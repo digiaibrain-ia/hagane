@@ -1,0 +1,10 @@
+.env
+*.env
+!*.env.example
+flows_cred.json
+node_modules/
+dashboard/dist/
+*.log
+.DS_Store
+# dados de ensaio / exportações com dados reais
+dados/
