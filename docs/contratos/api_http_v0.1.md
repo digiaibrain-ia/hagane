@@ -4,7 +4,7 @@ Só existem rotas `GET`. Nenhuma escreve na CPU. Teste: `tests/fluxos_somente_le
 
 | Rota | Resposta |
 |---|---|
-| `GET /baggio` | Página HTML (`dashboard/src/baggio_monitor_v0.7.html`, embutida no fluxo core) |
+| `GET /baggio` | Página HTML (`dashboard/src/baggio_monitor_v0.8.html`, embutida no fluxo core) |
 | `GET /baggio/api/tags` | Contrato monitorado: `{versao, origem, tags[], analogicas[]}` |
 | `GET /baggio/api/estado` | Instantâneo atual (abaixo) |
 

@@ -1,10 +1,11 @@
-BAGGIO - SISTEMA DE FILTRAGEM v0.7 - COMO USAR NO NOTEBOOK (somente leitura)
-1. VER A TELA SEM NADA INSTALADO: abra dashboard/src/baggio_monitor_v0.7.html com dois cliques. Ele mostra DADOS SIMULADOS (selo DEMO).
+BAGGIO - SISTEMA DE FILTRAGEM v0.8 - COMO USAR NO NOTEBOOK (somente leitura)
+1. VER A TELA SEM NADA INSTALADO: abra dashboard/src/baggio_monitor_v0.8.html com dois cliques. Ele mostra DADOS SIMULADOS (selo DEMO).
    Cabecalho: "Dados: PLC | Simulados" escolhe a origem; "Moderno | Original" escolhe o visual; "Animacao" liga/desliga a agua.
-2. COM NODE-RED: instale node-red-contrib-s7. Menu > Import: baggio_core_v0.7.json (Replace se ja houver o core antigo) + UMA fonte:
-   baggio_fonte_demo_v0.7.json (teste) OU baggio_fonte_s7_v0.7.json (PLC). Deploy. Abra http://localhost:1880/baggio
+2. COM NODE-RED: instale node-red-contrib-s7. Menu > Import: baggio_core_v0.8.json (Replace se ja houver o core antigo) + UMA fonte:
+   baggio_fonte_demo_v0.8.json (teste) OU baggio_fonte_s7_v0.8.json (PLC). Deploy. Abra http://localhost:1880/baggio
 3. PLC/PLCSIM: o IP vem de BAGGIO_PLC_IP ($env:BAGGIO_PLC_IP="192.168.0.10"; node-red) ou digitado no endpoint "CPU 315".
    Nao use PLC_IP (e do bt-gerador). Roteiro PLCSIM: docs/testes/roteiro_plcsim_v0.1.md
 4. Se o PLC nao responder, escolha Dados: Simulados: a tela funciona sem PLC e sem Node-RED.
-5. Alertas e falhas: toque numa linha para ver efeito, causa, solucao e como o PLC decide (enderecos ao vivo).
+5. Alertas e falhas: toque numa linha (efeito, causa, solucao, como o PLC decide). Filtre por Tipo, Familia ou busca; marque as caixas
+   para selecionar e exportar so os selecionados. Com dados simulados ha sempre 1 Falha e 1 Alerta de DEMONSTRACAO (codigos DEM).
 6. Nada aqui escreve no PLC. Erro: foto da aba Debug + da faixa vermelha "SEM COMUNICACAO".

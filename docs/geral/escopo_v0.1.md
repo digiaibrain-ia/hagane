@@ -63,3 +63,11 @@ Histórico em banco, relatórios, tendências, comandos de máquina, acesso remo
 - **Válvulas alinhadas ao eixo do tubo**, com flanges e atuador sempre do mesmo lado (direita no tubo vertical, acima no horizontal). Rótulo da compensação não atravessa mais a parede do tanque; rótulo da lavagem centrado na válvula.
 - **Corrida corrigida:** trocar "PLC → Simulados" com uma leitura do PLC pendente fazia o erro tardio derrubar a simulação; respostas de fonte já trocada são descartadas.
 - Teste: `tests/telas_v0.7.js` (nos dois visuais; regras de afastamento, ponte, setas, válvulas e sentido da animação) + `tests/colisao_textos.js` (amostragem de 1 em 1 e folga de 2).
+
+## v0.8 (24/11/2026) — T da alimentação, alertas de demonstração, filtros
+- **T da alimentação como no WinCC:** o tubo horizontal chega ao T e se divide; um ramo **sobe** (alimentação) e o outro **desce** (lavagem). Na v0.7 o tubo inteiro subia. Novo teste de conservação do fluxo: toda junção de pontas tem entrada e saída; acima do T a seta sobe e abaixo desce. Tubos emendados com ponta reta (sem "bolha" na junção).
+- **Simulação nunca gera falha de comunicação** (o estado simulado é sempre "ok"). A faixa "simulador em silêncio" que apareceu nos prints era da versão antiga.
+- **Alertas e falhas de demonstração:** com dados simulados há sempre uma Falha (`F-DEM-001`) e um Alerta (`A-DEM-001`) fictícios, autoexplicativos (explicam o que é falha/alerta, causa, teste e solução). Não existem no PLC, não entram no histórico e não mudam o selo de estado; contam no contador da aba.
+- **Filtros:** botões Falha/Alerta/Informação com contagem, lista de Família, busca, "Limpar filtros" e "Mostrando X de Y". **Seleção:** caixa por linha + "selecionar todos"; Exportar usa os selecionados (ou os ativos, se nada estiver selecionado).
+- Testes: `tests/telas_v0.8.js` (nos dois visuais) cobre T, junções, simulação sem falha (relógio forçado ao instante do antigo silêncio), demonstração, filtros e seleção.
+- **Registro honesto:** na primeira execução do teste v0.8, as verificações da simulação (arquivo aberto direto) falharam e não se repetiram depois (4 execuções completas e 15 aberturas isoladas sem erro). Causa não identificada; ficou como observação.
