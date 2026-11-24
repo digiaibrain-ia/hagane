@@ -1,10 +1,10 @@
-HAGANE v0.1 - COMO USAR NO NOTEBOOK (somente leitura)
-1. Instale Node-RED (node-red) e, em "Manage palette", o pacote node-red-contrib-s7.
-2. Teste SEM PLC: importe hagane_core_v0.1.json e hagane_fonte_demo_v0.1.json (Menu > Import), Deploy.
-3. Abra http://localhost:1880/hagane  -> deve aparecer "DEMO" em amarelo.
-4. Com a CPU: no PowerShell, ANTES de abrir o Node-RED:  $env:PLC_IP="192.168.0.2"; node-red
-   (o notebook precisa estar na rede 192.168.0.x). Importe core + hagane_fonte_s7_v0.1.json
-   e NAO importe a fonte demo junto. Deploy. A tela deve mostrar "CPU REAL".
-5. Celular/tablet na mesma rede: http://IP_DO_NOTEBOOK:1880/hagane
-6. Se der erro: abra a aba Debug e mande uma foto da tela + o texto "SEM COMUNICACAO".
-   Erro "getaddrinfo ENOTFOUND" = PLC_IP nao definido. Nada aqui escreve na CPU.
+HAGANE v0.2 - COMO USAR NO NOTEBOOK (somente leitura)
+1. Node-RED com o pacote node-red-contrib-s7 (Manage palette).
+2. Menu > Import: hagane_core_v0.2.json (se perguntar, escolha "Replace" para trocar a v0.1). Deploy.
+3. Teste SEM PLC: importe tambem hagane_fonte_demo_v0.2.json. Tela: http://localhost:1880/hagane (selo DEMO).
+4. Com PLCSIM ou CPU: use a fonte S7 (NAO junto com a demo). Na v0.2 o IP vem de HAGANE_PLC_IP
+   ($env:HAGANE_PLC_IP="192.168.0.10"; node-red) ou digite o IP no endpoint "CPU 315".
+   Nao use PLC_IP: e a variavel do bt-gerador.
+5. PLCSIM: siga docs/testes/roteiro_plcsim_v0.1.md (ordem de abertura + NetToPLCsim).
+6. Toque numa lampada do Overview para ver o endereco e o estado no PLC.
+7. Erro: foto da aba Debug + da faixa "SEM COMUNICACAO". Nada aqui escreve na CPU.

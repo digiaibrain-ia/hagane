@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="app-version" content="0.2">
+<title>Hagane — Sistema de Filtragem</title>
+<!--
+  HAGANE MONITOR v0.2  (SOMENTE LEITURA)
+  HISTORICO
+    v0.2  Overview fiel a tela do WinCC (Baggio - Sistema de agua); clique na lampada = detalhe.
+    v0.1  Primeira versao: Overview, Alertas e falhas, Entradas e saidas.
+  COMO FUNCIONA
+    A pagina so le /hagane/api/estado (1 s) e /hagane/api/tags do Node-RED.
+    Nao existe nenhum botao de comando. Se a leitura falha ou fica velha, a tela diz
+    "SEM COMUNICACAO" e apaga os valores (nunca mostra valor velho como se fosse atual).
+  ORGANIZACAO DO CODIGO (secoes neste arquivo)
+    1. Config   2. Dados (API/estado)   3. Mapa (equipamentos)   4. Alarmes
+    5. Overview 6. Alertas              7. E/S      8. Cabecalho/abas   9. Inicio
+-->
+<style>
+:root{
+  --bg:#e8ecef; --panel:#ffffff; --ink:#1b2a33; --muted:#586873; --line:#c8d1d7;
+  --head:#0b4a5c; --head-ink:#ffffff;
+  --run:#1c7f55; --run-bg:#dff2e8; --warn:#9a6700; --warn-bg:#fff1cc;
+  --bad:#b3261e; --bad-bg:#fde3e1; --off:#7d8a93; --off-bg:#eef1f3;
+  --liq:#5aa7c7; --sujo:#c9b24a; --focus:#0a64ad;
+  --font:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{font:14px/1.35 var(--font);background:var(--bg);color:var(--ink);display:flex;flex-direction:column;min-height:100vh}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--focus);outline-offset:1px}
+
+/* ---- cabecalho ---- */
+header{background:var(--head);color:var(--head-ink);display:flex;align-items:center;gap:12px;padding:8px 16px;flex-wrap:wrap}
+header h1{font-size:17px;margin:0;font-weight:650;letter-spacing:.02em;flex:1 1 auto;white-space:nowrap}
+header h1 small{font-weight:400;opacity:.8;margin-left:8px}
+.pill{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:3px 11px;font-weight:650;font-size:12.5px;border:2px solid transparent;white-space:nowrap}
+.pill.real{background:#fff;color:#0b4a5c}
+.pill.demo{background:#ffd23f;color:#3b2f00;border-color:#3b2f00;letter-spacing:.06em}
+.pill.com-ok{background:var(--run-bg);color:var(--run)}
+.pill.com-bad{background:var(--bad);color:#fff}
+.pill.com-nd{background:var(--off-bg);color:var(--muted)}
+#relogio{font-variant-numeric:tabular-nums;opacity:.9;font-size:13px}
+
+/* ---- abas ---- */
+nav{background:#fff;border-bottom:1px solid var(--line);display:flex;gap:2px;padding:0 10px;overflow-x:auto}
+nav button{border:0;background:none;padding:11px 16px;font-weight:600;color:var(--muted);border-bottom:4px solid transparent;white-space:nowrap}
+nav button[aria-selected="true"]{color:var(--head);border-bottom-color:var(--head)}
+nav .cnt{display:inline-block;min-width:22px;text-align:center;margin-left:6px;border-radius:11px;padding:0 6px;background:var(--off-bg);color:var(--muted);font-size:12px}
+nav .cnt.ativo{background:var(--bad);color:#fff}
+nav .cnt.aviso{background:var(--warn);color:#fff}
+
+/* ---- faixa de situacao (sempre visivel) ---- */
+#faixa{display:flex;gap:14px;align-items:center;flex-wrap:wrap;padding:6px 16px;background:#fff;border-bottom:1px solid var(--line);font-weight:600}
+#faixa .luz{display:inline-flex;align-items:center;gap:6px}
+.dot{width:14px;height:14px;border-radius:50%;border:2px solid var(--off);background:transparent;flex:none}
+.dot.on-g{background:var(--run);border-color:var(--run)}
+.dot.on-y{background:#e0a800;border-color:#9a6700}
+.dot.on-r{background:var(--bad);border-color:var(--bad)}
+.dot.nd{border-style:dashed}
+
+/* ---- aviso de comunicacao ---- */
+#aviso{display:none;background:var(--bad);color:#fff;padding:10px 16px;font-weight:700}
+#aviso small{font-weight:400;display:block;opacity:.95}
+body.sem-com #aviso{display:block}
+body.sem-com .dados{filter:grayscale(1);opacity:.45}
+#conf{display:none;background:var(--warn-bg);padding:10px 16px;border-bottom:1px solid var(--line)}
+#conf input{font:inherit;padding:5px 8px;width:min(340px,70vw)}
+
+header,nav,#faixa,#aviso,#conf{flex:none}   /* nao encolher no celular */
+main{flex:1;padding:12px 16px 20px;min-width:0}
+.vista{display:none}
+.vista.ativa{display:block}
+.barra{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.barra h2{margin:0;font-size:16px}
+.info-btn{width:26px;height:26px;border-radius:50%;border:1.5px solid var(--muted);background:#fff;color:var(--muted);font-weight:700;line-height:1}
+.pop{position:fixed;z-index:30;background:#fff;border:1px solid var(--line);border-radius:8px;box-shadow:0 8px 28px rgba(0,0,0,.25);padding:14px 16px;max-width:min(460px,92vw);max-height:80vh;overflow:auto}
+.pop h3{margin:0 0 8px;font-size:15px}
+.pop .fechar{position:absolute;top:6px;right:8px;border:0;background:none;font-size:20px}
+.pop p,.pop li{margin:.3em 0}
+
+/* ---- overview ---- */
+.ov{display:grid;grid-template-columns:minmax(0,1fr) 250px;gap:12px;align-items:start}
+.painel{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+.painel h3{margin:0 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.svgwrap{overflow:auto;background:var(--panel);border:1px solid var(--line);border-radius:8px}
+#svg{display:block;width:100%;height:auto;max-height:calc(100vh - 202px);margin:0 auto}
+.lin{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px dashed var(--line)}
+.lin:last-child{border:0}
+.lin .t{flex:1}
+.lin .v{font-weight:700;font-size:12px;color:var(--muted)}
+.lin.ativo .v{color:var(--run)}
+.lin.ruim.ativo .v{color:var(--bad)}
+/* svg: estados de equipamento */
+.eq rect.f{fill:var(--off-bg);stroke:var(--off);stroke-width:1.5}
+.eq.run rect.f{fill:var(--run-bg);stroke:var(--run);stroke-width:2.5}
+.eq.fail rect.f{fill:var(--bad-bg);stroke:var(--bad);stroke-width:3}
+.eq.nd rect.f{stroke-dasharray:5 3}
+.eq text{font-family:var(--font);fill:var(--ink)}
+.eq .n{font-size:12.5px;font-weight:650}
+.eq .s{font-size:11.5px;font-weight:700;fill:var(--muted)}
+.eq.run .s{fill:var(--run)}
+.eq.fail .s{fill:var(--bad)}
+.eq .ic{fill:none;stroke:var(--off);stroke-width:2}
+.eq.run .ic{stroke:var(--run)}
+.eq.fail .ic{stroke:var(--bad)}
+.tubo{stroke:#9fb0ba;stroke-width:5;fill:none;stroke-linejoin:round}
+.tubo.vivo{stroke:var(--liq)}
+.tanque{fill:#fff;stroke:#52646e;stroke-width:2.5}
+.nivel-l{fill:var(--liq);opacity:.75}
+.nivel-s{fill:var(--sujo);opacity:.8}
+.rot{font:11.5px var(--font);fill:var(--muted)}
+.rot .b{font-weight:700}
+.sen circle{fill:#fff;stroke:var(--off);stroke-width:2}
+.sen.on circle{fill:var(--run);stroke:var(--run)}
+.sen text{font:11px var(--font);fill:var(--ink)}
+.vlv path{fill:#fff;stroke:var(--off);stroke-width:2}
+.vlv.on path{fill:var(--run);stroke:var(--run)}
+.vlv text{font:11px var(--font);fill:var(--ink)}
+.vlv.nd path{stroke-dasharray:3 2}
+.banda{fill:none;stroke:#6f7f89;stroke-width:3;stroke-dasharray:8 6}
+.banda.gira{animation:desl 1.2s linear infinite}
+@keyframes desl{to{stroke-dashoffset:-28}}
+@media (prefers-reduced-motion:reduce){.banda.gira{animation:none}}
+
+/* ---- overview fiel ao WinCC (v0.2) ---- */
+.tela{background:#d5d9dc;border:1px solid #9aa3a8}
+.tela-tit{background:#0d4a5e;color:#fff;font:700 15px Tahoma,Arial,sans-serif;padding:6px 14px;display:flex;align-items:center;gap:10px;letter-spacing:.02em}
+.tela-tit .info-btn{background:transparent;color:#fff;border-color:#fff}
+.tela .svgwrap{border:0;border-radius:0;background:transparent}
+#svg text{font-family:Tahoma,Arial,sans-serif}
+.rt{font-size:10px;font-weight:700;fill:#1b2a33}
+.rt2{font-size:12px;fill:#1b2a33}
+.rt3{font-size:13.5px;fill:#1b2a33}
+.seta{font-size:14px;fill:#1b2a33}
+.eqp{fill:#cfd3d6;stroke:#6f7a80;stroke-width:1.5}
+.eqp2{fill:#b3b9bd;stroke:#6f7a80;stroke-width:1.5}
+.pnl{fill:#c3c8cc;stroke:#9aa3a8}
+.tb-o{fill:none;stroke:#2b9a43;stroke-width:9;stroke-linejoin:round;stroke-linecap:round}
+.tb-i{fill:none;stroke:#7be884;stroke-width:5;stroke-linejoin:round;stroke-linecap:round}
+.tb-o.ar{stroke:#2c5cb5}.tb-i.ar{stroke:#7aa6f2}
+.tb-ponta{fill:#7be884;stroke:#2b9a43;stroke-width:2.5}
+.lp{cursor:pointer}
+.lp circle{fill:url(#gOff);stroke:#59646a;stroke-width:1}
+.lp.on circle{fill:url(#gOn);stroke:#0f6a2c}
+.lp.fail circle{fill:url(#gFail);stroke:#7d120c}
+.lp.nd circle{fill:#e4e7e9;stroke-dasharray:2 2}
+.lpx{font:700 11px Arial,sans-serif;fill:#fff;pointer-events:none}
+.lp.nd .lpx{fill:#59646a}
+.vl{cursor:pointer}
+.vl path{fill:#eef0f1;stroke:#59646a;stroke-width:1.3}
+.vl.on path{fill:#35c75a;stroke:#0f6a2c}
+.vl.nd path{stroke-dasharray:2 2}
+.hz{fill:#fff;stroke:#8d969c}
+.hzt{font-size:12px;fill:#1b2a33}
+@media (max-width:900px){ #svg{min-width:900px} }
+
+/* ---- alertas ---- */
+table{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:#f3f6f8;font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+tr.ativo td{background:var(--bad-bg)}
+tr.ativo.sev-alarme td{background:var(--warn-bg)}
+tr.inativo td{color:var(--muted)}
+.sev{display:inline-block;padding:1px 8px;border-radius:4px;font-size:12px;font-weight:700;border:1.5px solid currentColor;white-space:nowrap}
+.sev.emergencia{color:#fff;background:var(--bad);border-color:var(--bad)}
+.sev.critico{color:var(--bad)}
+.sev.alarme{color:var(--warn)}
+.sev.campo{color:var(--muted)}
+.vazio{padding:26px;text-align:center;background:var(--panel);border:1px dashed var(--line);border-radius:8px;color:var(--run);font-weight:700;font-size:16px}
+.tw{overflow-x:auto}
+label.chk{display:inline-flex;align-items:center;gap:6px;cursor:pointer}
+.btn{border:1.5px solid var(--head);background:#fff;color:var(--head);border-radius:6px;padding:5px 12px;font-weight:600}
+.btn:hover{background:#eef6f8}
+h3.sec{margin:18px 0 8px;font-size:14px}
+
+/* ---- e/s ---- */
+.grade{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px}
+.byte{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px 10px}
+.byte h4{margin:0 0 6px;font-size:13px;color:var(--head)}
+.bit{display:flex;gap:8px;align-items:flex-start;padding:3px 0}
+.bit .a{font-family:ui-monospace,Consolas,monospace;font-size:12.5px;width:46px;flex:none;color:var(--muted)}
+.bit .d{flex:1;font-size:13px}
+.bit .d small{color:var(--muted);display:block;font-size:11px}
+.bit .e{font-size:11px;font-weight:700;width:34px;text-align:right;flex:none}
+.bit.on .e{color:var(--run)}
+.bit.nd .e{color:var(--off)}
+.warn{color:var(--warn);font-weight:700}
+input[type=search]{font:inherit;padding:6px 10px;border:1.5px solid var(--line);border-radius:6px;min-width:200px}
+.sub{display:flex;gap:6px}
+.sub button{border:1.5px solid var(--line);background:#fff;border-radius:6px;padding:5px 14px;font-weight:600}
+.sub button[aria-pressed="true"]{background:var(--head);color:#fff;border-color:var(--head)}
+
+@media (max-width:900px){
+  .ov{grid-template-columns:1fr}
+  header{padding:6px 12px;gap:6px}
+  header h1{font-size:15px;flex-basis:100%}
+  header h1 small{display:none}
+  .pill{font-size:12px;padding:2px 9px}
+  main{padding:8px 10px 16px}
+  th.h-origem,td.h-origem{display:none}
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>HAGANE — Sistema de Filtragem<small>Baggio · Sistema de água</small></h1>
+  <span id="pOrigem" class="pill com-nd">—</span>
+  <span id="pCom" class="pill com-nd">sem leitura</span>
+  <span id="relogio"></span>
+</header>
+<nav role="tablist" aria-label="Telas">
+  <button role="tab" id="aba-ov" aria-selected="true" data-v="ov">Overview</button>
+  <button role="tab" id="aba-al" aria-selected="false" data-v="al">Alertas e falhas<span class="cnt" id="cntAl">0</span></button>
+  <button role="tab" id="aba-es" aria-selected="false" data-v="es">Entradas e saídas</button>
+</nav>
+<div id="faixa" aria-live="polite"></div>
+<div id="aviso" role="alert"></div>
+<div id="conf">
+  Informe o endereço do Node-RED (ex.: http://192.168.0.10:1880):
+  <input id="confUrl" type="url" placeholder="http://…:1880"> <button class="btn" id="confOk">Conectar</button>
+</div>
+
+<main>
+<!-- ================= OVERVIEW ================= -->
+<section class="vista ativa" id="v-ov" aria-labelledby="aba-ov">
+  <div class="tela dados">
+    <div class="tela-tit">BAGGIO - SISTEMA DE ÁGUA - OVERVIEW <button class="info-btn" data-info="ov" aria-label="Sobre esta tela">i</button></div>
+    <div class="svgwrap"><svg id="svg" viewBox="0 20 1185 625" role="img" aria-label="Overview do sistema de água (filtragem)"></svg></div>
+  </div>
+</section>
+
+<!-- ================= ALERTAS ================= -->
+<section class="vista" id="v-al" aria-labelledby="aba-al">
+  <div class="barra">
+    <h2>Alertas e falhas</h2><button class="info-btn" data-info="al" aria-label="Sobre esta tela">i</button>
+    <label class="chk"><input type="checkbox" id="alTodos"> mostrar todos os alarmes cadastrados</label>
+  </div>
+  <div class="dados tw" id="alLista"></div>
+  <div class="barra"><h3 class="sec" style="margin:18px 0 0">Histórico desta sessão</h3>
+    <button class="btn" id="alCsv" style="margin-top:14px">Exportar CSV</button></div>
+  <div class="tw"><table id="alHist"><thead><tr><th>Hora</th><th>Evento</th><th>Endereço</th><th>Descrição</th><th>Duração</th></tr></thead><tbody></tbody></table></div>
+</section>
+
+<!-- ================= E/S ================= -->
+<section class="vista" id="v-es" aria-labelledby="aba-es">
+  <div class="barra">
+    <h2>Entradas e saídas</h2><button class="info-btn" data-info="es" aria-label="Sobre esta tela">i</button>
+    <div class="sub" role="group" aria-label="Área">
+      <button data-area="I" aria-pressed="true">Entradas (I)</button>
+      <button data-area="Q" aria-pressed="false">Saídas (Q)</button>
+    </div>
+    <input type="search" id="esBusca" placeholder="Buscar endereço ou texto" aria-label="Buscar">
+    <label class="chk"><input type="checkbox" id="esAtivos"> só ativos</label>
+    <label class="chk"><input type="checkbox" id="esRes"> mostrar reservas</label>
+    <span id="esCont" class="rot"></span>
+  </div>
+  <div class="grade dados" id="esGrade"></div>
+  <h3 class="sec">Analógicas</h3>
+  <div class="painel" id="esAnalog"></div>
+</section>
+</main>
+
+<script>
+"use strict";
+/* ============================================================
+   1. CONFIG
+   ============================================================ */
+const VERSAO = "0.2";
+const Cfg = {
+  pollMs: 1000,          // intervalo de leitura da API
+  velhoMs: 5000,         // idade maxima do dado para ser considerado atual
+  falhasParaCair: 2,     // falhas seguidas de fetch antes de declarar "sem comunicacao"
+  histMax: 300
+};
+function lerStorage(k){ try { return localStorage.getItem(k); } catch(e){ return null; } }
+function gravarStorage(k,v){ try { localStorage.setItem(k,v); } catch(e){} }
+function lerSessao(k){ try { return sessionStorage.getItem(k); } catch(e){ return null; } }
+function gravarSessao(k,v){ try { sessionStorage.setItem(k,v); } catch(e){} }
+const esc = s => String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const $ = (s,r=document)=>r.querySelector(s);
+const $$ = (s,r=document)=>Array.from(r.querySelectorAll(s));
+const hhmmss = d => new Date(d).toLocaleTimeString("pt-BR",{hour12:false});
+function dur(ms){ const s=Math.max(0,Math.round(ms/1000)); const h=Math.floor(s/3600),m=Math.floor(s%3600/60),x=s%60;
+  return (h?h+"h ":"")+(h||m?m+"min ":"")+x+"s"; }
+
+/* ============================================================
+   2. DADOS (API, estado, comunicacao)
+   ============================================================ */
+const Dados = {
+  base: "", contrato: null, tagsPorEnd: {}, estado: null,
+  ultimoOk: 0, falhas: 0, semCom: true, motivo: "aguardando 1ª leitura", semDesde: Date.now(),
+  ouvintes: [],
+  bit(a){ if (this.semCom || !this.estado) return undefined; const v=this.estado.bits[a]; return v===undefined?undefined:v; },
+  tag(a){ return this.tagsPorEnd[a]; },
+  aoAtualizar(f){ this.ouvintes.push(f); },
+  async buscar(url){
+    const c = new AbortController(); const t = setTimeout(()=>c.abort(), 3000);
+    try { const r = await fetch(this.base+url,{cache:"no-store",signal:c.signal}); if(!r.ok) throw new Error("HTTP "+r.status); return await r.json(); }
+    finally { clearTimeout(t); }
+  },
+  async carregarContrato(){
+    this.contrato = await this.buscar("/hagane/api/tags");
+    this.tagsPorEnd = {}; this.contrato.tags.forEach(t=>this.tagsPorEnd[t.endereco]=t);
+  },
+  async ler(){
+    try {
+      if (!this.contrato) await this.carregarContrato();
+      const e = await this.buscar("/hagane/api/estado");
+      this.falhas = 0; this.estado = e;
+      const ok = e.comunicacao === "ok" && e.idade_ms != null && e.idade_ms <= Cfg.velhoMs;
+      this.definirCom(!ok, ok ? "" : (e.motivo || "dados velhos"));
+      if (ok) this.ultimoOk = Date.now();
+    } catch (err) {
+      this.falhas++;
+      if (this.falhas >= Cfg.falhasParaCair) this.definirCom(true, "Node-RED não responde ("+(err.message||err)+")");
+    }
+    this.ouvintes.forEach(f=>{ try{ f(); }catch(e){ console.error(e); } });
+  },
+  definirCom(sem, motivo){
+    if (sem && !this.semCom) this.semDesde = Date.now();
+    this.semCom = sem; this.motivo = motivo;
+  },
+  iniciar(){ this.ler(); setInterval(()=>this.ler(), Cfg.pollMs); }
+};
+
+/* ============================================================
+   3. MAPA (equipamentos e luzes: endereco -> significado)
+      Fonte dos enderecos: docs/contratos/tags_v0.1.json.
+      A VALIDAR NA MAQUINA: polaridade e quais alarmes ligam a cada equipamento.
+   ============================================================ */
+const Mapa = {
+  eq: {
+    bomba1:   {nome:"Bomba 1",  run:"I1.1", disj:"I1.0", falha:["M10.1","M10.5","M12.2","M122.2","M61.0","I1.3"], auto:"I5.4", man:"I5.5"},
+    bomba2:   {nome:"Bomba 2",  run:"I1.5", disj:"I1.4", falha:["M10.3","M10.6","M12.3","M122.3","M61.1","I1.7"], auto:"I5.6", man:"I5.7"},
+    bombaTC:  {nome:"Bomba trocador de calor", run:"I2.1", disj:"I2.0", falha:["M12.1","M13.6"]},
+    aspirador:{nome:"Aspirador", run:"I2.3", disj:"I2.2", falha:["M13.4","M15.1"]},
+    extrator: {nome:"Extrator de lodo", run:"I2.5", disj:"I2.4", falha:["M14.2","M15.2"]},
+    rotovac:  {nome:"Rotovac", run:"I3.1", disj:"I3.0", falha:["M13.1","M15.0"]},
+    dragante: {nome:"Transp. dragante", run:"I3.6", disj:"I3.5", falha:["M13.2","M10.4"]}
+  },
+  valvulas: {
+    quebraVacuo:{nome:"Quebra vácuo", end:"Q14.1"}, compensacao:{nome:"Compensação", end:"Q14.2"},
+    sopro:{nome:"Sopro", end:"Q14.3"}, lavagem:{nome:"Lavagem", end:"Q15.6"}, trocador:{nome:"V. T.C.", end:"Q15.5"}
+  },
+  nivSujo:[["Máximo","Q14.6"],["Alto","Q14.7"],["Baixo","Q15.0"],["Mínimo","Q15.1"]],
+  nivLimpo:[["Alto","Q14.4"],["Baixo","Q14.5"]],
+  /* Overview fiel ao WinCC: posicao (x,y) em coordenadas do desenho; bit = endereco, eq = equipamento */
+  ov:{
+    lampadas:[
+      {id:"ar",       nome:"Ar comprimido",                    x:57,  y:45,  bit:"Q14.0"},
+      {id:"rotovac",  nome:"Rotovac",                          x:198, y:92,  eq:"rotovac"},
+      {id:"transp",   nome:"Transportador do filtro (dragante)",x:168, y:127, eq:"dragante"},
+      {id:"aspirador",nome:"Aspirador",                        x:230, y:128, eq:"aspirador"},
+      {id:"extrator", nome:"Extrator de lodo",                 x:198, y:162, eq:"extrator"},
+      {id:"qv",       nome:"Válvula quebra vácuo aberta",      x:165, y:232, bit:"Q14.1"},
+      {id:"banda",    nome:"Rotação da banda filtrante",       x:200, y:340, bit:"Q15.3"},
+      {id:"lAlto",    nome:"Tanque limpo - nível alto",        x:325, y:130, bit:"Q14.4"},
+      {id:"lMin",     nome:"Tanque limpo - nível mínimo",      x:325, y:186, bit:"Q14.5"},
+      {id:"comp",     nome:"Válvula de compensação aberta",    x:492, y:155, bit:"Q14.2"},
+      {id:"sMax",     nome:"Nível máximo tanque sujo",         x:483, y:256, bit:"I6.0"},
+      {id:"sFim",     nome:"Nível fim de enchimento",          x:483, y:282, bit:"I6.3"},
+      {id:"sIni",     nome:"Nível início de enchimento",       x:483, y:310, bit:"I6.2"},
+      {id:"sMin",     nome:"Nível mínimo tanque sujo",         x:483, y:337, bit:"I6.1"},
+      {id:"papel",    nome:"Rolo de papel (controle de papel)",x:863, y:160, bit:"Q15.2"},
+      {id:"b1",       nome:"Bomba 1 de filtragem",             x:158, y:505, eq:"bomba1"},
+      {id:"b2",       nome:"Bomba 2 de filtragem",             x:559, y:505, eq:"bomba2"}
+    ],
+    painel:[   /* dois grupos, como no WinCC */
+      [["Filtro Automático","Q12.1"],["Filtro Manual","Q12.0"],["Ciclo Automático Ligado","Q12.2"],["Ciclo Automático Desligado","Q12.6"]],
+      [["Auto Limpeza","Q12.4"],["Auto Limpeza Contínua","Q12.5"],["Ciclo Final de Semana","Q12.3"],["Vácuo no Filtro","Q15.4"]]
+    ],
+    valvulas:[
+      {id:"vSopro", nome:"Válvula sopro",          x:55,  y:95,  vert:true,  bit:"Q14.3"},
+      {id:"vQv",    nome:"Válvula quebra vácuo",   x:231, y:262, vert:true,  bit:"Q14.1"},
+      {id:"vComp",  nome:"Válvula de compensação", x:469, y:155, vert:true,  bit:"Q14.2"},
+      {id:"vLav",   nome:"Válvula de lavagem",     x:828, y:268, vert:false, bit:"Q15.6"}
+    ]
+  },
+  faixa:{verde:"Q11.4",amarela:"Q11.6",vermelha:"Q11.5",sirene:"Q11.7",critico:"M21.0",permissivel:"M21.3"},
+  /* alarmes derivados de entradas (alem das memorias M de alarme) */
+  derivados:[
+    {end:"I0.1",quando:true, sev:"emergencia",txt:"Botão de emergência do painel pressionado"},
+    {end:"I4.7",quando:true, sev:"emergencia",txt:"Botão de emergência do filtro pressionado"},
+    {end:"I0.3",quando:false,sev:"emergencia",txt:"Relé do circuito de segurança NÃO está OK"},
+    {end:"I1.0",quando:false,sev:"campo",txt:"Disjuntor da bomba 1 não OK"},
+    {end:"I1.4",quando:false,sev:"campo",txt:"Disjuntor da bomba 2 não OK"},
+    {end:"I2.0",quando:false,sev:"campo",txt:"Disjuntor da bomba do trocador de calor não OK"},
+    {end:"I2.2",quando:false,sev:"campo",txt:"Disjuntor do aspirador não OK"},
+    {end:"I2.4",quando:false,sev:"campo",txt:"Disjuntor do motor extrator de lodo não OK"},
+    {end:"I3.0",quando:false,sev:"campo",txt:"Disjuntor do rotovac não OK"},
+    {end:"I3.5",quando:false,sev:"campo",txt:"Disjuntor do transportador dragante não OK"},
+    {end:"I1.3",quando:true, sev:"campo",txt:"Falha no soft-start da bomba 1"},
+    {end:"I1.7",quando:true, sev:"campo",txt:"Falha no soft-start da bomba 2"}
+  ],
+  /* memorias M que sao resumo/estado, nao entram como linha de alarme */
+  semLinha:["M21.0","M21.3","M21.4"],
+  enderecosUsados(){
+    const s = new Set();
+    Object.values(this.eq).forEach(e=>[e.run,e.disj,e.auto,e.man,...(e.falha||[])].filter(Boolean).forEach(a=>s.add(a)));
+    this.ov.lampadas.forEach(l=>l.bit&&s.add(l.bit)); this.ov.valvulas.forEach(v=>s.add(v.bit));
+    this.ov.painel.flat().forEach(p=>s.add(p[1]));
+    Object.values(this.faixa).forEach(a=>s.add(a));
+    this.derivados.forEach(d=>s.add(d.end));
+    return Array.from(s).sort();
+  }
+};
+
+/* ============================================================
+   4. ALARMES (lista, inicio, historico)
+   ============================================================ */
+const Alarmes = {
+  defs: [], estado: {}, hist: [], iniciado: false,
+  montar(){
+    const d = [];
+    Dados.contrato.tags.filter(t=>t.classe==="alarme" && !Mapa.semLinha.includes(t.endereco)).forEach(t=>{
+      const crit = /CRITICO|CRÍTICO/i.test(t.comentario);
+      const emerg = t.endereco==="M11.5";
+      d.push({id:t.endereco, end:t.endereco, txt:t.comentario||t.nome, quando:true,
+              sev: emerg?"emergencia":(crit?"critico":"alarme")});
+    });
+    Mapa.derivados.forEach(x=>{ if (Dados.tag(x.end)) d.push({id:"D:"+x.end, end:x.end, txt:x.txt, quando:x.quando, sev:x.sev}); });
+    this.defs = d;
+    const salvo = lerSessao("hagane_hist_v1"); if (salvo) { try { this.hist = JSON.parse(salvo)||[]; } catch(e){} }
+  },
+  ordem:{emergencia:0,critico:1,alarme:2,campo:3},
+  rotulo:{emergencia:"EMERGÊNCIA",critico:"CRÍTICO",alarme:"ALARME",campo:"CAMPO"},
+  glifo:{emergencia:"■ ",critico:"▲ ",alarme:"● ",campo:"◆ "},
+  ativo(d){ const v = Dados.bit(d.end); return v===undefined ? undefined : (v === d.quando); },
+  atualizar(){
+    if (!Dados.contrato) return;
+    if (!this.defs.length) this.montar();
+    if (Dados.semCom) return;                       // sem dado atual: nao registra transicoes
+    const agora = Date.now();
+    this.defs.forEach(d=>{
+      const a = this.ativo(d); if (a===undefined) return;
+      const e = this.estado[d.id];
+      if (a && (!e || !e.ativo)) {
+        this.estado[d.id] = {ativo:true, desde:agora, aoAbrir:!this.iniciado};
+        this.hist.push({t:agora, ev:this.iniciado?"ATIVOU":"JÁ ATIVO AO ABRIR", end:d.end, txt:d.txt, dur:""});
+      } else if (!a && e && e.ativo) {
+        this.hist.push({t:agora, ev:"NORMALIZOU", end:d.end, txt:d.txt, dur:dur(agora-e.desde)});
+        this.estado[d.id] = {ativo:false, desde:agora};
+      } else if (!e) this.estado[d.id] = {ativo:false, desde:agora};
+    });
+    this.iniciado = true;
+    if (this.hist.length > Cfg.histMax) this.hist = this.hist.slice(-Cfg.histMax);
+    gravarSessao("hagane_hist_v1", JSON.stringify(this.hist));
+  },
+  ativos(){ return this.defs.filter(d=>this.ativo(d)===true); }
+};
+
+/* ============================================================
+   5. OVERVIEW (sinotico em SVG + painel de modos)
+   ============================================================ */
+const Overview = {
+  montado:false,
+  /* estado de um equipamento: run / stop / fail / nd (sem dado) */
+  estadoEq(id){
+    const e = Mapa.eq[id];
+    if (Dados.semCom) return {k:"nd", t:"SEM DADO"};
+    const run = Dados.bit(e.run), disj = e.disj?Dados.bit(e.disj):true;
+    const falhas = (e.falha||[]).filter(a=>Dados.bit(a)===true);
+    if (falhas.length) { const tg = Dados.tag(falhas[0]); return {k:"fail", t:"FALHA", d: tg ? tg.comentario||tg.nome : falhas[0], end:falhas[0]}; }
+    if (disj===false) return {k:"fail", t:"FALHA", d:"Disjuntor não OK", end:e.disj};
+    if (run===undefined) return {k:"nd", t:"SEM DADO"};
+    return run ? {k:"run", t:"EM OPERAÇÃO"} : {k:"stop", t:"PARADO"};
+  },
+  /* estado de uma lampada do desenho -> classe on / off / fail / nd + texto */
+  estadoLampada(l){
+    if (Dados.semCom) return {c:"nd", t:"sem dado", end:l.bit||Mapa.eq[l.eq].run};
+    if (l.eq) {
+      const r = this.estadoEq(l.eq), e = Mapa.eq[l.eq];
+      return {c:{run:"on",stop:"off",fail:"fail",nd:"nd"}[r.k], t:r.t+(r.d?": "+r.d:""),
+              end:"retorno "+e.run+(r.end?" · falha "+r.end:"")};
+    }
+    const v = Dados.bit(l.bit);
+    return {c: v===undefined?"nd": v?"on":"off", t: v===undefined?"sem dado": v?"ATIVO (1)":"inativo (0)", end:l.bit};
+  },
+  lampada(id,x,y){ return `<g class="lp nd" data-lp="${id}" transform="translate(${x},${y})"><title></title><circle r="8"/><text class="lpx" y="4" text-anchor="middle"></text></g>`; },
+  valvula(v){
+    const d = v.vert ? "M-7 -9 L7 -9 L-7 9 L7 9 Z" : "M-9 -7 L-9 7 L9 -7 L9 7 Z";
+    return `<g class="vl nd" data-vl="${v.id}" transform="translate(${v.x},${v.y})"><title></title><path d="${d}"/></g>`;
+  },
+  tubo(d,cls){ return `<path class="tb-o ${cls||""}" d="${d}"/><path class="tb-i ${cls||""}" d="${d}"/>`; },
+  texto(x,y,t,cls,ancora){ return `<text class="${cls||"rt"}" x="${x}" y="${y}"${ancora?` text-anchor="${ancora}"`:""}>${esc(t)}</text>`; },
+  /* bomba centrifuga desenhada como no WinCC: motor com aletas + voluta a direita */
+  bomba(x,y){
+    return `<g transform="translate(${x},${y})">
+      <rect x="-34" y="-10" width="40" height="20" rx="4" fill="url(#gMotor)" stroke="#6f7a80"/>
+      ${[-27,-20,-13,-6].map(a=>`<line x1="${a}" y1="-9" x2="${a}" y2="9" stroke="#8d969c" stroke-width="1"/>`).join("")}
+      <rect x="4" y="-6" width="5" height="12" fill="#9aa3a8" stroke="#6f7a80"/>
+      <circle cx="20" cy="0" r="12" fill="url(#gMotor)" stroke="#6f7a80"/><circle cx="20" cy="0" r="4" fill="#8d969c"/>
+      <rect x="-30" y="10" width="56" height="4" fill="#8d969c"/></g>`;
+  },
+  /* valvula de retencao / instrumento (decorativo, como no WinCC) */
+  retencao(x,y){ return `<g transform="translate(${x},${y})"><rect x="-5" y="-9" width="10" height="18" fill="#c3c8cc" stroke="#59646a"/><rect x="8" y="-6" width="3" height="18" fill="#e0731b"/></g>`; },
+  montar(){
+    const O = Mapa.ov;
+    const setas = [[218,195,"↓"],[218,380,"↓"],[277,255,"↑"],[676,92,"↑"],[676,182,"↑"],[676,258,"↑"],[733,128,"↓"],[733,212,"↓"],
+                   [254,478,"↑"],[326,473,"↓"],[374,473,"↓"],[436,478,"↑"],[600,192,"⇢"],[790,262,"⇢"]];
+    const rot = [[73,43,"AR"],[73,55,"COMPRIMIDO"],[66,102,"VÁLVULA SOPRO"],[212,97,"ROTOVAC"],[155,131,"TRANSP. FILTRO","end"],
+                 [241,132,"ASPIRADOR"],[186,166,"EXTRATOR LODO","end"],[180,229,"VÁLVULA"],[180,241,"QUEBRA VÁCUO"],
+                 [100,338,"ROTAÇÃO BANDA"],[100,350,"FILTRANTE"],[338,134,"NÍVEL ALTO"],[338,190,"NÍVEL MÍNIMO"],
+                 [506,152,"VÁLVULA DE"],[506,164,"COMPENSAÇÃO"],[650,58,"ALIMENTAÇÃO"],[722,96,"RETORNO"],[838,103,"ROLO DE PAPEL"],
+                 [806,290,"VÁLVULA DE"],[806,302,"LAVAGEM"],[176,505,"BOMBA 1"],[176,517,"DE FILTRAGEM"],[469,505,"BOMBA 2"],[469,517,"DE FILTRAGEM"]];
+    const niveis = [[500,260,"Nível Máximo Tanque Sujo"],[500,286,"Nível Fim de Enchimento"],[500,314,"Nível Início de Enchimento"],[500,341,"Nível Mínimo Tanque Sujo"]];
+    const yPainel = [[47,74,101,128],[187,214,241,268]];
+    let painel = "";
+    O.painel.forEach((g,gi)=>g.forEach((p,i)=>{ painel += this.lampada("p"+gi+i, 976, yPainel[gi][i]) + this.texto(992, yPainel[gi][i]+4, p[0], "rt2"); }));
+    $("#svg").innerHTML = `
+      <defs>
+        <pattern id="pts" width="9" height="9" patternUnits="userSpaceOnUse"><circle cx="1.5" cy="1.5" r="0.9" fill="#8e979d"/></pattern>
+        <radialGradient id="gOn" cx="35%" cy="35%" r="70%"><stop offset="0" stop-color="#c8f7d1"/><stop offset=".45" stop-color="#35c75a"/><stop offset="1" stop-color="#0f6a2c"/></radialGradient>
+        <radialGradient id="gOff" cx="35%" cy="35%" r="70%"><stop offset="0" stop-color="#f4f5f6"/><stop offset=".5" stop-color="#b8bfc4"/><stop offset="1" stop-color="#6f7a80"/></radialGradient>
+        <radialGradient id="gFail" cx="35%" cy="35%" r="70%"><stop offset="0" stop-color="#ffd0cb"/><stop offset=".45" stop-color="#e0352b"/><stop offset="1" stop-color="#7d120c"/></radialGradient>
+        <linearGradient id="gMotor" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f4f5f6"/><stop offset=".5" stop-color="#c3c8cc"/><stop offset="1" stop-color="#8a9298"/></linearGradient>
+      </defs>
+      <rect x="0" y="20" width="1185" height="625" fill="#d5d9dc"/><rect x="0" y="20" width="1185" height="625" fill="url(#pts)"/>
+      <rect x="105" y="416" width="447" height="220" fill="none" stroke="#e3cf00" stroke-width="1.5" stroke-dasharray="3 3"/>
+      <!-- tanque sujo e liquido (amarelo fixo, como no WinCC) -->
+      <polygon class="eqp" points="232,228 918,228 918,360 268,360"/>
+      <polygon fill="#ecea00" points="248,287 918,287 918,360 268,360"/>
+      <!-- filtro (funil) e bloco da valvula quebra vacuo -->
+      <polygon class="eqp" points="150,95 195,95 268,360 245,360 180,276 140,276 140,200 150,200"/>
+      <rect class="eqp2" x="140" y="200" width="40" height="76"/>
+      <!-- tanque limpo, rolo de papel, caixa de saida -->
+      <rect class="eqp" x="312" y="73" width="216" height="154"/>
+      <rect class="eqp" x="841" y="115" width="45" height="112"/>
+      <rect class="eqp2" x="300" y="360" width="76" height="30"/>
+      <!-- tubulacao -->
+      ${this.tubo("M55 62 V198 Q55 213 70 213 H140","ar")}
+      ${this.tubo("M248 172 H239 Q231 172 231 180 V412 Q231 420 239 420 H313 V390")}
+      ${this.tubo("M265 520 V216 Q265 208 273 208 H690")}
+      ${this.tubo("M275 530 H327 Q335 530 335 522 V390")}
+      ${this.tubo("M450 520 V208")}
+      ${this.tubo("M363 390 V598 Q363 606 371 606 H463 Q471 606 471 598 V538 Q471 530 463 530 H444")}
+      ${this.tubo("M469 118 V208")}
+      ${this.tubo("M690 52 V260 Q690 268 698 268 H857 Q865 268 865 260 V240")}
+      ${this.tubo("M745 105 V228")}
+      <circle class="tb-ponta" cx="469" cy="118" r="7"/><circle class="tb-ponta" cx="865" cy="240" r="7"/>
+      ${this.retencao(265,467)}${this.retencao(450,467)}${this.retencao(745,140)}
+      ${this.bomba(241,530)}${this.bomba(424,530)}
+      <rect class="hz" x="209" y="553" width="68" height="22" rx="3"/><text class="hzt" x="243" y="568" text-anchor="middle"><title>Frequência não lida na v0.1/v0.2 (pendência P-03)</title>-- Hz</text>
+      <rect class="hz" x="391" y="553" width="68" height="22" rx="3"/><text class="hzt" x="425" y="568" text-anchor="middle"><title>Frequência não lida na v0.1/v0.2 (pendência P-03)</title>-- Hz</text>
+      ${O.valvulas.map(v=>this.valvula(v)).join("")}
+      ${setas.map(a=>`<text class="seta" x="${a[0]}" y="${a[1]}">${a[2]}</text>`).join("")}
+      ${rot.map(r=>this.texto(r[0],r[1],r[2],"rt",r[3])).join("")}
+      <text class="rt3" x="348" y="101">TANQUE LIMPO</text>
+      ${niveis.map(n=>this.texto(n[0],n[1],n[2],"rt2")).join("")}
+      <rect class="pnl" x="958" y="30" width="213" height="117" rx="2"/>
+      <rect class="pnl" x="958" y="170" width="213" height="117" rx="2"/>
+      ${painel}
+      ${O.lampadas.map(l=>this.lampada(l.id,l.x,l.y)).join("")}`;
+    // clique/toque numa lampada ou valvula: mostra nome, estado e endereco (ajuda no teste)
+    $("#svg").addEventListener("click", e=>{
+      const g = e.target.closest("[data-lp],[data-vl]"); if (!g) return;
+      e.stopPropagation();
+      const d = this.detalhe(g);
+      abrirPop(d.nome, `<p><b>${esc(d.t)}</b></p><p class="rot">Endereço: ${esc(d.end)}</p>`, g.getBoundingClientRect());
+    });
+    this.montado = true;
+  },
+  /* acha a definicao de uma lampada/valvula pelo elemento do desenho */
+  defDe(g){
+    if (g.dataset.vl) { const v = Mapa.ov.valvulas.find(x=>x.id===g.dataset.vl); return {nome:v.nome, bit:v.bit}; }
+    const id = g.dataset.lp;
+    if (id[0]==="p" && /^p\d\d$/.test(id)) { const p = Mapa.ov.painel[+id[1]][+id[2]]; return {nome:p[0], bit:p[1]}; }
+    return Mapa.ov.lampadas.find(x=>x.id===id);
+  },
+  detalhe(g){
+    const l = this.defDe(g), r = this.estadoLampada(l);
+    const t = g.dataset.vl ? (r.c==="on"?"ABERTA (1)": r.c==="off"?"fechada (0)": r.t) : r.t;
+    return {nome:l.nome, t:t, end:r.end, c:r.c};
+  },
+  atualizar(){
+    if (!Dados.contrato) return;
+    if (!this.montado) this.montar();
+    $$("#svg [data-lp],#svg [data-vl]").forEach(g=>{
+      const d = this.detalhe(g);
+      g.setAttribute("class", (g.dataset.vl?"vl ":"lp ")+d.c);
+      g.querySelector("title").textContent = d.nome+" — "+d.t+" ["+d.end+"]";
+      const x = g.querySelector(".lpx"); if (x) x.textContent = d.c==="fail"?"!": d.c==="nd"?"?":"";
+    });
+  }
+};
+
+/* ============================================================
+   6. ALERTAS E FALHAS
+   ============================================================ */
+const TelaAlertas = {
+  atualizar(){
+    const todos = $("#alTodos").checked;
+    const ativos = Alarmes.ativos().sort((a,b)=>Alarmes.ordem[a.sev]-Alarmes.ordem[b.sev] ||
+                    (Alarmes.estado[a.id].desde-Alarmes.estado[b.id].desde));
+    const lista = todos ? Alarmes.defs.slice().sort((a,b)=>{
+        const aa=Alarmes.ativo(a)===true, bb=Alarmes.ativo(b)===true;
+        return (bb-aa) || Alarmes.ordem[a.sev]-Alarmes.ordem[b.sev] || a.end.localeCompare(b.end,undefined,{numeric:true}); }) : ativos;
+    const box = $("#alLista");
+    if (!Alarmes.defs.length) { box.innerHTML = '<div class="vazio" style="color:var(--muted)">Carregando…</div>'; }
+    else if (!lista.length) {
+      box.innerHTML = Dados.semCom ? '<div class="vazio" style="color:var(--muted)">Sem dado atual</div>'
+        : '<div class="vazio">✔ Nenhum alarme ativo</div>';
+    } else {
+      const agora = Date.now();
+      box.innerHTML = "<table><thead><tr><th>Estado</th><th>Prioridade</th><th>Descrição</th><th>Início</th><th>Duração</th><th class='h-origem'>Origem</th></tr></thead><tbody>"+
+        lista.map(d=>{
+          const a = Alarmes.ativo(d), e = Alarmes.estado[d.id];
+          const est = a===undefined ? "SEM DADO" : a ? "● ATIVO" : "○ normal";
+          return `<tr class="${a?"ativo":"inativo"} sev-${d.sev}"><td><b>${est}</b></td>
+            <td><span class="sev ${d.sev}">${Alarmes.glifo[d.sev]}${Alarmes.rotulo[d.sev]}</span></td>
+            <td>${esc(d.txt)}</td>
+            <td class="num">${a&&e?hhmmss(e.desde)+(e.aoAbrir?" (ao abrir)":""):"—"}</td>
+            <td class="num">${a&&e?dur(agora-e.desde):"—"}</td>
+            <td class="h-origem num">${esc(d.end)}</td></tr>`;}).join("")+"</tbody></table>";
+    }
+    const h = $("#alHist tbody");
+    h.innerHTML = Alarmes.hist.slice().reverse().slice(0,100).map(x=>`<tr><td class="num">${hhmmss(x.t)}</td><td><b>${esc(x.ev)}</b></td><td class="num">${esc(x.end)}</td><td>${esc(x.txt)}</td><td class="num">${esc(x.dur)}</td></tr>`).join("")
+      || '<tr><td colspan="5" style="color:var(--muted)">Sem eventos nesta sessão.</td></tr>';
+  },
+  csv(){
+    const linhas = [["hora","evento","endereco","descricao","duracao"]].concat(Alarmes.hist.map(x=>[new Date(x.t).toLocaleString("pt-BR"),x.ev,x.end,x.txt,x.dur]));
+    const txt = "﻿"+linhas.map(l=>l.map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(";")).join("\r\n");
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob([txt],{type:"text/csv;charset=utf-8"}));
+    a.download = "hagane_alertas_"+new Date().toISOString().slice(0,19).replace(/[:T]/g,"-")+".csv";
+    document.body.appendChild(a); a.click(); a.remove();
+  }
+};
+
+/* ============================================================
+   7. ENTRADAS E SAIDAS
+   ============================================================ */
+const TelaES = {
+  area:"I", montadoAnalog:false,
+  filtrar(t){
+    const busca = $("#esBusca").value.trim().toLowerCase();
+    if (t.classe==="reserva" && !$("#esRes").checked) return false;
+    if ($("#esAtivos").checked && Dados.bit(t.endereco)!==true) return false;
+    if (busca && !(t.endereco.toLowerCase().includes(busca) || (t.comentario||"").toLowerCase().includes(busca) || t.nome.toLowerCase().includes(busca))) return false;
+    return true;
+  },
+  atualizar(){
+    if (!Dados.contrato) return;
+    const tags = Dados.contrato.tags.filter(t=>t.area===this.area && t.classe!=="alarme" && t.classe!=="estado");
+    const grupos = {};
+    tags.filter(t=>this.filtrar(t)).forEach(t=>{ (grupos[t.byte]=grupos[t.byte]||[]).push(t); });
+    const bytes = Object.keys(grupos).sort((a,b)=>parseInt(a.slice(2))-parseInt(b.slice(2)));
+    let n=0, ativos=0;
+    $("#esGrade").innerHTML = bytes.map(b=>{
+      const linhas = grupos[b].sort((x,y)=>x.nbit-y.nbit).map(t=>{
+        const v = Dados.bit(t.endereco); n++; if (v) ativos++;
+        const desc = t.comentario || t.nome;
+        const alerta = t.nome.endsWith("_res") && t.classe!=="reserva" ? ' <span class="warn" title="Nome da tag diz reserva, mas o comentário descreve uma função (pendência P-01/P-02)">⚠</span>' : "";
+        return `<div class="bit ${v===undefined?"nd":v?"on":""}"><span class="dot ${v===undefined?"nd":v?"on-g":""}"></span>
+          <span class="a">${esc(t.endereco)}</span><span class="d">${esc(desc)}${alerta}<small>${esc(t.nome)}</small></span>
+          <span class="e">${v===undefined?"—":v?"1":"0"}</span></div>`;}).join("");
+      return `<div class="byte"><h4>${this.area}${parseInt(b.slice(2))} — byte ${parseInt(b.slice(2))}</h4>${linhas}</div>`;
+    }).join("") || '<div class="vazio" style="color:var(--muted);grid-column:1/-1">Nenhum item com este filtro</div>';
+    $("#esCont").textContent = n+" itens · "+ativos+" ativos";
+    if (!this.montadoAnalog) {
+      $("#esAnalog").innerHTML = '<p class="rot" style="margin:0 0 6px">Não lidas na v0.1 (endereços de periferia; escala e unidade pendentes — P-03).</p>' +
+        Dados.contrato.analogicas.map(a=>`<div class="bit nd"><span class="a" style="width:60px">${esc(a.endereco)}</span><span class="d">${esc(a.comentario||a.nome)}<small>${esc(a.nome)}</small></span><span class="e" style="width:auto">não lido</span></div>`).join("");
+      this.montadoAnalog = true;
+    }
+  }
+};
+
+/* ============================================================
+   8. CABECALHO, FAIXA, ABAS E POPOVERS
+   ============================================================ */
+const Textos = {
+  ov:["Overview","<p>Mesma disposição da tela do WinCC. <b>Somente leitura</b>: nada aqui envia comando.</p><ul><li>Lâmpada <b>verde</b> = ativo/em operação; <b>cinza</b> = inativo/parado; <b>vermelha com !</b> = falha (alarme ou disjuntor do equipamento); <b>tracejada com ?</b> = sem dado.</li><li><b>Toque/clique numa lâmpada ou válvula</b> para ver o estado e o endereço no PLC (útil no teste com PLCSIM).</li><li>Líquido amarelo e tubos são desenho fixo, como no WinCC. Frequência das bombas ainda não é lida (P-03).</li></ul>"],
+
+  al:["Alertas e falhas","<p>Lista dos alarmes ativos, do mais grave ao menos grave. A prioridade <b>CRÍTICO</b> vem do texto do alarme no programa; os demais ainda não têm classificação (pendência P-04).</p><p><b>CAMPO</b> = falha deduzida de entradas (disjuntor, soft-start). Marque “mostrar todos” para ver também os normais.</p><p>Horas e histórico valem <b>desta sessão do navegador</b>; não ficam gravados no servidor.</p>"],
+  es:["Entradas e saídas","<p>Estado ao vivo de cada entrada (I) e saída (Q) da CPU, agrupado por byte. Reservas ficam ocultas por padrão.</p><p>⚠ marca tag cujo <b>nome diz reserva</b> mas o comentário descreve uma função (pendência P-01/P-02).</p>"]
+};
+const Cab = {
+  atualizar(){
+    const o = Dados.estado ? Dados.estado.origem : null;
+    const po = $("#pOrigem");
+    po.className = "pill "+(o==="demo"?"demo":o==="real"?"real":"com-nd");
+    po.textContent = o==="demo" ? "▲ DEMO — DADOS SIMULADOS" : o==="real" ? "CPU REAL" : "origem ?";
+    const pc = $("#pCom");
+    if (!Dados.contrato || !Dados.estado) { pc.className="pill com-nd"; pc.textContent = Dados.falhas>=Cfg.falhasParaCair ? "sem Node-RED" : "conectando…"; }
+    else if (Dados.semCom) { pc.className="pill com-bad"; pc.textContent="✖ SEM COMUNICAÇÃO"; }
+    else { pc.className="pill com-ok"; pc.textContent="✔ comunicação OK"; }
+    document.body.classList.toggle("sem-com", Dados.semCom && (Dados.estado!==null || Dados.falhas>=Cfg.falhasParaCair));
+    const av = $("#aviso");
+    av.innerHTML = "SEM COMUNICAÇÃO — valores apagados"+(Dados.semDesde?" desde "+hhmmss(Dados.semDesde):"")+"<small>"+esc(Dados.motivo||"")+"</small>";
+    // faixa
+    const f = Mapa.faixa, b = a=>Dados.bit(a);
+    const luz = (txt,a,cor)=>{ const v=b(a); return `<span class="luz"><span class="dot ${v===undefined?"nd":v?cor:""}"></span>${txt}</span>`; };
+    $("#faixa").innerHTML = luz("Sistema ligado",f.verde,"on-g")+luz("Aviso",f.amarela,"on-y")+luz("Falha",f.vermelha,"on-r")+luz("Sirene",f.sirene,"on-r")+
+      (b(f.critico)===true?'<span class="sev critico">▲ ALARME CRÍTICO PRESENTE</span>':"")+
+      (b(f.permissivel)===true?'<span class="sev alarme">● ALARME PERMISSÍVEL PRESENTE</span>':"");
+    // contador
+    const n = Alarmes.ativos().length, c = $("#cntAl");
+    c.textContent = Dados.semCom ? "?" : n;
+    c.className = "cnt"+(!Dados.semCom && n ? (Alarmes.ativos().some(d=>d.sev==="emergencia"||d.sev==="critico")?" ativo":" aviso"):"");
+  }
+};
+function abrirInfo(chave,btn){ const t = Textos[chave]; abrirPop(t[0], t[1], btn.getBoundingClientRect()); }
+function abrirPop(titulo, html, r){
+  fecharInfo();
+  const p = document.createElement("div");
+  p.className="pop"; p.id="pop"; p.setAttribute("role","dialog"); p.setAttribute("aria-label",titulo);
+  p.innerHTML = `<button class="fechar" aria-label="Fechar">✕</button><h3>${esc(titulo)}</h3>${html}`;
+  document.body.appendChild(p);
+  p.style.left = Math.max(8, Math.min(r.left, innerWidth-p.offsetWidth-8))+"px";
+  p.style.top = Math.min(r.bottom+6, innerHeight-p.offsetHeight-8)+"px";
+  $(".fechar",p).addEventListener("click",fecharInfo); $(".fechar",p).focus();
+}
+function fecharInfo(){ const p=$("#pop"); if(p) p.remove(); }
+function mostrar(v){
+  $$("nav button").forEach(b=>b.setAttribute("aria-selected",b.dataset.v===v));
+  $$(".vista").forEach(s=>s.classList.toggle("ativa",s.id==="v-"+v));
+  gravarStorage("hagane_aba",v); fecharInfo(); renderTudo();
+}
+function renderTudo(){
+  Alarmes.atualizar(); Cab.atualizar();
+  const v = $(".vista.ativa").id;
+  if (v==="v-ov") Overview.atualizar(); else if (v==="v-al") TelaAlertas.atualizar(); else TelaES.atualizar();
+}
+
+/* ============================================================
+   9. INICIO
+   ============================================================ */
+function iniciar(){
+  const qs = new URLSearchParams(location.search);
+  let base = qs.get("api") || "";
+  if (!base && location.protocol==="file:") base = lerStorage("hagane_api") || "";
+  if (!base && location.protocol==="file:") {
+    $("#conf").style.display="block";
+    $("#confOk").addEventListener("click",()=>{ const u=$("#confUrl").value.trim().replace(/\/+$/,""); if(u){ gravarStorage("hagane_api",u); location.reload(); } });
+  }
+  Dados.base = base.replace(/\/+$/,"");
+  $$("nav button").forEach(b=>b.addEventListener("click",()=>mostrar(b.dataset.v)));
+  $$("[data-info]").forEach(b=>b.addEventListener("click",e=>{ e.stopPropagation(); abrirInfo(b.dataset.info,b); }));
+  document.addEventListener("click",e=>{ if(!e.target.closest(".pop")) fecharInfo(); });
+  document.addEventListener("keydown",e=>{ if(e.key==="Escape") fecharInfo(); });
+  $("#alTodos").addEventListener("change",renderTudo); $("#alCsv").addEventListener("click",()=>TelaAlertas.csv());
+  $$(".sub button").forEach(b=>b.addEventListener("click",()=>{ TelaES.area=b.dataset.area; $$(".sub button").forEach(x=>x.setAttribute("aria-pressed",x===b)); renderTudo(); }));
+  ["esBusca","esAtivos","esRes"].forEach(id=>$("#"+id).addEventListener("input",renderTudo));
+  setInterval(()=>{ $("#relogio").textContent = new Date().toLocaleString("pt-BR",{hour12:false}); }, 1000);
+  Dados.aoAtualizar(renderTudo);
+  const aba = lerStorage("hagane_aba"); if (aba && $("#v-"+aba)) { $$("nav button").forEach(b=>b.setAttribute("aria-selected",b.dataset.v===aba)); $$(".vista").forEach(s=>s.classList.toggle("ativa",s.id==="v-"+aba)); }
+  if (Dados.base || location.protocol!=="file:") Dados.iniciar();
+  renderTudo();
+}
+window.Hagane = {Dados, Mapa, Alarmes, VERSAO};   // acesso para os testes
+iniciar();
+</script>
+</body>
+</html>

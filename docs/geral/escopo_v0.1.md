@@ -24,3 +24,8 @@ Histórico em banco, relatórios, tendências, comandos de máquina, acesso remo
 - Tela: `dashboard/src/hagane_monitor_v0.1.html` (embutida no core). Contrato: `docs/contratos/api_http_v0.1.md`.
 - **Provado aqui (simulado):** telas em 1536x694 e 390x844, estados normal/aviso/falha/sem comunicação, leitura S7 bit a bit contra servidor snap7 simulado, queda e recuperação, fluxos sem nó de escrita.
 - **Não provado (depende do notebook/CPU):** rack/slot e acesso S7 da CPU 315, polaridade dos sensores e alarmes derivados (P-10, P-11), leitura analógica (P-03).
+
+## v0.2 (24/11/2026)
+- Overview **fiel à tela do WinCC** (mesma disposição, lâmpadas dinâmicas, toque = estado + endereço). Fonte S7 usa `HAGANE_PLC_IP`.
+- Arquivos: `dashboard/src/hagane_monitor_v0.2.html` (gerado por `dashboard/gerador/gerar_monitor_v0.2.py`), `nodered/flows/hagane_*_v0.2.json`. v0.1 em `arquivo/`.
+- Teste com PLCSIM: `docs/testes/roteiro_plcsim_v0.1.md`.
