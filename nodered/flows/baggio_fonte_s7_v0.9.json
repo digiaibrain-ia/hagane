@@ -1,0 +1,258 @@
+[
+ {
+  "id": "baggio_s7_tab",
+  "type": "tab",
+  "label": "Baggio fonte S7 v0.9",
+  "disabled": false,
+  "info": "Baggio fonte S7 v0.9: LE a CPU 315 por S7 (ISO-on-TCP). Endereco pela variavel de ambiente BAGGIO_PLC_IP (ou digitado no endpoint). Nenhum no de escrita."
+ },
+ {
+  "id": "hg_s_nota",
+  "type": "comment",
+  "z": "baggio_s7_tab",
+  "x": 190,
+  "y": 40,
+  "name": "Baggio fonte S7 v0.9 - leitura 35 bytes",
+  "info": "Rack 0 / slot 2 (CONFIRMAR na CPU 315)."
+ },
+ {
+  "id": "hg_s_ep",
+  "type": "s7 endpoint",
+  "transport": "iso-on-tcp",
+  "address": "${BAGGIO_PLC_IP}",
+  "port": "102",
+  "rack": "0",
+  "slot": "2",
+  "localtsaphi": "01",
+  "localtsaplo": "00",
+  "remotetsaphi": "01",
+  "remotetsaplo": "00",
+  "connmode": "rack-slot",
+  "adapter": "",
+  "busaddr": "",
+  "cycletime": "1000",
+  "timeout": "2000",
+  "name": "CPU 315 (BAGGIO_PLC_IP)",
+  "verbose": "default",
+  "vartable": [
+   {
+    "addr": "IB0",
+    "name": "IB0"
+   },
+   {
+    "addr": "IB1",
+    "name": "IB1"
+   },
+   {
+    "addr": "IB2",
+    "name": "IB2"
+   },
+   {
+    "addr": "IB3",
+    "name": "IB3"
+   },
+   {
+    "addr": "IB4",
+    "name": "IB4"
+   },
+   {
+    "addr": "IB5",
+    "name": "IB5"
+   },
+   {
+    "addr": "IB6",
+    "name": "IB6"
+   },
+   {
+    "addr": "IB7",
+    "name": "IB7"
+   },
+   {
+    "addr": "IB8",
+    "name": "IB8"
+   },
+   {
+    "addr": "MB10",
+    "name": "MB10"
+   },
+   {
+    "addr": "MB11",
+    "name": "MB11"
+   },
+   {
+    "addr": "MB12",
+    "name": "MB12"
+   },
+   {
+    "addr": "MB13",
+    "name": "MB13"
+   },
+   {
+    "addr": "MB14",
+    "name": "MB14"
+   },
+   {
+    "addr": "MB15",
+    "name": "MB15"
+   },
+   {
+    "addr": "MB16",
+    "name": "MB16"
+   },
+   {
+    "addr": "MB17",
+    "name": "MB17"
+   },
+   {
+    "addr": "MB20",
+    "name": "MB20"
+   },
+   {
+    "addr": "MB21",
+    "name": "MB21"
+   },
+   {
+    "addr": "MB22",
+    "name": "MB22"
+   },
+   {
+    "addr": "MB25",
+    "name": "MB25"
+   },
+   {
+    "addr": "MB61",
+    "name": "MB61"
+   },
+   {
+    "addr": "MB100",
+    "name": "MB100"
+   },
+   {
+    "addr": "MB122",
+    "name": "MB122"
+   },
+   {
+    "addr": "MB140",
+    "name": "MB140"
+   },
+   {
+    "addr": "QB8",
+    "name": "QB8"
+   },
+   {
+    "addr": "QB9",
+    "name": "QB9"
+   },
+   {
+    "addr": "QB10",
+    "name": "QB10"
+   },
+   {
+    "addr": "QB11",
+    "name": "QB11"
+   },
+   {
+    "addr": "QB12",
+    "name": "QB12"
+   },
+   {
+    "addr": "QB13",
+    "name": "QB13"
+   },
+   {
+    "addr": "QB14",
+    "name": "QB14"
+   },
+   {
+    "addr": "QB15",
+    "name": "QB15"
+   },
+   {
+    "addr": "QB28",
+    "name": "QB28"
+   },
+   {
+    "addr": "QB29",
+    "name": "QB29"
+   }
+  ]
+ },
+ {
+  "id": "hg_s_in",
+  "type": "s7 in",
+  "z": "baggio_s7_tab",
+  "x": 160,
+  "y": 120,
+  "endpoint": "hg_s_ep",
+  "mode": "all",
+  "variable": "",
+  "diff": false,
+  "name": "le CPU (todos os bytes)",
+  "wires": [
+   [
+    "hg_s_marca"
+   ]
+  ]
+ },
+ {
+  "id": "hg_s_marca",
+  "type": "function",
+  "z": "baggio_s7_tab",
+  "x": 380,
+  "y": 120,
+  "name": "origem=real",
+  "func": "msg.origem = \"real\";\nreturn msg;",
+  "outputs": 1,
+  "initialize": "",
+  "finalize": "",
+  "libs": [],
+  "wires": [
+   [
+    "hg_s_out"
+   ]
+  ],
+  "info": "Marca a origem para a tela."
+ },
+ {
+  "id": "hg_s_out",
+  "type": "link out",
+  "z": "baggio_s7_tab",
+  "x": 560,
+  "y": 120,
+  "name": "baggio-bruto",
+  "mode": "link",
+  "links": [
+   "hg_c_in"
+  ],
+  "wires": []
+ },
+ {
+  "id": "hg_s_status",
+  "type": "status",
+  "z": "baggio_s7_tab",
+  "x": 160,
+  "y": 200,
+  "name": "",
+  "scope": [
+   "hg_s_in"
+  ],
+  "wires": [
+   [
+    "hg_s_st_out"
+   ]
+  ]
+ },
+ {
+  "id": "hg_s_st_out",
+  "type": "link out",
+  "z": "baggio_s7_tab",
+  "x": 380,
+  "y": 200,
+  "name": "baggio-status-s7",
+  "mode": "link",
+  "links": [
+   "hg_c_st_in"
+  ],
+  "wires": []
+ }
+]
