@@ -15,3 +15,7 @@ Geradas da planilha: [pendencias_geradas.md](pendencias_geradas.md).
 | P-09 | PUT/GET ou comunicação S7 liberada na CPU 315 V3.2 para o Node-RED (rack 0, slot 2)? | Sem isso o Node-RED não lê | a testar |
 
 Respondidas pela planilha: **T.C. = trocador de calor** (bomba e válvula T.C.).
+
+| P-10 | Sensores de nível: lâmpada/entrada ativa significa "nível atingido" (coberto)? Vale para mínimo e baixo também? | A barra de nível do overview é uma **estimativa** pela suposição "ativo = atingido" | aberta |
+| P-11 | Alarmes derivados de entrada: `I0.1`/`I4.7` ativos = emergência; `I0.3` e disjuntores `OK` em 0 = falha; `I1.3`/`I1.7` ativos = falha de soft-start. Polaridade correta? | Evita falso alarme ou alarme que não aparece | aberta (validar na máquina) |
+| P-12 | CPU 315: acesso S7 sem PUT/GET extra, rack 0 / slot 2, e o Node-RED enxerga `192.168.0.2` do notebook? | Sem isso a leitura real não conecta | a testar no notebook |

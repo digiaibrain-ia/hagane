@@ -18,3 +18,9 @@
 
 ## Fora de escopo agora
 Histórico em banco, relatórios, tendências, comandos de máquina, acesso remoto externo.
+
+## Estado (24/11/2026)
+- Fluxos: `nodered/flows/hagane_core_v0.1.json` + uma fonte (`hagane_fonte_s7_v0.1.json` ou `hagane_fonte_demo_v0.1.json`), gerados por `nodered/gerador/gerar_fluxos_v0.1.py`.
+- Tela: `dashboard/src/hagane_monitor_v0.1.html` (embutida no core). Contrato: `docs/contratos/api_http_v0.1.md`.
+- **Provado aqui (simulado):** telas em 1536x694 e 390x844, estados normal/aviso/falha/sem comunicação, leitura S7 bit a bit contra servidor snap7 simulado, queda e recuperação, fluxos sem nó de escrita.
+- **Não provado (depende do notebook/CPU):** rack/slot e acesso S7 da CPU 315, polaridade dos sensores e alarmes derivados (P-10, P-11), leitura analógica (P-03).

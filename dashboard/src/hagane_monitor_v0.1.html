@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="app-version" content="0.1">
+<title>Hagane — Sistema de Filtragem</title>
+<!--
+  HAGANE MONITOR v0.1  (SOMENTE LEITURA)
+  HISTORICO
+    v0.1  Primeira versao: Overview, Alertas e falhas, Entradas e saidas.
+  COMO FUNCIONA
+    A pagina so le /hagane/api/estado (1 s) e /hagane/api/tags do Node-RED.
+    Nao existe nenhum botao de comando. Se a leitura falha ou fica velha, a tela diz
+    "SEM COMUNICACAO" e apaga os valores (nunca mostra valor velho como se fosse atual).
+  ORGANIZACAO DO CODIGO (secoes neste arquivo)
+    1. Config   2. Dados (API/estado)   3. Mapa (equipamentos)   4. Alarmes
+    5. Overview 6. Alertas              7. E/S      8. Cabecalho/abas   9. Inicio
+-->
+<style>
+:root{
+  --bg:#e8ecef; --panel:#ffffff; --ink:#1b2a33; --muted:#586873; --line:#c8d1d7;
+  --head:#0b4a5c; --head-ink:#ffffff;
+  --run:#1c7f55; --run-bg:#dff2e8; --warn:#9a6700; --warn-bg:#fff1cc;
+  --bad:#b3261e; --bad-bg:#fde3e1; --off:#7d8a93; --off-bg:#eef1f3;
+  --liq:#5aa7c7; --sujo:#c9b24a; --focus:#0a64ad;
+  --font:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{font:14px/1.35 var(--font);background:var(--bg);color:var(--ink);display:flex;flex-direction:column;min-height:100vh}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--focus);outline-offset:1px}
+
+/* ---- cabecalho ---- */
+header{background:var(--head);color:var(--head-ink);display:flex;align-items:center;gap:12px;padding:8px 16px;flex-wrap:wrap}
+header h1{font-size:17px;margin:0;font-weight:650;letter-spacing:.02em;flex:1 1 auto;white-space:nowrap}
+header h1 small{font-weight:400;opacity:.8;margin-left:8px}
+.pill{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:3px 11px;font-weight:650;font-size:12.5px;border:2px solid transparent;white-space:nowrap}
+.pill.real{background:#fff;color:#0b4a5c}
+.pill.demo{background:#ffd23f;color:#3b2f00;border-color:#3b2f00;letter-spacing:.06em}
+.pill.com-ok{background:var(--run-bg);color:var(--run)}
+.pill.com-bad{background:var(--bad);color:#fff}
+.pill.com-nd{background:var(--off-bg);color:var(--muted)}
+#relogio{font-variant-numeric:tabular-nums;opacity:.9;font-size:13px}
+
+/* ---- abas ---- */
+nav{background:#fff;border-bottom:1px solid var(--line);display:flex;gap:2px;padding:0 10px;overflow-x:auto}
+nav button{border:0;background:none;padding:11px 16px;font-weight:600;color:var(--muted);border-bottom:4px solid transparent;white-space:nowrap}
+nav button[aria-selected="true"]{color:var(--head);border-bottom-color:var(--head)}
+nav .cnt{display:inline-block;min-width:22px;text-align:center;margin-left:6px;border-radius:11px;padding:0 6px;background:var(--off-bg);color:var(--muted);font-size:12px}
+nav .cnt.ativo{background:var(--bad);color:#fff}
+nav .cnt.aviso{background:var(--warn);color:#fff}
+
+/* ---- faixa de situacao (sempre visivel) ---- */
+#faixa{display:flex;gap:14px;align-items:center;flex-wrap:wrap;padding:6px 16px;background:#fff;border-bottom:1px solid var(--line);font-weight:600}
+#faixa .luz{display:inline-flex;align-items:center;gap:6px}
+.dot{width:14px;height:14px;border-radius:50%;border:2px solid var(--off);background:transparent;flex:none}
+.dot.on-g{background:var(--run);border-color:var(--run)}
+.dot.on-y{background:#e0a800;border-color:#9a6700}
+.dot.on-r{background:var(--bad);border-color:var(--bad)}
+.dot.nd{border-style:dashed}
+
+/* ---- aviso de comunicacao ---- */
+#aviso{display:none;background:var(--bad);color:#fff;padding:10px 16px;font-weight:700}
+#aviso small{font-weight:400;display:block;opacity:.95}
+body.sem-com #aviso{display:block}
+body.sem-com .dados{filter:grayscale(1);opacity:.45}
+#conf{display:none;background:var(--warn-bg);padding:10px 16px;border-bottom:1px solid var(--line)}
+#conf input{font:inherit;padding:5px 8px;width:min(340px,70vw)}
+
+header,nav,#faixa,#aviso,#conf{flex:none}   /* nao encolher no celular */
+main{flex:1;padding:12px 16px 20px;min-width:0}
+.vista{display:none}
+.vista.ativa{display:block}
+.barra{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.barra h2{margin:0;font-size:16px}
+.info-btn{width:26px;height:26px;border-radius:50%;border:1.5px solid var(--muted);background:#fff;color:var(--muted);font-weight:700;line-height:1}
+.pop{position:fixed;z-index:30;background:#fff;border:1px solid var(--line);border-radius:8px;box-shadow:0 8px 28px rgba(0,0,0,.25);padding:14px 16px;max-width:min(460px,92vw);max-height:80vh;overflow:auto}
+.pop h3{margin:0 0 8px;font-size:15px}
+.pop .fechar{position:absolute;top:6px;right:8px;border:0;background:none;font-size:20px}
+.pop p,.pop li{margin:.3em 0}
+
+/* ---- overview ---- */
+.ov{display:grid;grid-template-columns:minmax(0,1fr) 250px;gap:12px;align-items:start}
+.painel{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+.painel h3{margin:0 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.svgwrap{overflow:auto;background:var(--panel);border:1px solid var(--line);border-radius:8px}
+#svg{display:block;width:100%;height:auto;min-width:760px;max-height:calc(100vh - 205px);margin:0 auto}
+.lin{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px dashed var(--line)}
+.lin:last-child{border:0}
+.lin .t{flex:1}
+.lin .v{font-weight:700;font-size:12px;color:var(--muted)}
+.lin.ativo .v{color:var(--run)}
+.lin.ruim.ativo .v{color:var(--bad)}
+/* svg: estados de equipamento */
+.eq rect.f{fill:var(--off-bg);stroke:var(--off);stroke-width:1.5}
+.eq.run rect.f{fill:var(--run-bg);stroke:var(--run);stroke-width:2.5}
+.eq.fail rect.f{fill:var(--bad-bg);stroke:var(--bad);stroke-width:3}
+.eq.nd rect.f{stroke-dasharray:5 3}
+.eq text{font-family:var(--font);fill:var(--ink)}
+.eq .n{font-size:12.5px;font-weight:650}
+.eq .s{font-size:11.5px;font-weight:700;fill:var(--muted)}
+.eq.run .s{fill:var(--run)}
+.eq.fail .s{fill:var(--bad)}
+.eq .ic{fill:none;stroke:var(--off);stroke-width:2}
+.eq.run .ic{stroke:var(--run)}
+.eq.fail .ic{stroke:var(--bad)}
+.tubo{stroke:#9fb0ba;stroke-width:5;fill:none;stroke-linejoin:round}
+.tubo.vivo{stroke:var(--liq)}
+.tanque{fill:#fff;stroke:#52646e;stroke-width:2.5}
+.nivel-l{fill:var(--liq);opacity:.75}
+.nivel-s{fill:var(--sujo);opacity:.8}
+.rot{font:11.5px var(--font);fill:var(--muted)}
+.rot .b{font-weight:700}
+.sen circle{fill:#fff;stroke:var(--off);stroke-width:2}
+.sen.on circle{fill:var(--run);stroke:var(--run)}
+.sen text{font:11px var(--font);fill:var(--ink)}
+.vlv path{fill:#fff;stroke:var(--off);stroke-width:2}
+.vlv.on path{fill:var(--run);stroke:var(--run)}
+.vlv text{font:11px var(--font);fill:var(--ink)}
+.vlv.nd path{stroke-dasharray:3 2}
+.banda{fill:none;stroke:#6f7f89;stroke-width:3;stroke-dasharray:8 6}
+.banda.gira{animation:desl 1.2s linear infinite}
+@keyframes desl{to{stroke-dashoffset:-28}}
+@media (prefers-reduced-motion:reduce){.banda.gira{animation:none}}
+
+/* ---- alertas ---- */
+table{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:#f3f6f8;font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+tr.ativo td{background:var(--bad-bg)}
+tr.ativo.sev-alarme td{background:var(--warn-bg)}
+tr.inativo td{color:var(--muted)}
+.sev{display:inline-block;padding:1px 8px;border-radius:4px;font-size:12px;font-weight:700;border:1.5px solid currentColor;white-space:nowrap}
+.sev.emergencia{color:#fff;background:var(--bad);border-color:var(--bad)}
+.sev.critico{color:var(--bad)}
+.sev.alarme{color:var(--warn)}
+.sev.campo{color:var(--muted)}
+.vazio{padding:26px;text-align:center;background:var(--panel);border:1px dashed var(--line);border-radius:8px;color:var(--run);font-weight:700;font-size:16px}
+.tw{overflow-x:auto}
+label.chk{display:inline-flex;align-items:center;gap:6px;cursor:pointer}
+.btn{border:1.5px solid var(--head);background:#fff;color:var(--head);border-radius:6px;padding:5px 12px;font-weight:600}
+.btn:hover{background:#eef6f8}
+h3.sec{margin:18px 0 8px;font-size:14px}
+
+/* ---- e/s ---- */
+.grade{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px}
+.byte{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px 10px}
+.byte h4{margin:0 0 6px;font-size:13px;color:var(--head)}
+.bit{display:flex;gap:8px;align-items:flex-start;padding:3px 0}
+.bit .a{font-family:ui-monospace,Consolas,monospace;font-size:12.5px;width:46px;flex:none;color:var(--muted)}
+.bit .d{flex:1;font-size:13px}
+.bit .d small{color:var(--muted);display:block;font-size:11px}
+.bit .e{font-size:11px;font-weight:700;width:34px;text-align:right;flex:none}
+.bit.on .e{color:var(--run)}
+.bit.nd .e{color:var(--off)}
+.warn{color:var(--warn);font-weight:700}
+input[type=search]{font:inherit;padding:6px 10px;border:1.5px solid var(--line);border-radius:6px;min-width:200px}
+.sub{display:flex;gap:6px}
+.sub button{border:1.5px solid var(--line);background:#fff;border-radius:6px;padding:5px 14px;font-weight:600}
+.sub button[aria-pressed="true"]{background:var(--head);color:#fff;border-color:var(--head)}
+
+@media (max-width:900px){
+  .ov{grid-template-columns:1fr}
+  header{padding:6px 12px;gap:6px}
+  header h1{font-size:15px;flex-basis:100%}
+  header h1 small{display:none}
+  .pill{font-size:12px;padding:2px 9px}
+  main{padding:8px 10px 16px}
+  th.h-origem,td.h-origem{display:none}
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>HAGANE — Sistema de Filtragem<small>Baggio · Sistema de água</small></h1>
+  <span id="pOrigem" class="pill com-nd">—</span>
+  <span id="pCom" class="pill com-nd">sem leitura</span>
+  <span id="relogio"></span>
+</header>
+<nav role="tablist" aria-label="Telas">
+  <button role="tab" id="aba-ov" aria-selected="true" data-v="ov">Overview</button>
+  <button role="tab" id="aba-al" aria-selected="false" data-v="al">Alertas e falhas<span class="cnt" id="cntAl">0</span></button>
+  <button role="tab" id="aba-es" aria-selected="false" data-v="es">Entradas e saídas</button>
+</nav>
+<div id="faixa" aria-live="polite"></div>
+<div id="aviso" role="alert"></div>
+<div id="conf">
+  Informe o endereço do Node-RED (ex.: http://192.168.0.10:1880):
+  <input id="confUrl" type="url" placeholder="http://…:1880"> <button class="btn" id="confOk">Conectar</button>
+</div>
+
+<main>
+<!-- ================= OVERVIEW ================= -->
+<section class="vista ativa" id="v-ov" aria-labelledby="aba-ov">
+  <div class="barra"><h2>Overview do processo</h2><button class="info-btn" data-info="ov" aria-label="Sobre esta tela">i</button></div>
+  <div class="ov dados">
+    <div class="svgwrap"><svg id="svg" viewBox="0 0 1100 450" role="img" aria-label="Sinótico do sistema de filtragem"></svg></div>
+    <div class="painel" id="modos"><h3>Modos e ciclos</h3><div id="modosLin"></div></div>
+  </div>
+</section>
+
+<!-- ================= ALERTAS ================= -->
+<section class="vista" id="v-al" aria-labelledby="aba-al">
+  <div class="barra">
+    <h2>Alertas e falhas</h2><button class="info-btn" data-info="al" aria-label="Sobre esta tela">i</button>
+    <label class="chk"><input type="checkbox" id="alTodos"> mostrar todos os alarmes cadastrados</label>
+  </div>
+  <div class="dados tw" id="alLista"></div>
+  <div class="barra"><h3 class="sec" style="margin:18px 0 0">Histórico desta sessão</h3>
+    <button class="btn" id="alCsv" style="margin-top:14px">Exportar CSV</button></div>
+  <div class="tw"><table id="alHist"><thead><tr><th>Hora</th><th>Evento</th><th>Endereço</th><th>Descrição</th><th>Duração</th></tr></thead><tbody></tbody></table></div>
+</section>
+
+<!-- ================= E/S ================= -->
+<section class="vista" id="v-es" aria-labelledby="aba-es">
+  <div class="barra">
+    <h2>Entradas e saídas</h2><button class="info-btn" data-info="es" aria-label="Sobre esta tela">i</button>
+    <div class="sub" role="group" aria-label="Área">
+      <button data-area="I" aria-pressed="true">Entradas (I)</button>
+      <button data-area="Q" aria-pressed="false">Saídas (Q)</button>
+    </div>
+    <input type="search" id="esBusca" placeholder="Buscar endereço ou texto" aria-label="Buscar">
+    <label class="chk"><input type="checkbox" id="esAtivos"> só ativos</label>
+    <label class="chk"><input type="checkbox" id="esRes"> mostrar reservas</label>
+    <span id="esCont" class="rot"></span>
+  </div>
+  <div class="grade dados" id="esGrade"></div>
+  <h3 class="sec">Analógicas</h3>
+  <div class="painel" id="esAnalog"></div>
+</section>
+</main>
+
+<script>
+"use strict";
+/* ============================================================
+   1. CONFIG
+   ============================================================ */
+const VERSAO = "0.1";
+const Cfg = {
+  pollMs: 1000,          // intervalo de leitura da API
+  velhoMs: 5000,         // idade maxima do dado para ser considerado atual
+  falhasParaCair: 2,     // falhas seguidas de fetch antes de declarar "sem comunicacao"
+  histMax: 300
+};
+function lerStorage(k){ try { return localStorage.getItem(k); } catch(e){ return null; } }
+function gravarStorage(k,v){ try { localStorage.setItem(k,v); } catch(e){} }
+function lerSessao(k){ try { return sessionStorage.getItem(k); } catch(e){ return null; } }
+function gravarSessao(k,v){ try { sessionStorage.setItem(k,v); } catch(e){} }
+const esc = s => String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const $ = (s,r=document)=>r.querySelector(s);
+const $$ = (s,r=document)=>Array.from(r.querySelectorAll(s));
+const hhmmss = d => new Date(d).toLocaleTimeString("pt-BR",{hour12:false});
+function dur(ms){ const s=Math.max(0,Math.round(ms/1000)); const h=Math.floor(s/3600),m=Math.floor(s%3600/60),x=s%60;
+  return (h?h+"h ":"")+(h||m?m+"min ":"")+x+"s"; }
+
+/* ============================================================
+   2. DADOS (API, estado, comunicacao)
+   ============================================================ */
+const Dados = {
+  base: "", contrato: null, tagsPorEnd: {}, estado: null,
+  ultimoOk: 0, falhas: 0, semCom: true, motivo: "aguardando 1ª leitura", semDesde: Date.now(),
+  ouvintes: [],
+  bit(a){ if (this.semCom || !this.estado) return undefined; const v=this.estado.bits[a]; return v===undefined?undefined:v; },
+  tag(a){ return this.tagsPorEnd[a]; },
+  aoAtualizar(f){ this.ouvintes.push(f); },
+  async buscar(url){
+    const c = new AbortController(); const t = setTimeout(()=>c.abort(), 3000);
+    try { const r = await fetch(this.base+url,{cache:"no-store",signal:c.signal}); if(!r.ok) throw new Error("HTTP "+r.status); return await r.json(); }
+    finally { clearTimeout(t); }
+  },
+  async carregarContrato(){
+    this.contrato = await this.buscar("/hagane/api/tags");
+    this.tagsPorEnd = {}; this.contrato.tags.forEach(t=>this.tagsPorEnd[t.endereco]=t);
+  },
+  async ler(){
+    try {
+      if (!this.contrato) await this.carregarContrato();
+      const e = await this.buscar("/hagane/api/estado");
+      this.falhas = 0; this.estado = e;
+      const ok = e.comunicacao === "ok" && e.idade_ms != null && e.idade_ms <= Cfg.velhoMs;
+      this.definirCom(!ok, ok ? "" : (e.motivo || "dados velhos"));
+      if (ok) this.ultimoOk = Date.now();
+    } catch (err) {
+      this.falhas++;
+      if (this.falhas >= Cfg.falhasParaCair) this.definirCom(true, "Node-RED não responde ("+(err.message||err)+")");
+    }
+    this.ouvintes.forEach(f=>{ try{ f(); }catch(e){ console.error(e); } });
+  },
+  definirCom(sem, motivo){
+    if (sem && !this.semCom) this.semDesde = Date.now();
+    this.semCom = sem; this.motivo = motivo;
+  },
+  iniciar(){ this.ler(); setInterval(()=>this.ler(), Cfg.pollMs); }
+};
+
+/* ============================================================
+   3. MAPA (equipamentos e luzes: endereco -> significado)
+      Fonte dos enderecos: docs/contratos/tags_v0.1.json.
+      A VALIDAR NA MAQUINA: polaridade e quais alarmes ligam a cada equipamento.
+   ============================================================ */
+const Mapa = {
+  eq: {
+    bomba1:   {nome:"Bomba 1",  run:"I1.1", disj:"I1.0", falha:["M10.1","M10.5","M12.2","M122.2","M61.0","I1.3"], auto:"I5.4", man:"I5.5"},
+    bomba2:   {nome:"Bomba 2",  run:"I1.5", disj:"I1.4", falha:["M10.3","M10.6","M12.3","M122.3","M61.1","I1.7"], auto:"I5.6", man:"I5.7"},
+    bombaTC:  {nome:"Bomba trocador de calor", run:"I2.1", disj:"I2.0", falha:["M12.1","M13.6"]},
+    aspirador:{nome:"Aspirador", run:"I2.3", disj:"I2.2", falha:["M13.4","M15.1"]},
+    extrator: {nome:"Extrator de lodo", run:"I2.5", disj:"I2.4", falha:["M14.2","M15.2"]},
+    rotovac:  {nome:"Rotovac", run:"I3.1", disj:"I3.0", falha:["M13.1","M15.0"]},
+    dragante: {nome:"Transp. dragante", run:"I3.6", disj:"I3.5", falha:["M13.2","M10.4"]}
+  },
+  valvulas: {
+    quebraVacuo:{nome:"Quebra vácuo", end:"Q14.1"}, compensacao:{nome:"Compensação", end:"Q14.2"},
+    sopro:{nome:"Sopro", end:"Q14.3"}, lavagem:{nome:"Lavagem", end:"Q15.6"}, trocador:{nome:"V. T.C.", end:"Q15.5"}
+  },
+  nivSujo:[["Máximo","Q14.6"],["Alto","Q14.7"],["Baixo","Q15.0"],["Mínimo","Q15.1"]],
+  nivLimpo:[["Alto","Q14.4"],["Baixo","Q14.5"]],
+  /* painel lateral: [texto, endereco, "ruim" se ativo = problema] */
+  modos:[
+    ["Sistema em automático","Q12.1"],["Sistema em manual","Q12.0"],
+    ["Ciclo automático ligado","Q12.2"],["Ciclo automático desligado","Q12.6"],
+    ["Ciclo fim de semana","Q12.3"],["Autolimpeza em ciclo","Q12.4"],["Autolimpeza contínua","Q12.5"],
+    ["Vácuo no filtro","Q15.4"],["Ar comprimido presente","Q14.0"],
+    ["Controle de papel","Q15.2"],["Rotação da manta","Q15.3"],
+    ["Comando ligado","I0.6"],["Circuito de segurança OK","I0.3"],
+    ["Emergência atuada","M11.5","ruim"]
+  ],
+  faixa:{verde:"Q11.4",amarela:"Q11.6",vermelha:"Q11.5",sirene:"Q11.7",critico:"M21.0",permissivel:"M21.3"},
+  /* alarmes derivados de entradas (alem das memorias M de alarme) */
+  derivados:[
+    {end:"I0.1",quando:true, sev:"emergencia",txt:"Botão de emergência do painel pressionado"},
+    {end:"I4.7",quando:true, sev:"emergencia",txt:"Botão de emergência do filtro pressionado"},
+    {end:"I0.3",quando:false,sev:"emergencia",txt:"Relé do circuito de segurança NÃO está OK"},
+    {end:"I1.0",quando:false,sev:"campo",txt:"Disjuntor da bomba 1 não OK"},
+    {end:"I1.4",quando:false,sev:"campo",txt:"Disjuntor da bomba 2 não OK"},
+    {end:"I2.0",quando:false,sev:"campo",txt:"Disjuntor da bomba do trocador de calor não OK"},
+    {end:"I2.2",quando:false,sev:"campo",txt:"Disjuntor do aspirador não OK"},
+    {end:"I2.4",quando:false,sev:"campo",txt:"Disjuntor do motor extrator de lodo não OK"},
+    {end:"I3.0",quando:false,sev:"campo",txt:"Disjuntor do rotovac não OK"},
+    {end:"I3.5",quando:false,sev:"campo",txt:"Disjuntor do transportador dragante não OK"},
+    {end:"I1.3",quando:true, sev:"campo",txt:"Falha no soft-start da bomba 1"},
+    {end:"I1.7",quando:true, sev:"campo",txt:"Falha no soft-start da bomba 2"}
+  ],
+  /* memorias M que sao resumo/estado, nao entram como linha de alarme */
+  semLinha:["M21.0","M21.3","M21.4"],
+  enderecosUsados(){
+    const s = new Set();
+    Object.values(this.eq).forEach(e=>[e.run,e.disj,e.auto,e.man,...(e.falha||[])].filter(Boolean).forEach(a=>s.add(a)));
+    Object.values(this.valvulas).forEach(v=>s.add(v.end));
+    this.nivSujo.concat(this.nivLimpo).forEach(n=>s.add(n[1]));
+    this.modos.forEach(m=>s.add(m[1]));
+    Object.values(this.faixa).forEach(a=>s.add(a));
+    this.derivados.forEach(d=>s.add(d.end));
+    return Array.from(s).sort();
+  }
+};
+
+/* ============================================================
+   4. ALARMES (lista, inicio, historico)
+   ============================================================ */
+const Alarmes = {
+  defs: [], estado: {}, hist: [], iniciado: false,
+  montar(){
+    const d = [];
+    Dados.contrato.tags.filter(t=>t.classe==="alarme" && !Mapa.semLinha.includes(t.endereco)).forEach(t=>{
+      const crit = /CRITICO|CRÍTICO/i.test(t.comentario);
+      const emerg = t.endereco==="M11.5";
+      d.push({id:t.endereco, end:t.endereco, txt:t.comentario||t.nome, quando:true,
+              sev: emerg?"emergencia":(crit?"critico":"alarme")});
+    });
+    Mapa.derivados.forEach(x=>{ if (Dados.tag(x.end)) d.push({id:"D:"+x.end, end:x.end, txt:x.txt, quando:x.quando, sev:x.sev}); });
+    this.defs = d;
+    const salvo = lerSessao("hagane_hist_v1"); if (salvo) { try { this.hist = JSON.parse(salvo)||[]; } catch(e){} }
+  },
+  ordem:{emergencia:0,critico:1,alarme:2,campo:3},
+  rotulo:{emergencia:"EMERGÊNCIA",critico:"CRÍTICO",alarme:"ALARME",campo:"CAMPO"},
+  glifo:{emergencia:"■ ",critico:"▲ ",alarme:"● ",campo:"◆ "},
+  ativo(d){ const v = Dados.bit(d.end); return v===undefined ? undefined : (v === d.quando); },
+  atualizar(){
+    if (!Dados.contrato) return;
+    if (!this.defs.length) this.montar();
+    if (Dados.semCom) return;                       // sem dado atual: nao registra transicoes
+    const agora = Date.now();
+    this.defs.forEach(d=>{
+      const a = this.ativo(d); if (a===undefined) return;
+      const e = this.estado[d.id];
+      if (a && (!e || !e.ativo)) {
+        this.estado[d.id] = {ativo:true, desde:agora, aoAbrir:!this.iniciado};
+        this.hist.push({t:agora, ev:this.iniciado?"ATIVOU":"JÁ ATIVO AO ABRIR", end:d.end, txt:d.txt, dur:""});
+      } else if (!a && e && e.ativo) {
+        this.hist.push({t:agora, ev:"NORMALIZOU", end:d.end, txt:d.txt, dur:dur(agora-e.desde)});
+        this.estado[d.id] = {ativo:false, desde:agora};
+      } else if (!e) this.estado[d.id] = {ativo:false, desde:agora};
+    });
+    this.iniciado = true;
+    if (this.hist.length > Cfg.histMax) this.hist = this.hist.slice(-Cfg.histMax);
+    gravarSessao("hagane_hist_v1", JSON.stringify(this.hist));
+  },
+  ativos(){ return this.defs.filter(d=>this.ativo(d)===true); }
+};
+
+/* ============================================================
+   5. OVERVIEW (sinotico em SVG + painel de modos)
+   ============================================================ */
+const Overview = {
+  montado:false,
+  estadoEq(id){
+    const e = Mapa.eq[id];
+    if (Dados.semCom) return {k:"nd", t:"SEM DADO"};
+    const run = Dados.bit(e.run), disj = e.disj?Dados.bit(e.disj):true;
+    const falhas = (e.falha||[]).filter(a=>Dados.bit(a)===true);
+    if (falhas.length) { const tg = Dados.tag(falhas[0]); return {k:"fail", t:"FALHA", d: tg ? tg.comentario||tg.nome : falhas[0]}; }
+    if (disj===false) return {k:"fail", t:"FALHA", d:"Disjuntor não OK"};
+    if (run===undefined) return {k:"nd", t:"SEM DADO"};
+    return run ? {k:"run", t:"EM OPERAÇÃO"} : {k:"stop", t:"PARADO"};
+  },
+  eqSvg(id,x,y,w,ic){
+    const e = Mapa.eq[id];
+    return `<g class="eq nd" data-eq="${id}" transform="translate(${x},${y})">
+      <rect class="f" width="${w}" height="46" rx="6"/>
+      <g class="ic" transform="translate(10,10)">${ic}</g>
+      <text class="n" x="44" y="19">${esc(e.nome)}</text>
+      <text class="s" x="44" y="36" data-s></text></g>`;
+  },
+  icones:{
+    motor:'<circle cx="13" cy="13" r="11" class="ic"/><path class="ic" d="M7 13h12M13 7v12"/>',
+    bomba:'<circle cx="13" cy="13" r="11" class="ic"/><path class="ic" d="M13 2v11l8 4"/>',
+    esteira:'<rect x="1" y="7" width="24" height="12" rx="6" class="ic"/><path class="ic" d="M8 13h10"/>'
+  },
+  valvSvg(id,x,y,rot){
+    const v = Mapa.valvulas[id];
+    return `<g class="vlv nd" data-valv="${id}" transform="translate(${x},${y})">
+      <path d="M-11 -9 L11 9 L11 -9 L-11 9 Z"/>
+      <text x="0" y="26" text-anchor="middle">${esc(v.nome)}</text></g>`;
+  },
+  senSvg(x,y,lista,dy){
+    return lista.map((n,i)=>`<g class="sen" data-sen="${n[1]}" transform="translate(${x},${y+i*dy})"><circle r="7"/><text x="14" y="4">${esc(n[0])}</text></g>`).join("");
+  },
+  montar(){
+    const S = $("#svg");
+    S.innerHTML = `
+      <!-- tubulacao (esquematica; nao e P&ID) -->
+      <path class="tubo" d="M300 200 V250"/>
+      <path class="tubo" data-tubo="b1" d="M330 330 V370"/>
+      <path class="tubo" data-tubo="b2" d="M570 330 V370"/>
+      <path class="tubo" d="M680 70 H760 V290 H720"/>
+      <path class="tubo" d="M720 290 H960"/>
+      <!-- tanque limpo -->
+      <g transform="translate(480,20)">
+        <rect class="tanque" width="200" height="100" rx="4"/>
+        <rect class="nivel-l" id="nvL" x="3" y="97" width="194" height="0"/>
+        <text class="rot" x="100" y="-6" text-anchor="middle"><tspan class="b">TANQUE LIMPO</tspan> (compensação)</text>
+        ${this.senSvg(14,28,Mapa.nivLimpo,24)}
+      </g>
+      <!-- filtro -->
+      <g transform="translate(200,30)">
+        <path class="tanque" d="M0 0 H200 L170 170 H30 Z"/>
+        <path class="banda" id="banda" d="M22 16 H178 L156 154 H44 Z"/>
+        <text class="rot" x="100" y="-6" text-anchor="middle"><tspan class="b">FILTRO</tspan> (banda e manta)</text>
+        <text class="rot" id="txBanda" x="100" y="88" text-anchor="middle"></text>
+      </g>
+      <!-- tanque sujo -->
+      <g transform="translate(200,250)">
+        <rect class="tanque" width="520" height="80" rx="4"/>
+        <rect class="nivel-s" id="nvS" x="3" y="77" width="514" height="0"/>
+        <text class="rot" x="260" y="-6" text-anchor="middle"><tspan class="b">TANQUE SUJO</tspan></text>
+        ${this.senSvg(400,14,Mapa.nivSujo,19)}
+        <text class="rot" id="txNvS" x="12" y="72"></text>
+      </g>
+      <!-- equipamentos do filtro -->
+      ${this.eqSvg("rotovac",10,40,150,this.icones.motor)}
+      ${this.eqSvg("aspirador",10,96,150,this.icones.motor)}
+      ${this.eqSvg("extrator",10,152,150,this.icones.motor)}
+      ${this.eqSvg("dragante",10,208,150,this.icones.esteira)}
+      <!-- bombas -->
+      ${this.eqSvg("bomba1",230,370,200,this.icones.bomba)}
+      ${this.eqSvg("bomba2",470,370,200,this.icones.bomba)}
+      ${this.eqSvg("bombaTC",800,370,250,this.icones.bomba)}
+      <text class="rot" x="330" y="436" text-anchor="middle" id="modoB1"></text>
+      <text class="rot" x="570" y="436" text-anchor="middle" id="modoB2"></text>
+      <!-- valvulas -->
+      ${this.valvSvg("sopro",182,100)}
+      ${this.valvSvg("quebraVacuo",300,214)}
+      ${this.valvSvg("compensacao",760,170)}
+      ${this.valvSvg("lavagem",900,290)}
+      ${this.valvSvg("trocador",775,395)}
+      <text class="rot" x="800" y="362"><tspan class="b">TROCADOR DE CALOR</tspan></text>`;
+    this.montado = true;
+    $("#modosLin").innerHTML = Mapa.modos.map((m,i)=>`<div class="lin${m[2]?" ruim":""}" data-m="${i}"><span class="dot nd"></span><span class="t">${esc(m[0])}</span><span class="v"></span></div>`).join("");
+  },
+  atualizar(){
+    if (!Dados.contrato) return;
+    if (!this.montado) this.montar();
+    // equipamentos
+    $$("[data-eq]").forEach(g=>{
+      const r = this.estadoEq(g.dataset.eq);
+      g.setAttribute("class","eq "+r.k);
+      const s = $("[data-s]",g);
+      const tx = r.k==="fail" ? (r.d ? r.t+": "+r.d : r.t) : r.t;
+      s.textContent = tx.length>30 ? tx.slice(0,29)+"…" : tx;
+      const ti = g.querySelector("title") || g.insertBefore(document.createElementNS("http://www.w3.org/2000/svg","title"), g.firstChild);
+      ti.textContent = Mapa.eq[g.dataset.eq].nome + " — " + tx;
+    });
+    // modo das bombas
+    ["bomba1","bomba2"].forEach((id,i)=>{
+      const e=Mapa.eq[id], a=Dados.bit(e.auto), m=Dados.bit(e.man);
+      $("#modoB"+(i+1)).textContent = "seletor: " + (a===undefined?"—": a?"AUTOMÁTICO": m?"MANUAL":"FORA");
+    });
+    // valvulas
+    $$("[data-valv]").forEach(g=>{ const v=Dados.bit(Mapa.valvulas[g.dataset.valv].end);
+      g.setAttribute("class","vlv "+(v===undefined?"nd":v?"on":""));
+      const ti=g.querySelector("title")||g.insertBefore(document.createElementNS("http://www.w3.org/2000/svg","title"),g.firstChild);
+      ti.textContent = Mapa.valvulas[g.dataset.valv].nome+": "+(v===undefined?"sem dado":v?"ABERTA":"fechada"); });
+    // sensores
+    $$("[data-sen]").forEach(g=>{ const v=Dados.bit(g.dataset.sen); g.setAttribute("class","sen"+(v?" on":"")); });
+    // niveis (estimativa pelos sensores; polaridade A VALIDAR)
+    const q=a=>Dados.bit(a);
+    const nvS = Dados.semCom?0 : q("Q14.6")?100 : q("Q14.7")?80 : q("Q15.1")?5 : q("Q15.0")?25 : 55;
+    const nvL = Dados.semCom?0 : q("Q14.4")?90 : q("Q14.5")?15 : 55;
+    const hS = 74*nvS/100, hL = 94*nvL/100;
+    const rs=$("#nvS"), rl=$("#nvL");
+    rs.setAttribute("height",hS); rs.setAttribute("y",77-hS);
+    rl.setAttribute("height",hL); rl.setAttribute("y",97-hL);
+    $("#txNvS").textContent = Dados.semCom ? "" : "nível estimado pelos sensores";
+    // tubos vivos
+    const b1=this.estadoEq("bomba1").k==="run", b2=this.estadoEq("bomba2").k==="run";
+    $$("[data-tubo]").forEach(p=>p.setAttribute("class","tubo"+((p.dataset.tubo==="b1"&&b1)||(p.dataset.tubo==="b2"&&b2)?" vivo":"")));
+    // banda
+    const gira = q("Q15.3")===true;
+    $("#banda").setAttribute("class","banda"+(gira?" gira":""));
+    $("#txBanda").textContent = Dados.semCom ? "" : ("manta: "+(gira?"avançando":"parada")+(q("Q15.4")?" · vácuo":""));
+    // painel de modos
+    $$("[data-m]").forEach(l=>{ const m=Mapa.modos[l.dataset.m], v=Dados.bit(m[1]);
+      l.classList.toggle("ativo",v===true);
+      $(".dot",l).className = "dot "+(v===undefined?"nd":v?(m[2]?"on-r":"on-g"):"");
+      $(".v",l).textContent = v===undefined?"—":v?"SIM":"não"; });
+  }
+};
+
+/* ============================================================
+   6. ALERTAS E FALHAS
+   ============================================================ */
+const TelaAlertas = {
+  atualizar(){
+    const todos = $("#alTodos").checked;
+    const ativos = Alarmes.ativos().sort((a,b)=>Alarmes.ordem[a.sev]-Alarmes.ordem[b.sev] ||
+                    (Alarmes.estado[a.id].desde-Alarmes.estado[b.id].desde));
+    const lista = todos ? Alarmes.defs.slice().sort((a,b)=>{
+        const aa=Alarmes.ativo(a)===true, bb=Alarmes.ativo(b)===true;
+        return (bb-aa) || Alarmes.ordem[a.sev]-Alarmes.ordem[b.sev] || a.end.localeCompare(b.end,undefined,{numeric:true}); }) : ativos;
+    const box = $("#alLista");
+    if (!Alarmes.defs.length) { box.innerHTML = '<div class="vazio" style="color:var(--muted)">Carregando…</div>'; }
+    else if (!lista.length) {
+      box.innerHTML = Dados.semCom ? '<div class="vazio" style="color:var(--muted)">Sem dado atual</div>'
+        : '<div class="vazio">✔ Nenhum alarme ativo</div>';
+    } else {
+      const agora = Date.now();
+      box.innerHTML = "<table><thead><tr><th>Estado</th><th>Prioridade</th><th>Descrição</th><th>Início</th><th>Duração</th><th class='h-origem'>Origem</th></tr></thead><tbody>"+
+        lista.map(d=>{
+          const a = Alarmes.ativo(d), e = Alarmes.estado[d.id];
+          const est = a===undefined ? "SEM DADO" : a ? "● ATIVO" : "○ normal";
+          return `<tr class="${a?"ativo":"inativo"} sev-${d.sev}"><td><b>${est}</b></td>
+            <td><span class="sev ${d.sev}">${Alarmes.glifo[d.sev]}${Alarmes.rotulo[d.sev]}</span></td>
+            <td>${esc(d.txt)}</td>
+            <td class="num">${a&&e?hhmmss(e.desde)+(e.aoAbrir?" (ao abrir)":""):"—"}</td>
+            <td class="num">${a&&e?dur(agora-e.desde):"—"}</td>
+            <td class="h-origem num">${esc(d.end)}</td></tr>`;}).join("")+"</tbody></table>";
+    }
+    const h = $("#alHist tbody");
+    h.innerHTML = Alarmes.hist.slice().reverse().slice(0,100).map(x=>`<tr><td class="num">${hhmmss(x.t)}</td><td><b>${esc(x.ev)}</b></td><td class="num">${esc(x.end)}</td><td>${esc(x.txt)}</td><td class="num">${esc(x.dur)}</td></tr>`).join("")
+      || '<tr><td colspan="5" style="color:var(--muted)">Sem eventos nesta sessão.</td></tr>';
+  },
+  csv(){
+    const linhas = [["hora","evento","endereco","descricao","duracao"]].concat(Alarmes.hist.map(x=>[new Date(x.t).toLocaleString("pt-BR"),x.ev,x.end,x.txt,x.dur]));
+    const txt = "﻿"+linhas.map(l=>l.map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(";")).join("\r\n");
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(new Blob([txt],{type:"text/csv;charset=utf-8"}));
+    a.download = "hagane_alertas_"+new Date().toISOString().slice(0,19).replace(/[:T]/g,"-")+".csv";
+    document.body.appendChild(a); a.click(); a.remove();
+  }
+};
+
+/* ============================================================
+   7. ENTRADAS E SAIDAS
+   ============================================================ */
+const TelaES = {
+  area:"I", montadoAnalog:false,
+  filtrar(t){
+    const busca = $("#esBusca").value.trim().toLowerCase();
+    if (t.classe==="reserva" && !$("#esRes").checked) return false;
+    if ($("#esAtivos").checked && Dados.bit(t.endereco)!==true) return false;
+    if (busca && !(t.endereco.toLowerCase().includes(busca) || (t.comentario||"").toLowerCase().includes(busca) || t.nome.toLowerCase().includes(busca))) return false;
+    return true;
+  },
+  atualizar(){
+    if (!Dados.contrato) return;
+    const tags = Dados.contrato.tags.filter(t=>t.area===this.area && t.classe!=="alarme" && t.classe!=="estado");
+    const grupos = {};
+    tags.filter(t=>this.filtrar(t)).forEach(t=>{ (grupos[t.byte]=grupos[t.byte]||[]).push(t); });
+    const bytes = Object.keys(grupos).sort((a,b)=>parseInt(a.slice(2))-parseInt(b.slice(2)));
+    let n=0, ativos=0;
+    $("#esGrade").innerHTML = bytes.map(b=>{
+      const linhas = grupos[b].sort((x,y)=>x.nbit-y.nbit).map(t=>{
+        const v = Dados.bit(t.endereco); n++; if (v) ativos++;
+        const desc = t.comentario || t.nome;
+        const alerta = t.nome.endsWith("_res") && t.classe!=="reserva" ? ' <span class="warn" title="Nome da tag diz reserva, mas o comentário descreve uma função (pendência P-01/P-02)">⚠</span>' : "";
+        return `<div class="bit ${v===undefined?"nd":v?"on":""}"><span class="dot ${v===undefined?"nd":v?"on-g":""}"></span>
+          <span class="a">${esc(t.endereco)}</span><span class="d">${esc(desc)}${alerta}<small>${esc(t.nome)}</small></span>
+          <span class="e">${v===undefined?"—":v?"1":"0"}</span></div>`;}).join("");
+      return `<div class="byte"><h4>${this.area}${parseInt(b.slice(2))} — byte ${parseInt(b.slice(2))}</h4>${linhas}</div>`;
+    }).join("") || '<div class="vazio" style="color:var(--muted);grid-column:1/-1">Nenhum item com este filtro</div>';
+    $("#esCont").textContent = n+" itens · "+ativos+" ativos";
+    if (!this.montadoAnalog) {
+      $("#esAnalog").innerHTML = '<p class="rot" style="margin:0 0 6px">Não lidas na v0.1 (endereços de periferia; escala e unidade pendentes — P-03).</p>' +
+        Dados.contrato.analogicas.map(a=>`<div class="bit nd"><span class="a" style="width:60px">${esc(a.endereco)}</span><span class="d">${esc(a.comentario||a.nome)}<small>${esc(a.nome)}</small></span><span class="e" style="width:auto">não lido</span></div>`).join("");
+      this.montadoAnalog = true;
+    }
+  }
+};
+
+/* ============================================================
+   8. CABECALHO, FAIXA, ABAS E POPOVERS
+   ============================================================ */
+const Textos = {
+  ov:["Overview","<p>Mostra o estado do processo lido da CPU. <b>Somente leitura</b>: esta tela não envia nenhum comando.</p><ul><li><b>EM OPERAÇÃO</b> = retorno de motor ligado; <b>PARADO</b>; <b>FALHA</b> = alarme ou disjuntor não OK ligado àquele equipamento.</li><li>Nível dos tanques é uma <b>estimativa</b> pelos sensores (a validar na máquina).</li><li>Horas de início de alarme são as do navegador, não da CPU.</li></ul>"],
+  al:["Alertas e falhas","<p>Lista dos alarmes ativos, do mais grave ao menos grave. A prioridade <b>CRÍTICO</b> vem do texto do alarme no programa; os demais ainda não têm classificação (pendência P-04).</p><p><b>CAMPO</b> = falha deduzida de entradas (disjuntor, soft-start). Marque “mostrar todos” para ver também os normais.</p><p>Horas e histórico valem <b>desta sessão do navegador</b>; não ficam gravados no servidor.</p>"],
+  es:["Entradas e saídas","<p>Estado ao vivo de cada entrada (I) e saída (Q) da CPU, agrupado por byte. Reservas ficam ocultas por padrão.</p><p>⚠ marca tag cujo <b>nome diz reserva</b> mas o comentário descreve uma função (pendência P-01/P-02).</p>"]
+};
+const Cab = {
+  atualizar(){
+    const o = Dados.estado ? Dados.estado.origem : null;
+    const po = $("#pOrigem");
+    po.className = "pill "+(o==="demo"?"demo":o==="real"?"real":"com-nd");
+    po.textContent = o==="demo" ? "▲ DEMO — DADOS SIMULADOS" : o==="real" ? "CPU REAL" : "origem ?";
+    const pc = $("#pCom");
+    if (!Dados.contrato || !Dados.estado) { pc.className="pill com-nd"; pc.textContent = Dados.falhas>=Cfg.falhasParaCair ? "sem Node-RED" : "conectando…"; }
+    else if (Dados.semCom) { pc.className="pill com-bad"; pc.textContent="✖ SEM COMUNICAÇÃO"; }
+    else { pc.className="pill com-ok"; pc.textContent="✔ comunicação OK"; }
+    document.body.classList.toggle("sem-com", Dados.semCom && (Dados.estado!==null || Dados.falhas>=Cfg.falhasParaCair));
+    const av = $("#aviso");
+    av.innerHTML = "SEM COMUNICAÇÃO — valores apagados"+(Dados.semDesde?" desde "+hhmmss(Dados.semDesde):"")+"<small>"+esc(Dados.motivo||"")+"</small>";
+    // faixa
+    const f = Mapa.faixa, b = a=>Dados.bit(a);
+    const luz = (txt,a,cor)=>{ const v=b(a); return `<span class="luz"><span class="dot ${v===undefined?"nd":v?cor:""}"></span>${txt}</span>`; };
+    $("#faixa").innerHTML = luz("Sistema ligado",f.verde,"on-g")+luz("Aviso",f.amarela,"on-y")+luz("Falha",f.vermelha,"on-r")+luz("Sirene",f.sirene,"on-r")+
+      (b(f.critico)===true?'<span class="sev critico">▲ ALARME CRÍTICO PRESENTE</span>':"")+
+      (b(f.permissivel)===true?'<span class="sev alarme">● ALARME PERMISSÍVEL PRESENTE</span>':"");
+    // contador
+    const n = Alarmes.ativos().length, c = $("#cntAl");
+    c.textContent = Dados.semCom ? "?" : n;
+    c.className = "cnt"+(!Dados.semCom && n ? (Alarmes.ativos().some(d=>d.sev==="emergencia"||d.sev==="critico")?" ativo":" aviso"):"");
+  }
+};
+function abrirInfo(chave,btn){
+  fecharInfo();
+  const t = Textos[chave]; const p = document.createElement("div");
+  p.className="pop"; p.id="pop"; p.setAttribute("role","dialog"); p.setAttribute("aria-label",t[0]);
+  p.innerHTML = `<button class="fechar" aria-label="Fechar">✕</button><h3>${esc(t[0])}</h3>${t[1]}`;
+  document.body.appendChild(p);
+  const r = btn.getBoundingClientRect();
+  p.style.left = Math.max(8, Math.min(r.left, innerWidth-p.offsetWidth-8))+"px";
+  p.style.top = Math.min(r.bottom+6, innerHeight-p.offsetHeight-8)+"px";
+  $(".fechar",p).addEventListener("click",fecharInfo); $(".fechar",p).focus();
+}
+function fecharInfo(){ const p=$("#pop"); if(p) p.remove(); }
+function mostrar(v){
+  $$("nav button").forEach(b=>b.setAttribute("aria-selected",b.dataset.v===v));
+  $$(".vista").forEach(s=>s.classList.toggle("ativa",s.id==="v-"+v));
+  gravarStorage("hagane_aba",v); fecharInfo(); renderTudo();
+}
+function renderTudo(){
+  Alarmes.atualizar(); Cab.atualizar();
+  const v = $(".vista.ativa").id;
+  if (v==="v-ov") Overview.atualizar(); else if (v==="v-al") TelaAlertas.atualizar(); else TelaES.atualizar();
+}
+
+/* ============================================================
+   9. INICIO
+   ============================================================ */
+function iniciar(){
+  const qs = new URLSearchParams(location.search);
+  let base = qs.get("api") || "";
+  if (!base && location.protocol==="file:") base = lerStorage("hagane_api") || "";
+  if (!base && location.protocol==="file:") {
+    $("#conf").style.display="block";
+    $("#confOk").addEventListener("click",()=>{ const u=$("#confUrl").value.trim().replace(/\/+$/,""); if(u){ gravarStorage("hagane_api",u); location.reload(); } });
+  }
+  Dados.base = base.replace(/\/+$/,"");
+  $$("nav button").forEach(b=>b.addEventListener("click",()=>mostrar(b.dataset.v)));
+  $$("[data-info]").forEach(b=>b.addEventListener("click",e=>{ e.stopPropagation(); abrirInfo(b.dataset.info,b); }));
+  document.addEventListener("click",e=>{ if(!e.target.closest(".pop")) fecharInfo(); });
+  document.addEventListener("keydown",e=>{ if(e.key==="Escape") fecharInfo(); });
+  $("#alTodos").addEventListener("change",renderTudo); $("#alCsv").addEventListener("click",()=>TelaAlertas.csv());
+  $$(".sub button").forEach(b=>b.addEventListener("click",()=>{ TelaES.area=b.dataset.area; $$(".sub button").forEach(x=>x.setAttribute("aria-pressed",x===b)); renderTudo(); }));
+  ["esBusca","esAtivos","esRes"].forEach(id=>$("#"+id).addEventListener("input",renderTudo));
+  setInterval(()=>{ $("#relogio").textContent = new Date().toLocaleString("pt-BR",{hour12:false}); }, 1000);
+  Dados.aoAtualizar(renderTudo);
+  const aba = lerStorage("hagane_aba"); if (aba && $("#v-"+aba)) { $$("nav button").forEach(b=>b.setAttribute("aria-selected",b.dataset.v===aba)); $$(".vista").forEach(s=>s.classList.toggle("ativa",s.id==="v-"+aba)); }
+  if (Dados.base || location.protocol!=="file:") Dados.iniciar();
+  renderTudo();
+}
+window.Hagane = {Dados, Mapa, Alarmes, VERSAO};   // acesso para os testes
+iniciar();
+</script>
+</body>
+</html>
