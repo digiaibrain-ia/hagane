@@ -1,8 +1,8 @@
-BAGGIO - SISTEMA DE FILTRAGEM v0.4 - COMO USAR NO NOTEBOOK (somente leitura)
-1. VER A TELA SEM NADA INSTALADO: abra dashboard/src/baggio_monitor_v0.4.html com dois cliques. Ele roda a SIMULACAO
+BAGGIO - SISTEMA DE FILTRAGEM v0.5 - COMO USAR NO NOTEBOOK (somente leitura)
+1. VER A TELA SEM NADA INSTALADO: abra dashboard/src/baggio_monitor_v0.5.html com dois cliques. Ele roda a SIMULACAO
    embutida (selo DEMO). Botoes do cabecalho: Fonte (CPU | Simulacao) e Visual (Moderno | Original); "Animacao" liga/desliga a agua.
-2. COM NODE-RED: instale node-red-contrib-s7. Menu > Import: baggio_core_v0.4.json (Replace se ja houver o core antigo) + UMA fonte:
-   baggio_fonte_demo_v0.4.json (teste) OU baggio_fonte_s7_v0.4.json (CPU). Deploy. Abra http://localhost:1880/baggio
+2. COM NODE-RED: instale node-red-contrib-s7. Menu > Import: baggio_core_v0.5.json (Replace se ja houver o core antigo) + UMA fonte:
+   baggio_fonte_demo_v0.5.json (teste) OU baggio_fonte_s7_v0.5.json (CPU). Deploy. Abra http://localhost:1880/baggio
 3. CPU/PLCSIM: o IP vem de BAGGIO_PLC_IP ($env:BAGGIO_PLC_IP="192.168.0.10"; node-red) ou digitado no endpoint "CPU 315".
    Nao use PLC_IP (e do bt-gerador). Roteiro PLCSIM: docs/testes/roteiro_plcsim_v0.1.md
 4. Se a CPU nao responder, troque a Fonte para Simulacao: a tela funciona sem PLC e sem Node-RED.

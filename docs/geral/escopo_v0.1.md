@@ -41,3 +41,9 @@ Histórico em banco, relatórios, tendências, comandos de máquina, acesso remo
 - **Nível dos tanques pelos sensores de nível** (`I6.x`, sensor ativo = coberto; polaridade a validar, P-10), com ondas na água e fluxo nos tubos das bombas. Botão **Animação** liga/desliga (lembrado).
 - **Textos:** 6 colisões medidas e corrigidas nos dois visuais (`tests/colisao_textos.js` = 0).
 - Teste: `tests/telas_v0.4.js` (nos dois visuais) + `tests/colisao_textos.js` + `tests/fluxos_somente_leitura_v0.4.js`.
+
+## v0.5 (24/11/2026) — correções de UI
+- **Sem deslocamento:** a faixa "SEM COMUNICAÇÃO" ficou fixa no rodapé (espaço sempre reservado), a barra de rolagem tem espaço reservado e os selos do cabeçalho têm largura mínima. Teste: layout idêntico em normal, aviso, falha e sem comunicação, nas 3 abas.
+- **Tubo emendado:** o tubo do extrator de lodo começava solto, 30 unidades antes do funil. `tests/colisao_textos.js` agora também confere que cada ponta de tubo encosta em outro tubo, equipamento ou bomba (entradas livres: ar, alimentação e retorno).
+- Os testes novos foram provados por mutação: na v0.4 eles falham (tubo solto e deslocamento detectados).
+- Arquivos: `baggio_monitor_v0.5.html` (`dashboard/gerador/gerar_monitor_v0.5.py`), `baggio_*_v0.5.json`, `tests/telas_v0.5.js`.

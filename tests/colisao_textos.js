@@ -1,4 +1,4 @@
-// Mede colisoes dos rotulos do desenho do Overview: texto x tubo, texto x contorno de equipamento,
+// Mede colisoes dos rotulos do desenho do Overview (e pontas de tubo soltas): texto x tubo, texto x contorno de equipamento,
 // texto x lampada/valvula e texto x texto. Uso: node tests/colisao_textos.js URL_OU_ARQUIVO [mod|ori]
 // Saida: lista de colisoes (vazia = ok). Sai com codigo 1 se houver alguma.
 const { chromium } = require("playwright");
@@ -32,6 +32,18 @@ const { chromium } = require("playwright");
       // texto x texto
       txt.forEach((u, j) => { if (j <= i) return; const d = bx[j];
         if (c.x < d.x + d.w && c.x + c.w > d.x && c.y < d.y + d.h && c.y + c.h > d.y) out.push(`"${rotulo(t)}" sobrepoe "${rotulo(u)}"`); });
+    });
+    // pontas dos tubos: cada ponta tem que encostar em outro tubo ou equipamento (ou ser entrada livre conhecida)
+    const livres = [[55, 62], [690, 52], [745, 105]];   // ar comprimido, alimentacao e retorno cruzam a borda do desenho
+    const formas = Array.from(svg.querySelectorAll(".eqp,.eqp2,.tb-o"));
+    tubos.forEach((tb, i) => { const L = tb.getTotalLength();
+      [0, L].forEach(d => { const q = tb.getPointAtLength(d);
+        if (livres.some(l => Math.abs(l[0] - q.x) < 2 && Math.abs(l[1] - q.y) < 2)) return;
+        const naBomba = Array.from(svg.querySelectorAll(".bmb")).some(g => { const m = /translate\(([-\d.]+),([-\d.]+)\)/.exec(g.getAttribute("transform")), bb = g.getBBox();
+          return q.x >= +m[1] + bb.x - 3 && q.x <= +m[1] + bb.x + bb.width + 3 && q.y >= +m[2] + bb.y - 3 && q.y <= +m[2] + bb.y + bb.height + 3; });
+        if (naBomba) return;
+        const toca = formas.some(f => f !== tb && [[0,0],[2,0],[-2,0],[0,2],[0,-2]].some(([dx, dy]) => { const P = pt(q.x + dx, q.y + dy); return f.isPointInFill(P) || f.isPointInStroke(P); }));
+        if (!toca) out.push(`TUBO ${i + 1} termina solto em (${Math.round(q.x)},${Math.round(q.y)})`); });
     });
     return Array.from(new Set(out));
   });
