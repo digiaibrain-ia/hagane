@@ -1,15 +1,14 @@
 // [F] SIMULADOR PURO (DEMO): simularBytes(contrato, agoraMs) devolve os MESMOS bytes que a CPU enviaria
-// [F] ({"IB0":n,...}) ou null (silencio = teste de "sem comunicacao"). Sem PLC, sem rede.
+// [F] ({"IB0":n,...}). Sem PLC, sem rede. (v0.7: sem silencio simulado; o teste de "sem comunicacao" fica nos testes automaticos.)
 // [F] Usado em 2 lugares com o MESMO codigo: fluxo demo do Node-RED e simulador embutido no HTML.
 // [F] Ciclo de 180 s: 40-70 s ALERTA A-NIV-002 (nivel minimo do tanque limpo: M13.7); 100-140 s FALHA F-DSJ-002
-// [F] (disjuntor da bomba 1 desarmado: I1.0 = 0 e M10.5); 150-165 s silencio. Os alarmes seguem a logica real do PLC.
+// [F] (disjuntor da bomba 1 desarmado: I1.0 = 0 e M10.5). Os alarmes seguem a logica real do PLC.
 // [F] Nivel do tanque sujo sobe e desce a cada 60 s e e entregue pelos SENSORES (sensor ativo = coberto):
 // [F]   I6.1 minimo >= 15 %, I6.2 inicio de enchimento >= 40 %, I6.3 fim de enchimento >= 70 %, I6.0 maximo >= 90 %.
 // [F] Tanque limpo (compensacao) oscila a cada 90 s: I6.5 minimo >= 15 %, I6.4 maximo >= 85 %.
 // [F] Nunca usar em producao: a tela exibe "DEMO" em destaque (licao Demo x Real).
 function simularBytes(contrato, agoraMs) {
   var t = (agoraMs / 1000) % 180;
-  if (t >= 150 && t < 165) return null;
   var B = {};
   var set = function (end, v) {
     var m = /^([IQM])(\d+)\.(\d)$/.exec(end); if (!m) return;

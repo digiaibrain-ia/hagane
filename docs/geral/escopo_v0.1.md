@@ -55,3 +55,11 @@ Histórico em banco, relatórios, tendências, comandos de máquina, acesso remo
 - **Alarmes deduzidos de entradas removidos:** o PLC é a única fonte. A dedução `I1.3 = 1 → falha` estava invertida (P-14).
 - Achados nos blocos: `M15.5` nunca dispara (condição contraditória), `M15.7` com selo invertido, `Q9.0` com nome de reserva (P-15 a P-17).
 - Teste: `tests/telas_v0.6.js` (nos dois visuais), `tests/colisao_textos.js`, `tests/fluxos_somente_leitura_v0.6.js`.
+
+## v0.7 (24/11/2026) — tubulação, setas e válvulas por regras medidas
+- **Simulador sem o silêncio** (já não derruba a comunicação a cada 3 minutos). O teste de "sem comunicação" continua nos testes automáticos.
+- **Setas geradas do próprio tubo**, a 12 unidades do eixo, só em trecho reto e longe de curvas, válvulas, instrumentos, lâmpadas, textos e outros tubos. A animação da água usa o mesmo caminho, então **seta e movimento têm sempre o mesmo sentido** (provado medindo o tracejado em movimento).
+- **Tubulação padronizada:** tubos paralelos com no mínimo 24 unidades de afastamento (antes 34, 28, 19…); tubo do filtro afastado do canto do tanque; **ponte** no único cruzamento sem ligação (tubo do filtro × recalque da bomba 1); linha tracejada fora do tubo.
+- **Válvulas alinhadas ao eixo do tubo**, com flanges e atuador sempre do mesmo lado (direita no tubo vertical, acima no horizontal). Rótulo da compensação não atravessa mais a parede do tanque; rótulo da lavagem centrado na válvula.
+- **Corrida corrigida:** trocar "PLC → Simulados" com uma leitura do PLC pendente fazia o erro tardio derrubar a simulação; respostas de fonte já trocada são descartadas.
+- Teste: `tests/telas_v0.7.js` (nos dois visuais; regras de afastamento, ponte, setas, válvulas e sentido da animação) + `tests/colisao_textos.js` (amostragem de 1 em 1 e folga de 2).

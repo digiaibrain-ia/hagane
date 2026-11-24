@@ -1,0 +1,75 @@
+[
+ {
+  "id": "baggio_demo_tab",
+  "type": "tab",
+  "label": "Baggio fonte DEMO v0.7",
+  "disabled": false,
+  "info": "Baggio fonte DEMO v0.7: simulador SEM PLC, so para teste das telas. Nunca instalar no PC de producao junto com a fonte S7."
+ },
+ {
+  "id": "hg_d_nota",
+  "type": "comment",
+  "z": "baggio_demo_tab",
+  "x": 190,
+  "y": 40,
+  "name": "Baggio fonte DEMO v0.7 - SO TESTE",
+  "info": "A tela mostra DEMO em destaque."
+ },
+ {
+  "id": "hg_d_tick",
+  "type": "inject",
+  "z": "baggio_demo_tab",
+  "x": 130,
+  "y": 120,
+  "name": "1 s",
+  "props": [
+   {
+    "p": "payload"
+   }
+  ],
+  "repeat": "1",
+  "crontab": "",
+  "once": true,
+  "onceDelay": "1",
+  "topic": "",
+  "payload": "",
+  "payloadType": "date",
+  "wires": [
+   [
+    "hg_d_sim"
+   ]
+  ]
+ },
+ {
+  "id": "hg_d_sim",
+  "type": "function",
+  "z": "baggio_demo_tab",
+  "x": 330,
+  "y": 120,
+  "name": "simula bytes da CPU",
+  "func": "// [F] FONTE DEMO: a cada tick chama o simulador puro (codigo abaixo) e entrega os bytes como se vieram da CPU.\n// [F] SIMULADOR PURO (DEMO): simularBytes(contrato, agoraMs) devolve os MESMOS bytes que a CPU enviaria\n// [F] ({\"IB0\":n,...}). Sem PLC, sem rede. (v0.7: sem silencio simulado; o teste de \"sem comunicacao\" fica nos testes automaticos.)\n// [F] Usado em 2 lugares com o MESMO codigo: fluxo demo do Node-RED e simulador embutido no HTML.\n// [F] Ciclo de 180 s: 40-70 s ALERTA A-NIV-002 (nivel minimo do tanque limpo: M13.7); 100-140 s FALHA F-DSJ-002\n// [F] (disjuntor da bomba 1 desarmado: I1.0 = 0 e M10.5). Os alarmes seguem a logica real do PLC.\n// [F] Nivel do tanque sujo sobe e desce a cada 60 s e e entregue pelos SENSORES (sensor ativo = coberto):\n// [F]   I6.1 minimo >= 15 %, I6.2 inicio de enchimento >= 40 %, I6.3 fim de enchimento >= 70 %, I6.0 maximo >= 90 %.\n// [F] Tanque limpo (compensacao) oscila a cada 90 s: I6.5 minimo >= 15 %, I6.4 maximo >= 85 %.\n// [F] Nunca usar em producao: a tela exibe \"DEMO\" em destaque (licao Demo x Real).\nfunction simularBytes(contrato, agoraMs) {\n  var t = (agoraMs / 1000) % 180;\n  var B = {};\n  var set = function (end, v) {\n    var m = /^([IQM])(\\d+)\\.(\\d)$/.exec(end); if (!m) return;\n    var k = m[1] + \"B\" + m[2]; B[k] = (B[k] || 0);\n    if (v) B[k] |= (1 << Number(m[3])); else B[k] &= ~(1 << Number(m[3]));\n  };\n  contrato.tags.forEach(function (tg) { if (tg.bit && B[tg.byte] === undefined) B[tg.byte] = 0; });\n\n  var falhaBomba1 = t >= 100 && t < 140, aviso = t >= 40 && t < 70;\n  var fase = (t % 60) / 60, nivel = fase < 0.5 ? fase * 2 : 2 - fase * 2;          // tanque sujo 0..1\n  var nl = aviso ? 0.08 : 0.55 + 0.35 * Math.sin(2 * Math.PI * t / 90);            // tanque limpo 0..1 (no alerta: abaixo do minimo)\n  var limpeza = (t % 90) >= 20 && (t % 90) < 50;\n\n  // base: comando, seguranca, disjuntores OK, ar, modo automatico\n  [\"I0.0\",\"I0.3\",\"I0.6\",\"I4.2\",\"I4.4\",\"I5.0\",\"I5.2\",\"I5.4\",\"I5.6\",\"I1.4\",\"I2.0\",\"I2.2\",\"I2.4\",\"I3.0\",\"I3.5\",\"Q12.1\",\"Q12.2\"].forEach(function (a) { set(a, true); });\n  // sensores de nivel do tanque sujo (entradas) e lampadas do sinotico (saidas)\n  set(\"I6.1\", nivel >= 0.15); set(\"I6.2\", nivel >= 0.40); set(\"I6.3\", nivel >= 0.70); set(\"I6.0\", nivel >= 0.90);\n  set(\"Q14.6\", nivel >= 0.90); set(\"Q14.7\", nivel >= 0.70); set(\"Q15.0\", nivel < 0.40); set(\"Q15.1\", nivel < 0.15);\n  // tanque limpo\n  set(\"I6.5\", nl >= 0.15); set(\"I6.4\", nl >= 0.85); set(\"Q14.4\", nl >= 0.85); set(\"Q14.5\", nl < 0.15);\n  // bombas\n  set(\"I1.0\", !falhaBomba1);                                                       // contato OK do disjuntor da bomba 1\n  var b1 = !falhaBomba1, b2 = nivel > 0.5;\n  set(\"I1.1\", b1); set(\"I1.2\", b1); set(\"Q13.0\", b1);\n  set(\"I1.5\", b2); set(\"I1.6\", b2); set(\"Q13.1\", b2);\n  set(\"I2.1\", true); set(\"Q13.6\", true);\n  // ciclo de autolimpeza\n  set(\"Q12.4\", limpeza);\n  set(\"I2.3\", limpeza); set(\"Q13.4\", limpeza); set(\"Q14.1\", limpeza); set(\"Q14.3\", limpeza);\n  set(\"I3.1\", limpeza); set(\"Q13.5\", limpeza);\n  set(\"I3.6\", true); set(\"Q13.2\", true); set(\"I2.5\", true); set(\"Q13.3\", true);\n  set(\"Q15.3\", true); set(\"Q15.4\", true); set(\"Q14.0\", true); set(\"Q15.6\", b2); set(\"Q14.2\", nl > 0.5);\n  // coluna sinaleira\n  set(\"Q11.4\", !falhaBomba1);\n  if (aviso) { set(\"M13.7\", true); set(\"M21.3\", true); set(\"Q11.6\", true); }          // A-NIV-002\n  if (falhaBomba1) { set(\"M10.5\", true); set(\"M21.0\", true); set(\"Q11.5\", true); set(\"Q11.7\", true); }   // F-DSJ-002\n  return B;\n}\n\nconst contrato = global.get(\"baggio_contrato\");\nif (!contrato) return null;\nconst B = simularBytes(contrato, Date.now());\nmsg.payload = B; msg.origem = \"demo\";\nreturn msg;\n",
+  "outputs": 1,
+  "initialize": "",
+  "finalize": "",
+  "libs": [],
+  "wires": [
+   [
+    "hg_d_out"
+   ]
+  ],
+  "info": "Ciclo de 180 s: aviso, falha, silencio."
+ },
+ {
+  "id": "hg_d_out",
+  "type": "link out",
+  "z": "baggio_demo_tab",
+  "x": 530,
+  "y": 120,
+  "name": "baggio-bruto",
+  "mode": "link",
+  "links": [
+   "hg_c_in"
+  ],
+  "wires": []
+ }
+]

@@ -3,6 +3,5 @@ __SIM_CORE__
 const contrato = global.get("baggio_contrato");
 if (!contrato) return null;
 const B = simularBytes(contrato, Date.now());
-if (!B) return null;                      // silencio: simula queda de comunicacao
 msg.payload = B; msg.origem = "demo";
 return msg;

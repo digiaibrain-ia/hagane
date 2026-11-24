@@ -20,12 +20,13 @@ const { chromium } = require("playwright");
     txt.forEach((t, i) => {
       const c = bx[i];
       // texto x tubo e texto x contorno
-      for (let x = c.x; x <= c.x + c.w; x += 3) for (let y = c.y; y <= c.y + c.h; y += 3) {
+      const ce = { x: c.x - 2, y: c.y - 2, w: c.w + 4, h: c.h + 4 };       // folga de 2 unidades ao redor do texto
+      for (let x = ce.x; x <= ce.x + ce.w; x += 1) for (let y = ce.y; y <= ce.y + ce.h; y += 1) {
         const P = pt(x, y);
         const tb = tubos.find(e => e.isPointInStroke(P)); if (tb) { out.push(`"${rotulo(t)}" cruza TUBO`); x = 1e9; break; }
       }
-      for (let x = c.x; x <= c.x + c.w; x += 3) { let achou = false;
-        for (let y = c.y; y <= c.y + c.h; y += 3) { const P = pt(x, y); if (cont.some(e => e.isPointInStroke(P))) { out.push(`"${rotulo(t)}" cruza CONTORNO de equipamento`); achou = true; break; } }
+      for (let x = ce.x; x <= ce.x + ce.w; x += 1) { let achou = false;
+        for (let y = ce.y; y <= ce.y + ce.h; y += 1) { const P = pt(x, y); if (cont.some(e => e.isPointInStroke(P))) { out.push(`"${rotulo(t)}" cruza CONTORNO de equipamento`); achou = true; break; } }
         if (achou) break; }
       // texto x lampada/valvula
       marcas.forEach(m => { if (m.x + m.r > c.x && m.x - m.r < c.x + c.w && m.y + m.r > c.y && m.y - m.r < c.y + c.h) out.push(`"${rotulo(t)}" encosta em ${m.id}`); });
@@ -33,8 +34,11 @@ const { chromium } = require("playwright");
       txt.forEach((u, j) => { if (j <= i) return; const d = bx[j];
         if (c.x < d.x + d.w && c.x + c.w > d.x && c.y < d.y + d.h && c.y + c.h > d.y) out.push(`"${rotulo(t)}" sobrepoe "${rotulo(u)}"`); });
     });
+    // texto x valvula (corpo, flanges e atuador)
+    const vb = Array.from(svg.querySelectorAll("[data-vl]")).map(g => { const b = g.getBBox(), m = /translate\(([-\d.]+),([-\d.]+)\)/.exec(g.getAttribute("transform")); return { id: g.dataset.vl, x: b.x + +m[1], y: b.y + +m[2], w: b.width, h: b.height }; });
+    txt.forEach((t, i) => { const c = bx[i]; vb.forEach(v => { if (c.x < v.x + v.w + 1 && c.x + c.w > v.x - 1 && c.y < v.y + v.h + 1 && c.y + c.h > v.y - 1) out.push(`"${rotulo(t)}" encosta na valvula ${v.id}`); }); });
     // pontas dos tubos: cada ponta tem que encostar em outro tubo ou equipamento (ou ser entrada livre conhecida)
-    const livres = [[55, 62], [690, 52], [745, 105]];   // ar comprimido, alimentacao e retorno cruzam a borda do desenho
+    const livres = [[55, 62], [690, 52], [738, 105]];   // ar comprimido, alimentacao e retorno cruzam a borda do desenho
     const formas = Array.from(svg.querySelectorAll(".eqp,.eqp2,.tb-o"));
     tubos.forEach((tb, i) => { const L = tb.getTotalLength();
       [0, L].forEach(d => { const q = tb.getPointAtLength(d);
