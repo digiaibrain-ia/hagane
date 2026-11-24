@@ -80,3 +80,10 @@ Histórico em banco, relatórios, tendências, comandos de máquina, acesso remo
 - Sem os dígitos 1/0 nos endereços (cor + dica); rótulo **TRANSP. DRAGANTE**; a tela se atualiza ao voltar de outra aba do navegador.
 - Defeitos meus achados nos prints e corrigidos: texto da aba selecionada invisível (azul sobre azul) e barra de seleção sempre visível (`hidden` perdia para `display:flex`). Os testes agora medem **contraste real** e **visibilidade real** (provado por mutação).
 - Testes: `tests/telas_v0.9.js` (dois visuais), `tests/colisao_textos.js`, `tests/fluxos_somente_leitura_v0.9.js`.
+
+## v0.10 (24/11/2026) — aproveitando o projeto do medidor
+- **Diálogo "Versão do programa"** (botão `vX.Y` no cabeçalho): histórico resumido, mais nova primeiro, ampliar, fechar (botão, Esc, clique fora), foco preso na janela. **Fonte única: `docs/historico_versoes.json`**; o gerador do HTML **aborta** se a primeira entrada não for a versão que está sendo gerada, então o diálogo não fica desatualizado.
+- **Contadores Alertas e Falhas** no cabeçalho (como no medidor); clicar abre a tela de alertas já filtrada pelo tipo. O selo de estado e a bolinha da aba saíram (cabeçalho mais limpo).
+- **Cadeia de comunicação HTML → Node-RED → PLC** (cartão "Modo" do medidor): nas opções (engrenagem) e na faixa de "sem comunicação" ("HTML ✔ → Node-RED ✔ → PLC ✖ não conectado (motivo)"). Ajuda a achar o elo que falha (por exemplo, Node-RED ok e PLC fora). Nos dados simulados, Node-RED e PLC aparecem como "não usado".
+- Teste: `tests/telas_v0.10.js` cobre contadores (incluindo "?" sem comunicação), cadeia nos três cenários, diálogo (abrir, ampliar, foco, Esc, clique fora, Fechar) e paridade do histórico embutido com o arquivo.
+- Do medidor ainda **não trazido** (ver backlog): "Logs", central de registros, exportação de relatório completo.

@@ -1,0 +1,90 @@
+{
+ "atual": "0.10",
+ "data": "24/11/2026",
+ "versoes": [
+  {
+   "v": "0.10",
+   "data": "24/11/2026",
+   "itens": [
+    "Diálogo \"Versão do programa\" com o histórico resumido (este que você está lendo), aberto pelo botão da versão no cabeçalho.",
+    "Contadores Alertas e Falhas no cabeçalho, como no medidor; clicar neles abre a tela de alertas já filtrada. O selo de estado foi retirado para o cabeçalho ficar mais limpo.",
+    "Diagnóstico da comunicação HTML, Node-RED e PLC: mostra qual elo da cadeia está conectado, nas opções e na faixa de \"sem comunicação\"."
+   ]
+  },
+  {
+   "v": "0.9",
+   "data": "24/11/2026",
+   "itens": [
+    "Simulador do HTML corrigido na raiz: ele estava velho desde a v0.4 e por isso a falta de comunicação simulada continuava aparecendo. Agora o gerador reembute o simulador atual e um teste compara com o arquivo-fonte.",
+    "Cenário fixo na simulação: sempre uma falha (F-PRS-001) e um alerta (A-DSJ-006) ativos, com a lógica real do PLC.",
+    "Cabeçalho de uma linha e sem bordas; chip que diz claramente a origem dos dados (Dados simulados, PLC ao vivo ou PLC sem comunicação); opções com \"em uso\", animação e tela cheia.",
+    "Proporção para notebook 1366x768 (overview maior, alertas e entradas/saídas mais compactos); sem os dígitos 1 e 0; rótulo TRANSP. DRAGANTE."
+   ]
+  },
+  {
+   "v": "0.8",
+   "data": "24/11/2026",
+   "itens": [
+    "T da alimentação como no WinCC: um ramo sobe (alimentação) e o outro desce (lavagem), com setas e animação no mesmo sentido.",
+    "Alertas e falhas com filtros (tipo, família e busca) e caixas de seleção; Exportar usa os selecionados.",
+    "Simulação sem falha de comunicação."
+   ]
+  },
+  {
+   "v": "0.7",
+   "data": "24/11/2026",
+   "itens": [
+    "Tubulação padronizada: no mínimo 24 unidades entre tubos paralelos e ponte no cruzamento sem ligação.",
+    "Setas geradas do próprio tubo, a distância padrão, no mesmo sentido da animação da água; válvulas alinhadas ao eixo do tubo; sem sobreposição de rótulos."
+   ]
+  },
+  {
+   "v": "0.6",
+   "data": "24/11/2026",
+   "itens": [
+    "Alertas e falhas alimentados pelos blocos do PLC: código, efeito, causa com teste rápido, solução e \"como o PLC decide\".",
+    "Tubo ligado à parede do tanque limpo e válvula de quebra vácuo como no WinCC.",
+    "Escolha de origem dos dados (PLC ou Simulados); retirado o nome da fábrica da tela."
+   ]
+  },
+  {
+   "v": "0.5",
+   "data": "24/11/2026",
+   "itens": [
+    "Sem deslocamento da tela: a faixa de comunicação ficou fixa no rodapé.",
+    "Tubo do extrator de lodo emendado."
+   ]
+  },
+  {
+   "v": "0.4",
+   "data": "24/11/2026",
+   "itens": [
+    "Nome Baggio - Sistema de filtragem.",
+    "Dados simulados dentro do próprio HTML (funciona sem Node-RED e sem PLC).",
+    "Nível dos tanques pelos sensores de nível, com animação da água que liga e desliga."
+   ]
+  },
+  {
+   "v": "0.3",
+   "data": "24/11/2026",
+   "itens": [
+    "Dois visuais: Moderno (identidade do medidor) e Original (tela do WinCC).",
+    "Menos informação repetida na tela."
+   ]
+  },
+  {
+   "v": "0.2",
+   "data": "24/11/2026",
+   "itens": [
+    "Overview fiel à tela do WinCC: tanques, filtro, bombas, válvulas e lâmpadas dinâmicas."
+   ]
+  },
+  {
+   "v": "0.1",
+   "data": "24/11/2026",
+   "itens": [
+    "Primeira versão, somente leitura: Overview, Alertas e falhas e Entradas e saídas, com leitura da CPU 315 pelo Node-RED."
+   ]
+  }
+ ]
+}

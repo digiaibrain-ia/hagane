@@ -1,13 +1,15 @@
-BAGGIO - SISTEMA DE FILTRAGEM v0.9 - COMO USAR NO NOTEBOOK (somente leitura)
-1. VER A TELA SEM NADA INSTALADO: abra dashboard/src/baggio_monitor_v0.9.html com dois cliques (use SEMPRE o arquivo da versao nova:
+BAGGIO - SISTEMA DE FILTRAGEM v0.10 - COMO USAR NO NOTEBOOK (somente leitura)
+1. VER A TELA SEM NADA INSTALADO: abra dashboard/src/baggio_monitor_v0.10.html com dois cliques (use SEMPRE o arquivo da versao nova:
    o nome tem a versao). Ele mostra DADOS SIMULADOS: o chip amarelo "Dados simulados" no cabecalho diz quem esta ativo.
 2. OPCOES (engrenagem no cabecalho, ou clique no chip de origem): escolha a origem dos dados (PLC real ou Dados simulados) e o visual
    (Moderno ou Original); a opcao ativa traz "em uso". Tambem: Animacao da agua e Tela cheia (a tela de 1366x768 fica bem maior em tela cheia).
-3. COM NODE-RED: instale node-red-contrib-s7. Menu > Import: baggio_core_v0.9.json (Replace se ja houver o core antigo) + UMA fonte:
-   baggio_fonte_demo_v0.9.json (teste) OU baggio_fonte_s7_v0.9.json (PLC). Deploy. Abra http://localhost:1880/baggio
+3. COM NODE-RED: instale node-red-contrib-s7. Menu > Import: baggio_core_v0.10.json (Replace se ja houver o core antigo) + UMA fonte:
+   baggio_fonte_demo_v0.10.json (teste) OU baggio_fonte_s7_v0.10.json (PLC). Deploy. Abra http://localhost:1880/baggio
 4. PLC/PLCSIM: o IP vem de BAGGIO_PLC_IP ($env:BAGGIO_PLC_IP="192.168.0.10"; node-red) ou digitado no endpoint "CPU 315".
    Nao use PLC_IP (e do bt-gerador). Roteiro PLCSIM: docs/testes/roteiro_plcsim_v0.1.md
 5. Se o PLC nao responder, escolha Dados simulados nas opcoes: a tela funciona sem PLC e sem Node-RED.
 6. Alertas e falhas: toque numa linha (efeito, causa, solucao, como o PLC decide). Filtre por Tipo, Familia ou busca; marque as caixas
    para selecionar e exportar so os selecionados. Com dados simulados ha SEMPRE 1 Falha (F-PRS-001) e 1 Alerta (A-DSJ-006) fixos.
-7. Nada aqui escreve no PLC. Erro: foto da aba Debug + da faixa vermelha "SEM COMUNICACAO".
+7. Cabecalho: contadores Alertas e Falhas (clique = abre a tela de alertas filtrada); botao da versao (vX.Y) abre o historico
+   de versoes. Engrenagem > Comunicacao mostra a cadeia HTML > Node-RED > PLC e qual elo esta conectado.
+8. Nada aqui escreve no PLC. Erro: foto da aba Debug + da faixa vermelha "SEM COMUNICACAO".
