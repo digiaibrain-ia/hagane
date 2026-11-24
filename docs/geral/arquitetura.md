@@ -14,6 +14,7 @@ Sensores/atuadores ──► PLC S7 ──► Node-RED (único cliente do PLC + 
 |---|---|
 | CPU | SIMATIC S7-300 **CPU 315-2 PN/DP**, 6ES7 315-2EH14-0AB0, firmware V3.2 (384 KB, PROFINET + MPI/DP) |
 | Supervisório local | PC station SIMATIC com **WinCC Unified RT** (`HMI_RT_1`, `HMI_RT_2`) via CP IE, rede `PN/IE_1` |
+| Rede | `PN/IE_1`, CPU em 192.168.0.2/24 (ver [processo_filtragem.md](processo_filtragem.md)) |
 | Engenharia | TIA Portal (sem S7-1200/1500: **SCL clássico**, DBs sempre não otimizados) |
 
 Consequências:
