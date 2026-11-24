@@ -29,3 +29,8 @@ Histórico em banco, relatórios, tendências, comandos de máquina, acesso remo
 - Overview **fiel à tela do WinCC** (mesma disposição, lâmpadas dinâmicas, toque = estado + endereço). Fonte S7 usa `HAGANE_PLC_IP`.
 - Arquivos: `dashboard/src/hagane_monitor_v0.2.html` (gerado por `dashboard/gerador/gerar_monitor_v0.2.py`), `nodered/flows/hagane_*_v0.2.json`. v0.1 em `arquivo/`.
 - Teste com PLCSIM: `docs/testes/roteiro_plcsim_v0.1.md`.
+
+## v0.3 (24/11/2026)
+- **Dois visuais** no mesmo HTML: Moderno (identidade do medidor: tinta `#1a4a78`, acento `#ec7000`, modo escuro automático) e Original (= v0.2, fiel ao WinCC). Mesma geometria e mesmos dados.
+- **Menos repetição:** um único selo de estado (Em operação, Aviso, Falha, Parada, Sem dado) no cabeçalho no lugar da faixa de luzes; local mostrado uma vez por visual; na E/S o nome da tag sai da linha.
+- Arquivos: `dashboard/src/hagane_monitor_v0.3.html` (gerado por `dashboard/gerador/gerar_monitor_v0.3.py` a partir da v0.2 em `arquivo/`), `nodered/flows/hagane_*_v0.3.json`. Teste: `tests/telas_v0.3.js` nos dois visuais.

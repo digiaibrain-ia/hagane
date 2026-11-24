@@ -1,0 +1,75 @@
+[
+ {
+  "id": "hagane_demo_tab",
+  "type": "tab",
+  "label": "Hagane fonte DEMO v0.3",
+  "disabled": false,
+  "info": "Hagane fonte DEMO v0.3: simulador SEM PLC, so para teste das telas. Nunca instalar no PC de producao junto com a fonte S7."
+ },
+ {
+  "id": "hg_d_nota",
+  "type": "comment",
+  "z": "hagane_demo_tab",
+  "x": 190,
+  "y": 40,
+  "name": "Hagane fonte DEMO v0.3 - SO TESTE",
+  "info": "A tela mostra DEMO em destaque."
+ },
+ {
+  "id": "hg_d_tick",
+  "type": "inject",
+  "z": "hagane_demo_tab",
+  "x": 130,
+  "y": 120,
+  "name": "1 s",
+  "props": [
+   {
+    "p": "payload"
+   }
+  ],
+  "repeat": "1",
+  "crontab": "",
+  "once": true,
+  "onceDelay": "1",
+  "topic": "",
+  "payload": "",
+  "payloadType": "date",
+  "wires": [
+   [
+    "hg_d_sim"
+   ]
+  ]
+ },
+ {
+  "id": "hg_d_sim",
+  "type": "function",
+  "z": "hagane_demo_tab",
+  "x": 330,
+  "y": 120,
+  "name": "simula bytes da CPU",
+  "func": "// [F] SIMULADOR (DEMO): gera os MESMOS bytes que a CPU enviaria, para testar telas sem PLC.\n// [F] Ciclo de 180 s: 40-70 s aviso (permissivel); 100-140 s falha critica na bomba 1;\n// [F] 150-165 s o simulador CALA (testa \"sem comunicacao\"). Nivel do tanque oscila a cada 60 s.\n// [F] Nunca usar em producao: a tela exibe \"DEMO\" em destaque (licao Demo x Real).\nconst contrato = global.get(\"hagane_contrato\");\nif (!contrato) return null;\nconst t = (Date.now() / 1000) % 180;\nif (t >= 150 && t < 165) { return null; }           // silencio: sem comunicacao\nconst B = {};                                         // bytes\nconst set = (end, v) => {                             // liga/desliga um bit pelo endereco\n  const m = /^([IQM])(\\d+)\\.(\\d)$/.exec(end); if (!m) return;\n  const k = m[1] + \"B\" + m[2]; B[k] = (B[k] || 0);\n  if (v) B[k] |= (1 << Number(m[3])); else B[k] &= ~(1 << Number(m[3]));\n};\nfor (const tg of contrato.tags) if (tg.bit && B[tg.byte] === undefined) B[tg.byte] = 0;\n\nconst falhaBomba1 = t >= 100 && t < 140, aviso = t >= 40 && t < 70;\nconst fase = (t % 60) / 60, nivel = fase < 0.5 ? fase * 2 : 2 - fase * 2;   // 0..1\nconst limpeza = (t % 90) >= 20 && (t % 90) < 50;\n\n// base: comando, seguranca, disjuntores OK, ar, modo automatico\n[\"I0.0\",\"I0.3\",\"I0.6\",\"I4.2\",\"I4.4\",\"I5.0\",\"I5.2\",\"I5.4\",\"I5.6\",\"I1.0\",\"I1.4\",\"I2.0\",\"I2.2\",\"I2.4\",\"I3.0\",\"I3.5\",\"Q12.1\",\"Q12.2\"].forEach(a => set(a, true));\n// niveis do tanque sujo (entradas I6 e lampadas Q)\nconst max = nivel > 0.9, alto = nivel > 0.7, baixo = nivel < 0.4, min = nivel < 0.15;\nset(\"I6.0\", max); set(\"I6.3\", alto); set(\"I6.2\", baixo); set(\"I6.1\", !min);\nset(\"Q14.6\", max); set(\"Q14.7\", alto); set(\"Q15.0\", baixo); set(\"Q15.1\", min);\nset(\"I6.5\", true); set(\"Q14.4\", true);\n// bombas\nconst b1 = !falhaBomba1, b2 = nivel > 0.5;\nset(\"I1.1\", b1); set(\"I1.2\", b1); set(\"Q13.0\", b1);\nset(\"I1.5\", b2); set(\"I1.6\", b2); set(\"Q13.1\", b2);\nset(\"I2.1\", true); set(\"Q13.6\", true);\n// ciclo de autolimpeza\nset(\"Q12.4\", limpeza);\nset(\"I2.3\", limpeza); set(\"Q13.4\", limpeza); set(\"Q14.1\", limpeza);\nset(\"I3.1\", limpeza); set(\"Q13.5\", limpeza);\nset(\"I3.6\", true); set(\"Q13.2\", true); set(\"I2.5\", true); set(\"Q13.3\", true);\nset(\"Q15.3\", true); set(\"Q15.4\", true); set(\"Q14.0\", true);\n// coluna sinaleira\nset(\"Q11.4\", !falhaBomba1);\nif (aviso) { set(\"M13.7\", true); set(\"M21.3\", true); set(\"Q11.6\", true); }\nif (falhaBomba1) { set(\"M12.2\", true); set(\"M122.2\", true); set(\"M21.0\", true); set(\"Q11.5\", true); set(\"Q11.7\", true); }\nmsg.payload = B; msg.origem = \"demo\";\nreturn msg;\n",
+  "outputs": 1,
+  "initialize": "",
+  "finalize": "",
+  "libs": [],
+  "wires": [
+   [
+    "hg_d_out"
+   ]
+  ],
+  "info": "Ciclo de 180 s: aviso, falha, silencio."
+ },
+ {
+  "id": "hg_d_out",
+  "type": "link out",
+  "z": "hagane_demo_tab",
+  "x": 530,
+  "y": 120,
+  "name": "hagane-bruto",
+  "mode": "link",
+  "links": [
+   "hg_c_in"
+  ],
+  "wires": []
+ }
+]

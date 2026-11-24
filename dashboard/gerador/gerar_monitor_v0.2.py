@@ -12,7 +12,7 @@ from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parents[2]
 ORIG = RAIZ / "dashboard/arquivo/hagane_monitor_v0.1.html"   # base: versao anterior (arquivada)
-DEST = RAIZ / "dashboard/src/hagane_monitor_v0.2.html"
+DEST = RAIZ / "dashboard/arquivo/hagane_monitor_v0.2.html"
 if DEST.exists() and "--forcar" not in sys.argv:
     sys.exit(f"ABORTA: {DEST.name} ja existe (versao nova, nunca sobrescrever)")
 s = ORIG.read_text(encoding="utf-8")
