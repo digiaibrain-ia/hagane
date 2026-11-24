@@ -1,0 +1,306 @@
+﻿endereco,nome,tipo,grupo,classe,comentario
+C1,c1_Contador,Counter,contadores,contador,
+C2,c2_Contador,Counter,contadores,contador,
+I0.0,ix_0.0_rlCircuitoDeControle,Bool,entradas,entrada_digital,rele circuito de controle ligado
+I0.1,ix_0.1_btEmergencPainelEletrico,Bool,entradas,entrada_digital,botão emerg. pressionada q.e.
+I0.2,ix_0.2_btResetFalhas,Bool,entradas,entrada_digital,reset falhas
+I0.3,ix_0.3_rlEmergencCircuitoSeguranc,Bool,entradas,entrada_digital,rele circuito de segurança ok
+I0.4,ix_0.4_btTesteLamp,Bool,entradas,entrada_digital,teste de lâmpadas
+I0.5,ix_0.5_habPapelDescart,Bool,entradas,entrada_digital,habilita papel descartavel
+I0.6,ix_0.6_habComandoLig,Bool,entradas,entrada_digital,comando ligado
+I0.7,ix_0.7_falhSubSobrecarTranspor,Bool,entradas,reserva,reserva
+I1.0,ix_1.0_djBomba1OK,Bool,entradas,entrada_digital,disj. bomba 1 filtragem ok
+I1.1,ix_1.1_bm1Ligada,Bool,entradas,entrada_digital,bomba 1 de filtragem ligada
+I1.2,ix_1.2_bm1FimPartida,Bool,entradas,entrada_digital,bomba 1 de filtragem fim de partida
+I1.3,ix_1.3_bm1FalhaSoftstar,Bool,entradas,entrada_digital,bomba 1 de filtragem falha soft-start
+I1.4,ix_1.4_djBomba2OK,Bool,entradas,entrada_digital,disj. bomba 2 filtragem ok
+I1.5,ix_1.5_bm2Ligada,Bool,entradas,entrada_digital,bomba 2 de filtragem ligada
+I1.6,ix_1.6_bm2FimPartida,Bool,entradas,entrada_digital,bomba 2 de filtragem fim de partida
+I1.7,ix_1.7_bm2FalhaSoftstar,Bool,entradas,entrada_digital,bomba 2 de filtragem falha soft-start
+I2.0,ix_2.0_djBombaTrocadorOK,Bool,entradas,entrada_digital,disj. bomba t. c. ok
+I2.1,ix_2.1_bmTrocadorLigada,Bool,entradas,entrada_digital,bomba t. c. ligada
+I2.2,ix_2.2_djAspiradoOK,Bool,entradas,entrada_digital,disj. do aspirador ok
+I2.3,ix_2.3_aspiLigado,Bool,entradas,entrada_digital,aspirador ligado
+I2.4,ix_2.4_djExtratorLodoOK,Bool,entradas,entrada_digital,disjuntor motor extrator de lodo
+I2.5,ix_2.5_extrLodoLigado,Bool,entradas,entrada_digital,extrator de lodo ligado
+I2.6,ix_2.6_fimPartidaSoftstarterBomba2,Bool,entradas,entrada_digital,fim de partida softstarter da bombas 2
+I2.7,ix_2.7_disjuntorArCondicionadoDesarmado,Bool,entradas,entrada_digital,disj. desarmado ar condicionado
+I3.0,ix_3.0_djRotovacOK,Bool,entradas,entrada_digital,DISJ. ROTOVAC OK
+I3.1,ix_3.1_rotoLigado,Bool,entradas,entrada_digital,ROTOVAC LIGADO
+I3.2,ix_3.2_res,Bool,entradas,entrada_digital,NÍVEL DE ENCHIMENTO
+I3.3,ix_3.3_res,Bool,entradas,entrada_digital,NÍVEL FIM DE ENCHIMENTO
+I3.4,ix_3.4_res,Bool,entradas,entrada_digital,NÍVEL MAXIMO TANQUE COMPENSAÇÃO
+I3.5,ix_3.5_djTransporDraganteOK,Bool,entradas,entrada_digital,DISJ. TRANSP. DRAGANTE OK
+I3.6,ix_3.6_tranDraganteLigado,Bool,entradas,entrada_digital,TRANSP. DRAGANTE LIGADO
+I3.7,ix_3.7_res,Bool,entradas,reserva,RESERVA
+I4.0,ix_4.0_ctrlMantaDescarta,Bool,entradas,entrada_digital,CONTR. DE MANTA DESCARTÁVEL
+I4.1,ix_4.1_ctrlAvancoMantaFiltrant,Bool,entradas,entrada_digital,CONTR. DE AVANÇO MANTA FILTRANTE
+I4.2,ix_4.2_sisAutomati,Bool,entradas,entrada_digital,SISTEMA EM AUT.
+I4.3,ix_4.3_sisManual,Bool,entradas,entrada_digital,SISTEMA EM MAN.
+I4.4,ix_4.4_lgCicloAutomati,Bool,entradas,entrada_digital,LIGA CICLO AUT.
+I4.5,ix_4.5_dslCicloAutomati,Bool,entradas,entrada_digital,DESLIGA CICLO AUT.
+I4.6,ix_4.6_lgCicloFimDe,Bool,entradas,entrada_digital,LIGA CICLO FINAL DE SEMANA
+I4.7,ix_4.7_emgFiltroPression,Bool,entradas,entrada_digital,BOTÃO EMERG. DO FILTRO PRESSIONADO
+I5.0,ix_5.0_prsArComprimi,Bool,entradas,entrada_digital,PRESENÇA DE AR COMPRIMIDO
+I5.1,ix_5.1_comaPressaoFiltro,Bool,entradas,entrada_digital,COMANDO DEPRESSÃO DO FILTRO
+I5.2,ix_5.2_prsColetorAlimenta,Bool,entradas,entrada_digital,PRESSÃO DO COLETOR OK
+I5.3,ix_5.3_tmpLiquidoRefriger,Bool,entradas,entrada_digital,TEMPERATURA DO LIQUIDO REFRIGERANTE
+I5.4,ix_5.4_bm1Automati,Bool,entradas,entrada_digital,BOMBA 1 DE FILTRAGEM EM AUT.
+I5.5,ix_5.5_bm1Manual,Bool,entradas,entrada_digital,BOMBA 1 DE FILTRAGEM EM MAN.
+I5.6,ix_5.6_bm2Automati,Bool,entradas,entrada_digital,BOMBA 2 DE FILTRAGEM EM AUT.
+I5.7,ix_5.7_bm2Manual,Bool,entradas,entrada_digital,BOMBA 2 DE FILTRAGEM EM MAN.
+I6.0,ix_6.0_nvMaximoTanqueSujo,Bool,entradas,entrada_digital,NÍVEL MAXIMO TQ. SUJO
+I6.1,ix_6.1_nvMinimoTanqueSujo,Bool,entradas,entrada_digital,NÍVEL MINIMO TQ. SUJO
+I6.2,ix_6.2_nvInicioEnchimen,Bool,entradas,entrada_digital,NÍVEL INICIO DE ENCHIMENTO
+I6.3,ix_6.3_nvFimEnchimen,Bool,entradas,entrada_digital,NÍVEL FIM DE ENCHIMENTO
+I6.4,ix_6.4_nvMaximoTanqueCompensa,Bool,entradas,entrada_digital,NÍVEL MAXIMO TQ. DE COMPENSAÇÃO
+I6.5,ix_6.5_nvMinimoTanqueCompensa,Bool,entradas,entrada_digital,NÍVEL MINIMO TQ. DE COMPENSAÇÃO
+I6.6,ix_6.6_habAutolimpContinua,Bool,entradas,entrada_digital,HABILITA AUTOLIMPEZA CONTINUA
+I6.7,ix_6.7_habAutolimpManual,Bool,entradas,entrada_digital,HABILITA AUTOL. MANUAL
+I7.0,ix_7.0_habComandoLocalPT2,Bool,entradas,entrada_digital,HABILITA COMANDO LOCAL PT2
+I7.1,ix_7.1_lgManualTransporPT2,Bool,entradas,entrada_digital,LIGA MAN. TRANSP. DRAGANTE PT2
+I7.2,ix_7.2_res,Bool,entradas,reserva,RESERVA
+I7.3,ix_7.3_res,Bool,entradas,reserva,RESERVA
+I7.4,ix_7.4_habComandoLocalPT1,Bool,entradas,entrada_digital,HABILITA COMANDO LOCAL PT1
+I7.5,ix_7.5_lgManualTransporPT1,Bool,entradas,entrada_digital,LIGA MAN. TRANSP. DRAGANTE PT1
+I7.6,ix_7.6_lgManualTransporRotovac,Bool,entradas,entrada_digital,LIGA MAN. TRANSP. DRAG.+ROTOVAC PT1
+I7.7,ix_7.7_lgManualExtratorLodo,Bool,entradas,entrada_digital,LIGA MAN. EXTRATOR DE LODO PT1
+I8.0,ix_8.0_res,Bool,entradas,entrada_digital,SAE8.0 cilco automatico
+I8.1,ix_8.1_res,Bool,entradas,entrada_digital,SAE8.0 ciclo malual
+I8.2,ix_8.2_res,Bool,entradas,entrada_digital,SBE8.2 inicio ciclo
+I8.3,ix_8.3_res,Bool,entradas,entrada_digital,SBE8.3 desliga ciclo
+I8.4,ix_8.4_res,Bool,entradas,entrada_digital,SBE8.4 inicio ciclo final semala
+I8.5,ix_8.5_res,Bool,entradas,entrada_digital,KAA23.5 motor desoleador iniciado
+I8.6,ix_8.6_res,Bool,entradas,entrada_digital,SAE8.6 habilita auto limpeza contínua
+I8.7,ix_8.7_res,Bool,entradas,reserva,reserva
+IW352,iw_cont_banda_rasgada,Word,entradas,analogico_ou_palavra,
+IW356,iw_sinal_trasd_press,Word,entradas,analogico_ou_palavra,
+M0.0,mx_zero,Bool,memorias,apoio_programa,merker sempre a zero
+M0.1,mx_uno,Bool,memorias,apoio_programa,merker sempre a uno
+M0.5,mx_newstart,Bool,memorias,apoio_programa,merker newstart
+M1.0,"mx_clock_0,1sec.",Bool,memorias,apoio_programa,"merker clock_0,1sec."
+M1.1,"mx_clock_0,2sec.",Bool,memorias,apoio_programa,"merker clock_0,2sec."
+M1.2,"mx_clock_0,4sec.",Bool,memorias,apoio_programa,"merker clock_0,4sec."
+M1.3,"mx_clock_0,5sec.",Bool,memorias,apoio_programa,"merker clock_0,5sec."
+M1.4,"mx_clock_0,8sec.",Bool,memorias,apoio_programa,"merker clock_0,8sec."
+M1.5,"mx_clock_1,0sec.",Bool,memorias,apoio_programa,"merker clock_1,0sec."
+M1.6,"mx_clock_1,6sec.",Bool,memorias,apoio_programa,"merker clock_1,6sec."
+M1.7,"mx_clock_2,0sec.",Bool,memorias,apoio_programa,"merker clock_2,0sec."
+M2.1,mx_2.1,Bool,memorias,apoio_programa,CONTA MINUTOS
+M10.1,mx_10.1,Bool,memorias,alarme,ALARME AO INICIAR BOMBA 1 FILTRO/ENVIO
+M10.3,mx_10.3,Bool,memorias,alarme,ALARME AO INICIAR BOMBA 2 FILTRO/ENVIO
+M10.4,mx_10.4,Bool,memorias,alarme,DISJUNTOR DESARMADO MOTOR TRANSP. DRAGANTE
+M10.5,mx_10.5,Bool,memorias,alarme,DISJUNTOR DESARMADO BOMBA 1
+M10.6,mx_10.6,Bool,memorias,alarme,DISJUNTOR DESARMADO BOMBA 2
+M11.1,mx_11.1,Bool,memorias,alarme,NÍVEL MIN. LIQUIDO P/ FILTRAR
+M11.2,mx_11.2,Bool,memorias,alarme,PRESSÃO AR INSUFICIENTE
+M11.3,mx_11.3,Bool,memorias,estado,AUXILIARES DESABILITADO
+M11.5,mx_11.5,Bool,memorias,alarme,EMERGÊNCIA ATUADA
+M11.6,mx_11.6,Bool,memorias,alarme,ALARME DEPRESSÃO FILTRO
+M12.1,mx_12.1,Bool,memorias,alarme,ALARME COMANDO BOMBA TROCADOR DE CALOR
+M12.2,mx_12.2,Bool,memorias,alarme,ALARME BOMBA 1
+M12.3,mx_12.3,Bool,memorias,alarme,ALARME BOMBA 2
+M13.0,mx_13.0,Bool,memorias,alarme,ALARME TEMPERATURA ARMÁRIO ELÉTRICO
+M13.1,mx_13.1,Bool,memorias,alarme,ALARME COMANDO MOTOR ROTOVAC
+M13.2,mx_13.2,Bool,memorias,alarme,ALARME COMANDO MOTOR TRANSP. DRAGANTE
+M13.4,mx_13.4,Bool,memorias,alarme,ALARME COMANDO MOTOR ASPIRADOR
+M13.6,mx_13.6,Bool,memorias,alarme,DISJUNTOR DESARMADO BOMBA TROC. CALOR
+M13.7,mx_13.7,Bool,memorias,alarme,ALARME NÍVEL MIN. LIQUIDO FILTRADO
+M14.0,mx_14.0,Bool,memorias,alarme,ALARME NÍVEL MAX LIQUIDO P/ FILTRAR
+M14.1,mx_14.1,Bool,memorias,alarme,ALARME AVANÇO BANDA FILTRANTE
+M14.2,mx_14.2,Bool,memorias,alarme,ALARME COMANDO MOTOR EXTRATOR LODO
+M15.0,mx_15.0,Bool,memorias,alarme,DISJUNTOR DESARMADO MOTOR ROTOVAC
+M15.1,mx_15.1,Bool,memorias,alarme,DISJUNTOR DESARMADO MOTOR ASPIRADOR
+M15.2,mx_15.2,Bool,memorias,alarme,DISJUNTOR DESARMADO MOTOR EXTRATOR LODO
+M15.4,mx_15.4,Bool,memorias,alarme,FALTA ÓLEO P/ ENCHIMENTO
+M15.5,mx_15.5,Bool,memorias,alarme,ALARME NÍVEL MAX LIQUIDO FILTRADO
+M15.6,mx_15.6,Bool,memorias,estado,NÍVEL DE ENCHIMENTO
+M15.7,mx_15.7,Bool,memorias,estado,DURAÇÃO MAX ENCHIMENTO
+M16.0,mx_16.0,Bool,memorias,alarme,AUX 2 ALARME CRITICO
+M16.1,mx_16.1,Bool,memorias,alarme,ALARME CRITICO P/ NÍVEL MIN LIQUIDO FILTRADO
+M16.3,mx_16.3,Bool,memorias,alarme,AUX 3 ALARME CRITICO
+M17.1,mx_17.1,Bool,memorias,estado,INICIO DE PARTIDA BOMBA 1
+M17.2,mx_17.2,Bool,memorias,estado,INICIO DE PARTIDA BOMBA 2
+M17.7,mx_17.7,Bool,memorias,estado,NÍVEL BAIXO INICIO DE ENCHIMENTO
+M20.0,mx_20.0,Bool,memorias,estado,MANUAL SELECIONADO
+M20.1,mx_20.1,Bool,memorias,estado,AUTOMÁTICO SELECIONADO
+M20.2,mx_20.2,Bool,memorias,estado,INICIO CICLO AUTOMÁTICO
+M20.3,mx_20.3,Bool,memorias,estado,CICLO FINAL SEMAN. SELECIONADO
+M20.4,mx_20.4_IncCicloFimSem,Bool,memorias,estado,INICIO CICLO FINAL de semana
+M20.6,mx_20.6,Bool,memorias,estado,HABILITA AUTO LIMPEZA CONTÍNUA
+M20.7,mx_20.7,Bool,memorias,estado,DESLIGA CICLO
+M21.0,mx_21.0,Bool,memorias,alarme,ALARME CRITICO PRESENTE
+M21.1,mx_21.1,Bool,memorias,alarme,AUX 1 ALARME PERMISSÍVEL
+M21.2,mx_21.2,Bool,memorias,alarme,AUX 2 ALARME PERMISSÍVEL
+M21.3,mx_21.3,Bool,memorias,alarme,ALARME PERMISSÍVEL PRESENTE
+M21.4,mx_21.4,Bool,memorias,estado,SILENCIA SINALIZADOR ACUSTICO
+M21.5,mx_21.5,Bool,memorias,alarme,AUX 1 ALARME CRITICO
+M22.0,mx_22.0,Bool,memorias,estado,CICLO AUTO LIMPEZA
+M22.1,mx_22.1,Bool,memorias,estado,1° CICLO AUTO LIMPEZA APÓS INICIO
+M22.2,mx_22.2,Bool,memorias,estado,INICIO AUTO LIMPEZA A TEMPO
+M22.3,mx_22.3,Bool,memorias,estado,DURAÇÃO CICLO AUTO LIMPEZA
+M22.4,mx_22.4,Bool,memorias,apoio_programa,SET TIMER DURAÇÃO ASPIRADOR
+M25.0,mx_25.0,Bool,memorias,estado,BOMBA 1 FILTRO/ENVIO RESERVA
+M25.1,mx_25.1,Bool,memorias,estado,BOMBA 2 FILTRO/ENVIO RESERVA
+M30.0,mx_pag1_bomba_vis,Bool,memorias,apoio_programa,PAGINA 1 GRUPO BOMBAS FILTRO/USO VISUALIZADA
+M30.1,mx_pag1_motores_vis,Bool,memorias,apoio_programa,PAGINA 1 GRUPO MOTORES VISUALIZADA
+M30.2,mx_pag1_vál_vis,Bool,memorias,apoio_programa,PAGINA GRUPO VÁLVULA VISUALIZADA
+M30.3,mx_increm_horar_bomba_1,Bool,memorias,apoio_programa,INCREMENTO HORARIO BOMBA 1
+M30.4,mx_incr_horar_bomba_2,Bool,memorias,apoio_programa,INCREMENTO HORARIO BOMBA 2
+M30.5,mx_pag_1_cond_habilit,Bool,memorias,apoio_programa,PAGINA 1 CONDIÇÃO INICIO HABILITATA
+M30.6,mx_pag_2_cond_habilit,Bool,memorias,apoio_programa,PAGINA 2 CONDIÇÃO INICIO HABILITATA
+M40.0,mx_pag2_motor_vis,Bool,memorias,apoio_programa,PAGINA 2 GRUPO MOTORES VISUALIZADA
+M40.1,mx_pag2_vál_vis,Bool,memorias,apoio_programa,PAGINA 2 GRUPO VÁLVULAS VISUALIZADA
+M40.2,mx_pag2_bomba:vis,Bool,memorias,apoio_programa,PAGINA 2 GRUPO BOMBAS FILTRO/USO VISUALIZADA
+M40.3,mx_pag_desolead_vis,Bool,memorias,apoio_programa,PAGINA DESOLEADOR VISUALIZADA
+M46.0,mx_Tag_6,Bool,memorias,estado,
+M46.1,mx_Tag_9,Bool,memorias,estado,
+M61.0,mx_61.0,Bool,memorias,alarme,ALARME AO INICIAR SOFTSTART BOMBA 1
+M61.1,mx_61.1,Bool,memorias,alarme,ALARME AO INICIAR SOFTSTART BOMBA 2
+M100.0,mx_100.0,Bool,memorias,estado,MÁQUINA EM TRABALHO
+M100.1,mx_100.1,Bool,memorias,apoio_programa,incremento p/ hora bomba 4
+M100.5,mx_100.5,Bool,memorias,apoio_programa,pulso p/ contar minutos bomba 1
+M100.6,mx_100.6,Bool,memorias,apoio_programa,incremento p/ hora bomba 1
+M100.7,mx_100.7,Bool,memorias,apoio_programa,pulso p/ contar minutos bomba 2
+M101.0,mx_101.0,Bool,memorias,apoio_programa,incremento p/ hora bomba 2
+M101.1,mx_101.1,Bool,memorias,apoio_programa,incremento p/ hora bomba
+M101.2,mx_101.2,Bool,memorias,apoio_programa,pulso p/ contar autolimpeza
+M101.3,mx_101.3,Bool,memorias,apoio_programa,pulso p/ resetar duração autolimpeza
+M103.0,mx_103.0,Bool,memorias,apoio_programa,pulso p/ desabilitar papel descartável
+M103.1,mx_103.1,Bool,memorias,apoio_programa,habilita papel descartável
+M103.2,mx_103.2,Bool,memorias,apoio_programa,desabilita papel descartável
+M122.2,mx_122.2_ALM BOMBA 1,Bool,memorias,alarme,ALARME BOMBA 1
+M122.3,mx_122.3,Bool,memorias,alarme,ALARME BOMBA 2
+M140.4,mx_140.4,Bool,memorias,estado,COMANDO PT1 HABILITADO
+M140.5,mx_140.5,Bool,memorias,estado,COMANDO PT2 HABILITADO
+MB1,mb_clockmemorybyte,Byte,memorias,outro,mb_clockmemorybyte
+MW12,mw_12,Word,memorias,analogico_ou_palavra,
+MW14,mw_14,Word,memorias,analogico_ou_palavra,
+MW200,mw_Tag_5,Word,memorias,analogico_ou_palavra,
+MW202,mw_Tag_8,Word,memorias,analogico_ou_palavra,
+Q8.0,qx_08.0_ligaDesligaBomba1,Bool,saidas,saida_digital,LIGA/DESL. AUX. BOMBA 1 DE FILTRAGEM
+Q8.1,qx_08.1_reseSoftstarBomba1,Bool,saidas,saida_digital,AUX. RESET SOFT-START BOMBA 1 DE FILTR.
+Q8.2,qx_08.2_ligaDesligaBomba2,Bool,saidas,saida_digital,LIGA/DESL. AUX. BOMBA 2 DE FILTRAGEM
+Q8.3,qx_08.3_reseSoftstarBomba2,Bool,saidas,saida_digital,AUX. RESET SOFT-START BOMBA 2 DE FILTR.
+Q8.4,qx_08.4_contBombaTrocador,Bool,saidas,saida_digital,LIGA BOMBA TROCADOR DE CALOR
+Q8.5,qx_08.5_contAspirado,Bool,saidas,saida_digital,LIGA ASPIRADOR
+Q8.6,qx_08.6_contExtratorLodo,Bool,saidas,saida_digital,LIGA EXTRATOR DE LODO
+Q8.7,qx_08.7_contRotovac,Bool,saidas,saida_digital,LIGA ROTOVAC
+Q9.0,qx_09.0_res,Bool,saidas,reserva,RESERVA
+Q9.1,qx_09.1_RELE AUX. TRANSP. DRAGANTE,Bool,saidas,saida_digital,RELE AUX. TRANSP. DRAGANTE
+Q9.2,qx_09.2_res,Bool,saidas,reserva,RESERVA
+Q9.3,qx_09.3_res,Bool,saidas,reserva,RESERVA
+Q9.4,qx_09.4_res,Bool,saidas,reserva,RESERVA
+Q9.5,qx_09.5_res,Bool,saidas,reserva,RESERVA
+Q9.6,qx_09.6_res,Bool,saidas,reserva,RESERVA
+Q9.7,qx_09.7_res,Bool,saidas,reserva,RESERVA
+Q10.0,qx_10.0_valvEnvio,Bool,saidas,saida_digital,VÁLV. DE ALIM. AR COMPRIMIDO
+Q10.1,qx_10.1_valvQuebraPressao,Bool,saidas,saida_digital,VÁLV. COMANDO QUEBRA DEPRESSÃO
+Q10.2,qx_10.2_valvSopragem,Bool,saidas,saida_digital,VÁLV. COMANDO DE ASSOPRAGEM
+Q10.3,qx_10.3_valvLavagemCompensa,Bool,saidas,saida_digital,VÁLV. LAVAGEM E COMPENSAÇÃO
+Q10.4,qx_10.4_modoLocalPt2Ligado,Bool,saidas,saida_digital,modo local pt2 ligado
+Q10.5,qx_10.5_transportadorDraganteLigadoViaPt2,Bool,saidas,saida_digital,transportador dragante ligado via pt2
+Q10.6,qx_10.6_valvTrocadorCalor,Bool,saidas,saida_digital,VÁLV. DO TROCADOR DE CALOR
+Q10.7,qx_10.7_res,Bool,saidas,reserva,reserva
+Q11.0,qx_11.0_lampModoLocalPT1,Bool,saidas,saida_digital,MODO LOCAL PT1 LIGADO
+Q11.1,qx_11.1_lampModoLocalPT2,Bool,saidas,saida_digital,TRANSP. DRAG. LIGADO VIA PT1
+Q11.2,qx_11.2_tranPT1Ligado,Bool,saidas,saida_digital,TRANSP. DRAG. +ROTOVAC LIGADO VIA PT1
+Q11.3,qx_11.3_tranPT2Ligado,Bool,saidas,saida_digital,EXTRATOR DE LODO LIGADO VIA PT1
+Q11.4,qx_11.4_sistFiltrageLigado,Bool,saidas,saida_digital,COLUNA VD SIST. DE FILTRAGEM LIG.
+Q11.5,qx_11.5_sistFiltrageFalha,Bool,saidas,saida_digital,COLUNA VM SIST. DE FILTRAGEM FALHA
+Q11.6,qx_11.6_sistFiltrageAviso,Bool,saidas,saida_digital,COLUNA AM SIST. DE FILTRAGEM AVISO
+Q11.7,qx_11.7_sireFalha,Bool,saidas,saida_digital,COLUNA SIRENE SIST. DE FILTR. FALHA
+Q12.0,qx_12.0_sistManual,Bool,saidas,saida_digital,SINÓT. SISTEMA EM MAN.
+Q12.1,qx_12.1_sistAutomati,Bool,saidas,saida_digital,SINÓT SISTEMA EM AUT.
+Q12.2,qx_12.2_ciclAutomatiLigado,Bool,saidas,saida_digital,SINÓT. CICLO AUT. LIGADO
+Q12.3,qx_12.3_ciclFimSemanaLigado,Bool,saidas,saida_digital,SINÓT. CICLO FINAL SEMANA LIGADO
+Q12.4,qx_12.4_ciclAutolimpLigado,Bool,saidas,saida_digital,SINÓT. CICLO AUTOLIMPEZA LIGADO
+Q12.5,qx_12.5_ciclAutolimpContinua,Bool,saidas,saida_digital,SINÓT. CICLO AUTOL. CONTINUA LIGADO
+Q12.6,qx_12.6_deslCicloAutomati,Bool,saidas,saida_digital,SINÓT. DESLIGADO CICLO AUT.
+Q12.7,qx_12.7_res,Bool,saidas,reserva,RESERVA
+Q13.0,qx_13.0_bomb1LigadaFalha,Bool,saidas,saida_digital,SINÓT. BOMBA1 FILTR. LIGADA/FALHA
+Q13.1,qx_13.1_bomb2LigadaFalha,Bool,saidas,saida_digital,SINÓT. BOMBA2 FILTR. LIGADA/FALHA
+Q13.2,qx_13.2_tranLigadoFalha,Bool,saidas,saida_digital,SINÓT. TRANSP. DRAGANTE LIGADO/FALHA
+Q13.3,qx_13.3_extrLigadoFalha,Bool,saidas,saida_digital,SINÓT. EXTRATOR DE LODO LIGADO/FALHA
+Q13.4,qx_13.4_aspiLigadoFalha,Bool,saidas,saida_digital,SINÓT. ASPIRADOR LIGADO/FALHA
+Q13.5,qx_13.5_rotoLigadoFalha,Bool,saidas,saida_digital,SINÓT. ROTOVAC LIGADO/FALHA
+Q13.6,qx_13.6_bombTrocadorLigadaFalha,Bool,saidas,saida_digital,SINÓT. BOMBA T. C. LIGADO/FALHA
+Q13.7,qx_13.7_res,Bool,saidas,reserva,RESERVA
+Q14.0,qx_14.0_presArOK,Bool,saidas,saida_digital,SINÓT. PRESSÃO DE AR COMPRIMIDO
+Q14.1,qx_14.1_valvQuebraVacuoAberta,Bool,saidas,saida_digital,SINÓT. VÁLV. QUEBRA VÁCUO ABERTA
+Q14.2,qx_14.2_valvCompensaAberta,Bool,saidas,saida_digital,SINÓT. VÁLV. COMPENSAÇÃO ABERTA
+Q14.3,qx_14.3_valvSopragemAberta,Bool,saidas,saida_digital,SINÓT. VÁLV. ASSOPRAGEM ABERTA
+Q14.4,qx_14.4_niveAltoTanqueCompensa,Bool,saidas,saida_digital,SINÓT. NÍVEL ALTO TQ. COMPENSAÇÃO
+Q14.5,qx_14.5_niveBaixoTanqueCompensa,Bool,saidas,saida_digital,SINÓT. NÍVEL BAIXO TQ. COMPENSAÇÃO
+Q14.6,qx_14.6_niveMaximoFiltro,Bool,saidas,saida_digital,SINÓT. NÍVEL MAXIMO FILTRO
+Q14.7,qx_14.7_niveAltoFiltro,Bool,saidas,saida_digital,SINÓT. NÍVEL ALTO FILTRO
+Q15.0,qx_15.0_niveBaixoFiltro,Bool,saidas,saida_digital,SINÓT. NÍVEL BAIXO FILTRO
+Q15.1,qx_15.1_niveMinimoFiltro,Bool,saidas,saida_digital,SINÓT. NÍVEL MINIMO FILTRO
+Q15.2,qx_15.2_contPapel,Bool,saidas,saida_digital,SINÓT. CONTR. DE PAPEL
+Q15.3,qx_15.3_contRotacaoBanda,Bool,saidas,saida_digital,SINÓT. CONTR. ROTAÇÃO DA MANTA FILTR.
+Q15.4,qx_15.4_vacuNoFiltro,Bool,saidas,saida_digital,SINÓT. VÁCUO DO FILTRO
+Q15.5,qx_15.5_tempAltaPainel,Bool,saidas,saida_digital,SINÓT. VÁLV. T.C. ABERTA
+Q15.6,qx_15.6_valvLavagemAberta,Bool,saidas,saida_digital,SINÓT. VÁLV. LAVAGEM ABERTA
+Q15.7,qx_15.7_res,Bool,saidas,reserva,RESERVA
+Q28.6,qx_transp_em_rotaç,Bool,saidas,saida_digital,HLA28.6 transportador ligado
+Q28.7,qx_rotovac_em_rotaç,Bool,saidas,saida_digital,HLA28.7 rotovac ligado
+Q29.0,qx_extrator_em_rotaç,Bool,saidas,saida_digital,HLA29.0 extrator de lodo ligado
+QW336,qx_saída_analog_inverter,Word,saidas,analogico_ou_palavra,saída analôgica p/ regolar inverter
+T1,timer1,Timer,timers,temporizador,tempo p/ alarme no inverter
+T2,timer2,Timer,timers,temporizador,tempo p/ alarme no softstarter
+T3,timer3,Timer,timers,temporizador,tempo p/ alarme ao iniciar softstarter
+T4,timer4,Timer,timers,temporizador,tempo de alarme ao iniciar bomba 3
+T7,timer7,Timer,timers,temporizador,tempo antirepetição
+T8,timer8,Timer,timers,temporizador,tempo de duração ciclo de autolimpeza
+T10,timer10,Timer,timers,temporizador,atraso controle depressão filtro
+T11,timer11,Timer,timers,temporizador,tempo de alarme refrigerador
+T12,timer12,Timer,timers,temporizador,tempo de alarme bomba trocador de calor
+T13,timer13,Timer,timers,temporizador,tempo de alarme ao iniciar bomba 1
+T14,timer14,Timer,timers,temporizador,tempo de alarme ao iniciar bomba 2
+T15,timer15,Timer,timers,temporizador,controle nível max liquido filtrado
+T16,timer16,Timer,timers,temporizador,tempo de alarme posição válvula motorizada
+T17,timer17,Timer,timers,temporizador,tempo de alarme ao iniciar rotovac
+T20,timer20,Timer,timers,temporizador,tempo de alarme ao iniciar transp.
+T21,timer21,Timer,timers,temporizador,tempo de alarme ao iniciar transp. em alta velocidade
+T22,timer22,Timer,timers,temporizador,tempo de alarme ao iniciar aspirador
+T23,timer23,Timer,timers,temporizador,tempo de alarme ao iniciar preseparador
+T24,timer24,Timer,timers,temporizador,atraso controle nível min. liquido filtrado
+T25,timer25,Timer,timers,temporizador,atraso controle nível max liquido p/ filtrar
+T26,timer26,Timer,timers,temporizador,"controle rotação ""1"" banda filtrante"
+T27,timer27,Timer,timers,temporizador,"controle rotação ""0"" banda filtrante"
+T30,timer30,Timer,timers,temporizador,tempo de alarme ao iniciar extrator de lodo
+T31,timer31,Timer,timers,temporizador,atraso controle alarme
+T32,timer32,Timer,timers,temporizador,tempo de alarme ao iniciar desoleador
+T33,timer33,Timer,timers,temporizador,pausa ciclo final semana
+T34,timer34,Timer,timers,temporizador,duração trab ciclo final semana
+T35,timer35,Timer,timers,temporizador,inicio 1° ciclo auto limpeza
+T36,timer36,Timer,timers,temporizador,tempo auto limpeza a tempo
+T37,timer37,Timer,timers,temporizador,set tempo incremento
+T40,timer40,Timer,timers,temporizador,atraso inicio dragante
+T41,timer41,Timer,timers,temporizador,atraso fech. quebra depressão após auto limpeza
+T42,timer42,Timer,timers,temporizador,duração rotação aspirador
+T43,timer43,Timer,timers,temporizador,duração rotação extrator lodo
+T44,timer44,Timer,timers,temporizador,timer rotação separador magnetico
+T45,timer45,Timer,timers,temporizador,tempo funzionamento bombas
+T46,timer46,Timer,timers,temporizador,reset tempo funzionamento bombas
+T47,timer47,Timer,timers,temporizador,duração pausa separador magnetico
+T48,timer48,Timer,timers,temporizador,atraso abertura válvula envio
+T50,timer50,Timer,timers,temporizador,atraso liga motor troc. calor
+T51,timer51,Timer,timers,temporizador,atraso controle alarme refrigerador
+T52,timer52,Timer,timers,temporizador,reset tempo bomba 1
+T53,timer53,Timer,timers,temporizador,reset tempo bomba 2
+T54,timer54,Timer,timers,temporizador,duração max enchimento
+T100,timer100,Timer,timers,temporizador,atraso controle pressão
+T101,timer101,Timer,timers,temporizador,atraso consenso inicio bombas
+T102,timer102,Timer,timers,temporizador,atraso consenso desliga bombas
+T103,timer103,Timer,timers,temporizador,atraso inicio segunda bomba
+T104,timer104,Timer,timers,temporizador,atraso inicio terza bomba
+T105,timer105,Timer,timers,temporizador,atraso p/ desligar segunda bomba
+T108,timer106,Timer,timers,temporizador,atraso habilita inverter p/ bomba 1
+T109,timer107,Timer,timers,temporizador,atraso habilita inverter p/ bomba 2
+T110,timer110,Timer,timers,temporizador,atraso habilita softstart p/ bomba 2
+T111,timer111,Timer,timers,temporizador,atraso habilita sofstart p/ bomba 3
+T112,timer112,Timer,timers,temporizador,atraso habilita softstart p/ bomba 4
+T113,timer113,Timer,timers,temporizador,atraso habilita softstart p/ bomba 1
+T117,timer117,Timer,timers,temporizador,tempo de alarme comando do desoleador
+T118,timer118,Timer,timers,temporizador,tempo de alarme falta de ar desoleador

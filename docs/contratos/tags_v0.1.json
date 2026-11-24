@@ -1,0 +1,2751 @@
+{
+ "versao": "0.1",
+ "origem": "PLCTags_v0.1.xlsx",
+ "tags": [
+  {
+   "nome": "c1_Contador",
+   "grupo": "contadores",
+   "tipo": "Counter",
+   "endereco": "C1",
+   "area": "C",
+   "comentario": "",
+   "classe": "contador"
+  },
+  {
+   "nome": "c2_Contador",
+   "grupo": "contadores",
+   "tipo": "Counter",
+   "endereco": "C2",
+   "area": "C",
+   "comentario": "",
+   "classe": "contador"
+  },
+  {
+   "nome": "ix_0.0_rlCircuitoDeControle",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I0.0",
+   "area": "I",
+   "comentario": "rele circuito de controle ligado",
+   "classe": "entrada_digital"
+  },
+  {
+   "nome": "ix_0.1_btEmergencPainelEletrico",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I0.1",
+   "area": "I",
+   "comentario": "botão emerg. pressionada q.e.",
+   "classe": "entrada_digital"
+  },
+  {
+   "nome": "ix_0.2_btResetFalhas",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I0.2",
+   "area": "I",
+   "comentario": "reset falhas",
+   "classe": "entrada_digital"
+  },
+  {
+   "nome": "ix_0.3_rlEmergencCircuitoSeguranc",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I0.3",
+   "area": "I",
+   "comentario": "rele circuito de segurança ok",
+   "classe": "entrada_digital"
+  },
+  {
+   "nome": "ix_0.4_btTesteLamp",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I0.4",
+   "area": "I",
+   "comentario": "teste de lâmpadas",
+   "classe": "entrada_digital"
+  },
+  {
+   "nome": "ix_0.5_habPapelDescart",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I0.5",
+   "area": "I",
+   "comentario": "habilita papel descartavel",
+   "classe": "entrada_digital"
+  },
+  {
+   "nome": "ix_0.6_habComandoLig",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I0.6",
+   "area": "I",
+   "comentario": "comando ligado",
+   "classe": "entrada_digital"
+  },
+  {
+   "nome": "ix_0.7_falhSubSobrecarTranspor",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I0.7",
+   "area": "I",
+   "comentario": "reserva",
+   "classe": "reserva"
+  },
+  {
+   "nome": "ix_1.0_djBomba1OK",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I1.0",
+   "area": "I",
+   "comentario": "disj. bomba 1 filtragem ok",
+   "classe": "entrada_digital"
+  },
+  {
+   "nome": "ix_1.1_bm1Ligada",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I1.1",
+   "area": "I",
+   "comentario": "bomba 1 de filtragem ligada",
+   "classe": "entrada_digital"
+  },
+  {
+   "nome": "ix_1.2_bm1FimPartida",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I1.2",
+   "area": "I",
+   "comentario": "bomba 1 de filtragem fim de partida",
+   "classe": "entrada_digital"
+  },
+  {
+   "nome": "ix_1.3_bm1FalhaSoftstar",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I1.3",
+   "area": "I",
+   "comentario": "bomba 1 de filtragem falha soft-start",
+   "classe": "entrada_digital"
+  },
+  {
+   "nome": "ix_1.4_djBomba2OK",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I1.4",
+   "area": "I",
+   "comentario": "disj. bomba 2 filtragem ok",
+   "classe": "entrada_digital"
+  },
+  {
+   "nome": "ix_1.5_bm2Ligada",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I1.5",
+   "area": "I",
+   "comentario": "bomba 2 de filtragem ligada",
+   "classe": "entrada_digital"
+  },
+  {
+   "nome": "ix_1.6_bm2FimPartida",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I1.6",
+   "area": "I",
+   "comentario": "bomba 2 de filtragem fim de partida",
+   "classe": "entrada_digital"
+  },
+  {
+   "nome": "ix_1.7_bm2FalhaSoftstar",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I1.7",
+   "area": "I",
+   "comentario": "bomba 2 de filtragem falha soft-start",
+   "classe": "entrada_digital"
+  },
+  {
+   "nome": "ix_2.0_djBombaTrocadorOK",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I2.0",
+   "area": "I",
+   "comentario": "disj. bomba t. c. ok",
+   "classe": "entrada_digital"
+  },
+  {
+   "nome": "ix_2.1_bmTrocadorLigada",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I2.1",
+   "area": "I",
+   "comentario": "bomba t. c. ligada",
+   "classe": "entrada_digital"
+  },
+  {
+   "nome": "ix_2.2_djAspiradoOK",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I2.2",
+   "area": "I",
+   "comentario": "disj. do aspirador ok",
+   "classe": "entrada_digital"
+  },
+  {
+   "nome": "ix_2.3_aspiLigado",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I2.3",
+   "area": "I",
+   "comentario": "aspirador ligado",
+   "classe": "entrada_digital"
+  },
+  {
+   "nome": "ix_2.4_djExtratorLodoOK",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I2.4",
+   "area": "I",
+   "comentario": "disjuntor motor extrator de lodo",
+   "classe": "entrada_digital"
+  },
+  {
+   "nome": "ix_2.5_extrLodoLigado",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I2.5",
+   "area": "I",
+   "comentario": "extrator de lodo ligado",
+   "classe": "entrada_digital"
+  },
+  {
+   "nome": "ix_2.6_fimPartidaSoftstarterBomba2",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I2.6",
+   "area": "I",
+   "comentario": "fim de partida softstarter da bombas 2",
+   "classe": "entrada_digital"
+  },
+  {
+   "nome": "ix_2.7_disjuntorArCondicionadoDesarmado",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I2.7",
+   "area": "I",
+   "comentario": "disj. desarmado ar condicionado",
+   "classe": "entrada_digital"
+  },
+  {
+   "nome": "ix_3.0_djRotovacOK",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I3.0",
+   "area": "I",
+   "comentario": "DISJ. ROTOVAC OK",
+   "classe": "entrada_digital"
+  },
+  {
+   "nome": "ix_3.1_rotoLigado",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I3.1",
+   "area": "I",
+   "comentario": "ROTOVAC LIGADO",
+   "classe": "entrada_digital"
+  },
+  {
+   "nome": "ix_3.2_res",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I3.2",
+   "area": "I",
+   "comentario": "NÍVEL DE ENCHIMENTO",
+   "classe": "entrada_digital"
+  },
+  {
+   "nome": "ix_3.3_res",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I3.3",
+   "area": "I",
+   "comentario": "NÍVEL FIM DE ENCHIMENTO",
+   "classe": "entrada_digital"
+  },
+  {
+   "nome": "ix_3.4_res",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I3.4",
+   "area": "I",
+   "comentario": "NÍVEL MAXIMO TANQUE COMPENSAÇÃO",
+   "classe": "entrada_digital"
+  },
+  {
+   "nome": "ix_3.5_djTransporDraganteOK",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I3.5",
+   "area": "I",
+   "comentario": "DISJ. TRANSP. DRAGANTE OK",
+   "classe": "entrada_digital"
+  },
+  {
+   "nome": "ix_3.6_tranDraganteLigado",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I3.6",
+   "area": "I",
+   "comentario": "TRANSP. DRAGANTE LIGADO",
+   "classe": "entrada_digital"
+  },
+  {
+   "nome": "ix_3.7_res",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I3.7",
+   "area": "I",
+   "comentario": "RESERVA",
+   "classe": "reserva"
+  },
+  {
+   "nome": "ix_4.0_ctrlMantaDescarta",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I4.0",
+   "area": "I",
+   "comentario": "CONTR. DE MANTA DESCARTÁVEL",
+   "classe": "entrada_digital"
+  },
+  {
+   "nome": "ix_4.1_ctrlAvancoMantaFiltrant",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I4.1",
+   "area": "I",
+   "comentario": "CONTR. DE AVANÇO MANTA FILTRANTE",
+   "classe": "entrada_digital"
+  },
+  {
+   "nome": "ix_4.2_sisAutomati",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I4.2",
+   "area": "I",
+   "comentario": "SISTEMA EM AUT.",
+   "classe": "entrada_digital"
+  },
+  {
+   "nome": "ix_4.3_sisManual",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I4.3",
+   "area": "I",
+   "comentario": "SISTEMA EM MAN.",
+   "classe": "entrada_digital"
+  },
+  {
+   "nome": "ix_4.4_lgCicloAutomati",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I4.4",
+   "area": "I",
+   "comentario": "LIGA CICLO AUT.",
+   "classe": "entrada_digital"
+  },
+  {
+   "nome": "ix_4.5_dslCicloAutomati",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I4.5",
+   "area": "I",
+   "comentario": "DESLIGA CICLO AUT.",
+   "classe": "entrada_digital"
+  },
+  {
+   "nome": "ix_4.6_lgCicloFimDe",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I4.6",
+   "area": "I",
+   "comentario": "LIGA CICLO FINAL DE SEMANA",
+   "classe": "entrada_digital"
+  },
+  {
+   "nome": "ix_4.7_emgFiltroPression",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I4.7",
+   "area": "I",
+   "comentario": "BOTÃO EMERG. DO FILTRO PRESSIONADO",
+   "classe": "entrada_digital"
+  },
+  {
+   "nome": "ix_5.0_prsArComprimi",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I5.0",
+   "area": "I",
+   "comentario": "PRESENÇA DE AR COMPRIMIDO",
+   "classe": "entrada_digital"
+  },
+  {
+   "nome": "ix_5.1_comaPressaoFiltro",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I5.1",
+   "area": "I",
+   "comentario": "COMANDO DEPRESSÃO DO FILTRO",
+   "classe": "entrada_digital"
+  },
+  {
+   "nome": "ix_5.2_prsColetorAlimenta",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I5.2",
+   "area": "I",
+   "comentario": "PRESSÃO DO COLETOR OK",
+   "classe": "entrada_digital"
+  },
+  {
+   "nome": "ix_5.3_tmpLiquidoRefriger",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I5.3",
+   "area": "I",
+   "comentario": "TEMPERATURA DO LIQUIDO REFRIGERANTE",
+   "classe": "entrada_digital"
+  },
+  {
+   "nome": "ix_5.4_bm1Automati",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I5.4",
+   "area": "I",
+   "comentario": "BOMBA 1 DE FILTRAGEM EM AUT.",
+   "classe": "entrada_digital"
+  },
+  {
+   "nome": "ix_5.5_bm1Manual",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I5.5",
+   "area": "I",
+   "comentario": "BOMBA 1 DE FILTRAGEM EM MAN.",
+   "classe": "entrada_digital"
+  },
+  {
+   "nome": "ix_5.6_bm2Automati",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I5.6",
+   "area": "I",
+   "comentario": "BOMBA 2 DE FILTRAGEM EM AUT.",
+   "classe": "entrada_digital"
+  },
+  {
+   "nome": "ix_5.7_bm2Manual",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I5.7",
+   "area": "I",
+   "comentario": "BOMBA 2 DE FILTRAGEM EM MAN.",
+   "classe": "entrada_digital"
+  },
+  {
+   "nome": "ix_6.0_nvMaximoTanqueSujo",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I6.0",
+   "area": "I",
+   "comentario": "NÍVEL MAXIMO TQ. SUJO",
+   "classe": "entrada_digital"
+  },
+  {
+   "nome": "ix_6.1_nvMinimoTanqueSujo",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I6.1",
+   "area": "I",
+   "comentario": "NÍVEL MINIMO TQ. SUJO",
+   "classe": "entrada_digital"
+  },
+  {
+   "nome": "ix_6.2_nvInicioEnchimen",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I6.2",
+   "area": "I",
+   "comentario": "NÍVEL INICIO DE ENCHIMENTO",
+   "classe": "entrada_digital"
+  },
+  {
+   "nome": "ix_6.3_nvFimEnchimen",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I6.3",
+   "area": "I",
+   "comentario": "NÍVEL FIM DE ENCHIMENTO",
+   "classe": "entrada_digital"
+  },
+  {
+   "nome": "ix_6.4_nvMaximoTanqueCompensa",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I6.4",
+   "area": "I",
+   "comentario": "NÍVEL MAXIMO TQ. DE COMPENSAÇÃO",
+   "classe": "entrada_digital"
+  },
+  {
+   "nome": "ix_6.5_nvMinimoTanqueCompensa",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I6.5",
+   "area": "I",
+   "comentario": "NÍVEL MINIMO TQ. DE COMPENSAÇÃO",
+   "classe": "entrada_digital"
+  },
+  {
+   "nome": "ix_6.6_habAutolimpContinua",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I6.6",
+   "area": "I",
+   "comentario": "HABILITA AUTOLIMPEZA CONTINUA",
+   "classe": "entrada_digital"
+  },
+  {
+   "nome": "ix_6.7_habAutolimpManual",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I6.7",
+   "area": "I",
+   "comentario": "HABILITA AUTOL. MANUAL",
+   "classe": "entrada_digital"
+  },
+  {
+   "nome": "ix_7.0_habComandoLocalPT2",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I7.0",
+   "area": "I",
+   "comentario": "HABILITA COMANDO LOCAL PT2",
+   "classe": "entrada_digital"
+  },
+  {
+   "nome": "ix_7.1_lgManualTransporPT2",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I7.1",
+   "area": "I",
+   "comentario": "LIGA MAN. TRANSP. DRAGANTE PT2",
+   "classe": "entrada_digital"
+  },
+  {
+   "nome": "ix_7.2_res",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I7.2",
+   "area": "I",
+   "comentario": "RESERVA",
+   "classe": "reserva"
+  },
+  {
+   "nome": "ix_7.3_res",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I7.3",
+   "area": "I",
+   "comentario": "RESERVA",
+   "classe": "reserva"
+  },
+  {
+   "nome": "ix_7.4_habComandoLocalPT1",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I7.4",
+   "area": "I",
+   "comentario": "HABILITA COMANDO LOCAL PT1",
+   "classe": "entrada_digital"
+  },
+  {
+   "nome": "ix_7.5_lgManualTransporPT1",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I7.5",
+   "area": "I",
+   "comentario": "LIGA MAN. TRANSP. DRAGANTE PT1",
+   "classe": "entrada_digital"
+  },
+  {
+   "nome": "ix_7.6_lgManualTransporRotovac",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I7.6",
+   "area": "I",
+   "comentario": "LIGA MAN. TRANSP. DRAG.+ROTOVAC PT1",
+   "classe": "entrada_digital"
+  },
+  {
+   "nome": "ix_7.7_lgManualExtratorLodo",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I7.7",
+   "area": "I",
+   "comentario": "LIGA MAN. EXTRATOR DE LODO PT1",
+   "classe": "entrada_digital"
+  },
+  {
+   "nome": "ix_8.0_res",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I8.0",
+   "area": "I",
+   "comentario": "SAE8.0 cilco automatico",
+   "classe": "entrada_digital"
+  },
+  {
+   "nome": "ix_8.1_res",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I8.1",
+   "area": "I",
+   "comentario": "SAE8.0 ciclo malual",
+   "classe": "entrada_digital"
+  },
+  {
+   "nome": "ix_8.2_res",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I8.2",
+   "area": "I",
+   "comentario": "SBE8.2 inicio ciclo",
+   "classe": "entrada_digital"
+  },
+  {
+   "nome": "ix_8.3_res",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I8.3",
+   "area": "I",
+   "comentario": "SBE8.3 desliga ciclo",
+   "classe": "entrada_digital"
+  },
+  {
+   "nome": "ix_8.4_res",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I8.4",
+   "area": "I",
+   "comentario": "SBE8.4 inicio ciclo final semala",
+   "classe": "entrada_digital"
+  },
+  {
+   "nome": "ix_8.5_res",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I8.5",
+   "area": "I",
+   "comentario": "KAA23.5 motor desoleador iniciado",
+   "classe": "entrada_digital"
+  },
+  {
+   "nome": "ix_8.6_res",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I8.6",
+   "area": "I",
+   "comentario": "SAE8.6 habilita auto limpeza contínua",
+   "classe": "entrada_digital"
+  },
+  {
+   "nome": "ix_8.7_res",
+   "grupo": "entradas",
+   "tipo": "Bool",
+   "endereco": "I8.7",
+   "area": "I",
+   "comentario": "reserva",
+   "classe": "reserva"
+  },
+  {
+   "nome": "iw_cont_banda_rasgada",
+   "grupo": "entradas",
+   "tipo": "Word",
+   "endereco": "IW352",
+   "area": "IW",
+   "comentario": "",
+   "classe": "analogico_ou_palavra"
+  },
+  {
+   "nome": "iw_sinal_trasd_press",
+   "grupo": "entradas",
+   "tipo": "Word",
+   "endereco": "IW356",
+   "area": "IW",
+   "comentario": "",
+   "classe": "analogico_ou_palavra"
+  },
+  {
+   "nome": "mx_zero",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M0.0",
+   "area": "M",
+   "comentario": "merker sempre a zero",
+   "classe": "apoio_programa"
+  },
+  {
+   "nome": "mx_uno",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M0.1",
+   "area": "M",
+   "comentario": "merker sempre a uno",
+   "classe": "apoio_programa"
+  },
+  {
+   "nome": "mx_newstart",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M0.5",
+   "area": "M",
+   "comentario": "merker newstart",
+   "classe": "apoio_programa"
+  },
+  {
+   "nome": "mx_clock_0,1sec.",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M1.0",
+   "area": "M",
+   "comentario": "merker clock_0,1sec.",
+   "classe": "apoio_programa"
+  },
+  {
+   "nome": "mx_clock_0,2sec.",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M1.1",
+   "area": "M",
+   "comentario": "merker clock_0,2sec.",
+   "classe": "apoio_programa"
+  },
+  {
+   "nome": "mx_clock_0,4sec.",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M1.2",
+   "area": "M",
+   "comentario": "merker clock_0,4sec.",
+   "classe": "apoio_programa"
+  },
+  {
+   "nome": "mx_clock_0,5sec.",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M1.3",
+   "area": "M",
+   "comentario": "merker clock_0,5sec.",
+   "classe": "apoio_programa"
+  },
+  {
+   "nome": "mx_clock_0,8sec.",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M1.4",
+   "area": "M",
+   "comentario": "merker clock_0,8sec.",
+   "classe": "apoio_programa"
+  },
+  {
+   "nome": "mx_clock_1,0sec.",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M1.5",
+   "area": "M",
+   "comentario": "merker clock_1,0sec.",
+   "classe": "apoio_programa"
+  },
+  {
+   "nome": "mx_clock_1,6sec.",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M1.6",
+   "area": "M",
+   "comentario": "merker clock_1,6sec.",
+   "classe": "apoio_programa"
+  },
+  {
+   "nome": "mx_clock_2,0sec.",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M1.7",
+   "area": "M",
+   "comentario": "merker clock_2,0sec.",
+   "classe": "apoio_programa"
+  },
+  {
+   "nome": "mx_2.1",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M2.1",
+   "area": "M",
+   "comentario": "CONTA MINUTOS",
+   "classe": "apoio_programa"
+  },
+  {
+   "nome": "mx_10.1",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M10.1",
+   "area": "M",
+   "comentario": "ALARME AO INICIAR BOMBA 1 FILTRO/ENVIO",
+   "classe": "alarme"
+  },
+  {
+   "nome": "mx_10.3",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M10.3",
+   "area": "M",
+   "comentario": "ALARME AO INICIAR BOMBA 2 FILTRO/ENVIO",
+   "classe": "alarme"
+  },
+  {
+   "nome": "mx_10.4",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M10.4",
+   "area": "M",
+   "comentario": "DISJUNTOR DESARMADO MOTOR TRANSP. DRAGANTE",
+   "classe": "alarme"
+  },
+  {
+   "nome": "mx_10.5",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M10.5",
+   "area": "M",
+   "comentario": "DISJUNTOR DESARMADO BOMBA 1",
+   "classe": "alarme"
+  },
+  {
+   "nome": "mx_10.6",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M10.6",
+   "area": "M",
+   "comentario": "DISJUNTOR DESARMADO BOMBA 2",
+   "classe": "alarme"
+  },
+  {
+   "nome": "mx_11.1",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M11.1",
+   "area": "M",
+   "comentario": "NÍVEL MIN. LIQUIDO P/ FILTRAR",
+   "classe": "alarme"
+  },
+  {
+   "nome": "mx_11.2",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M11.2",
+   "area": "M",
+   "comentario": "PRESSÃO AR INSUFICIENTE",
+   "classe": "alarme"
+  },
+  {
+   "nome": "mx_11.3",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M11.3",
+   "area": "M",
+   "comentario": "AUXILIARES DESABILITADO",
+   "classe": "estado"
+  },
+  {
+   "nome": "mx_11.5",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M11.5",
+   "area": "M",
+   "comentario": "EMERGÊNCIA ATUADA",
+   "classe": "alarme"
+  },
+  {
+   "nome": "mx_11.6",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M11.6",
+   "area": "M",
+   "comentario": "ALARME DEPRESSÃO FILTRO",
+   "classe": "alarme"
+  },
+  {
+   "nome": "mx_12.1",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M12.1",
+   "area": "M",
+   "comentario": "ALARME COMANDO BOMBA TROCADOR DE CALOR",
+   "classe": "alarme"
+  },
+  {
+   "nome": "mx_12.2",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M12.2",
+   "area": "M",
+   "comentario": "ALARME BOMBA 1",
+   "classe": "alarme"
+  },
+  {
+   "nome": "mx_12.3",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M12.3",
+   "area": "M",
+   "comentario": "ALARME BOMBA 2",
+   "classe": "alarme"
+  },
+  {
+   "nome": "mx_13.0",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M13.0",
+   "area": "M",
+   "comentario": "ALARME TEMPERATURA ARMÁRIO ELÉTRICO",
+   "classe": "alarme"
+  },
+  {
+   "nome": "mx_13.1",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M13.1",
+   "area": "M",
+   "comentario": "ALARME COMANDO MOTOR ROTOVAC",
+   "classe": "alarme"
+  },
+  {
+   "nome": "mx_13.2",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M13.2",
+   "area": "M",
+   "comentario": "ALARME COMANDO MOTOR TRANSP. DRAGANTE",
+   "classe": "alarme"
+  },
+  {
+   "nome": "mx_13.4",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M13.4",
+   "area": "M",
+   "comentario": "ALARME COMANDO MOTOR ASPIRADOR",
+   "classe": "alarme"
+  },
+  {
+   "nome": "mx_13.6",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M13.6",
+   "area": "M",
+   "comentario": "DISJUNTOR DESARMADO BOMBA TROC. CALOR",
+   "classe": "alarme"
+  },
+  {
+   "nome": "mx_13.7",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M13.7",
+   "area": "M",
+   "comentario": "ALARME NÍVEL MIN. LIQUIDO FILTRADO",
+   "classe": "alarme"
+  },
+  {
+   "nome": "mx_14.0",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M14.0",
+   "area": "M",
+   "comentario": "ALARME NÍVEL MAX LIQUIDO P/ FILTRAR",
+   "classe": "alarme"
+  },
+  {
+   "nome": "mx_14.1",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M14.1",
+   "area": "M",
+   "comentario": "ALARME AVANÇO BANDA FILTRANTE",
+   "classe": "alarme"
+  },
+  {
+   "nome": "mx_14.2",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M14.2",
+   "area": "M",
+   "comentario": "ALARME COMANDO MOTOR EXTRATOR LODO",
+   "classe": "alarme"
+  },
+  {
+   "nome": "mx_15.0",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M15.0",
+   "area": "M",
+   "comentario": "DISJUNTOR DESARMADO MOTOR ROTOVAC",
+   "classe": "alarme"
+  },
+  {
+   "nome": "mx_15.1",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M15.1",
+   "area": "M",
+   "comentario": "DISJUNTOR DESARMADO MOTOR ASPIRADOR",
+   "classe": "alarme"
+  },
+  {
+   "nome": "mx_15.2",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M15.2",
+   "area": "M",
+   "comentario": "DISJUNTOR DESARMADO MOTOR EXTRATOR LODO",
+   "classe": "alarme"
+  },
+  {
+   "nome": "mx_15.4",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M15.4",
+   "area": "M",
+   "comentario": "FALTA ÓLEO P/ ENCHIMENTO",
+   "classe": "alarme"
+  },
+  {
+   "nome": "mx_15.5",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M15.5",
+   "area": "M",
+   "comentario": "ALARME NÍVEL MAX LIQUIDO FILTRADO",
+   "classe": "alarme"
+  },
+  {
+   "nome": "mx_15.6",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M15.6",
+   "area": "M",
+   "comentario": "NÍVEL DE ENCHIMENTO",
+   "classe": "estado"
+  },
+  {
+   "nome": "mx_15.7",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M15.7",
+   "area": "M",
+   "comentario": "DURAÇÃO MAX ENCHIMENTO",
+   "classe": "estado"
+  },
+  {
+   "nome": "mx_16.0",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M16.0",
+   "area": "M",
+   "comentario": "AUX 2 ALARME CRITICO",
+   "classe": "alarme"
+  },
+  {
+   "nome": "mx_16.1",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M16.1",
+   "area": "M",
+   "comentario": "ALARME CRITICO P/ NÍVEL MIN LIQUIDO FILTRADO",
+   "classe": "alarme"
+  },
+  {
+   "nome": "mx_16.3",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M16.3",
+   "area": "M",
+   "comentario": "AUX 3 ALARME CRITICO",
+   "classe": "alarme"
+  },
+  {
+   "nome": "mx_17.1",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M17.1",
+   "area": "M",
+   "comentario": "INICIO DE PARTIDA BOMBA 1",
+   "classe": "estado"
+  },
+  {
+   "nome": "mx_17.2",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M17.2",
+   "area": "M",
+   "comentario": "INICIO DE PARTIDA BOMBA 2",
+   "classe": "estado"
+  },
+  {
+   "nome": "mx_17.7",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M17.7",
+   "area": "M",
+   "comentario": "NÍVEL BAIXO INICIO DE ENCHIMENTO",
+   "classe": "estado"
+  },
+  {
+   "nome": "mx_20.0",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M20.0",
+   "area": "M",
+   "comentario": "MANUAL SELECIONADO",
+   "classe": "estado"
+  },
+  {
+   "nome": "mx_20.1",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M20.1",
+   "area": "M",
+   "comentario": "AUTOMÁTICO SELECIONADO",
+   "classe": "estado"
+  },
+  {
+   "nome": "mx_20.2",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M20.2",
+   "area": "M",
+   "comentario": "INICIO CICLO AUTOMÁTICO",
+   "classe": "estado"
+  },
+  {
+   "nome": "mx_20.3",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M20.3",
+   "area": "M",
+   "comentario": "CICLO FINAL SEMAN. SELECIONADO",
+   "classe": "estado"
+  },
+  {
+   "nome": "mx_20.4_IncCicloFimSem",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M20.4",
+   "area": "M",
+   "comentario": "INICIO CICLO FINAL de semana",
+   "classe": "estado"
+  },
+  {
+   "nome": "mx_20.6",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M20.6",
+   "area": "M",
+   "comentario": "HABILITA AUTO LIMPEZA CONTÍNUA",
+   "classe": "estado"
+  },
+  {
+   "nome": "mx_20.7",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M20.7",
+   "area": "M",
+   "comentario": "DESLIGA CICLO",
+   "classe": "estado"
+  },
+  {
+   "nome": "mx_21.0",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M21.0",
+   "area": "M",
+   "comentario": "ALARME CRITICO PRESENTE",
+   "classe": "alarme"
+  },
+  {
+   "nome": "mx_21.1",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M21.1",
+   "area": "M",
+   "comentario": "AUX 1 ALARME PERMISSÍVEL",
+   "classe": "alarme"
+  },
+  {
+   "nome": "mx_21.2",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M21.2",
+   "area": "M",
+   "comentario": "AUX 2 ALARME PERMISSÍVEL",
+   "classe": "alarme"
+  },
+  {
+   "nome": "mx_21.3",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M21.3",
+   "area": "M",
+   "comentario": "ALARME PERMISSÍVEL PRESENTE",
+   "classe": "alarme"
+  },
+  {
+   "nome": "mx_21.4",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M21.4",
+   "area": "M",
+   "comentario": "SILENCIA SINALIZADOR ACUSTICO",
+   "classe": "estado"
+  },
+  {
+   "nome": "mx_21.5",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M21.5",
+   "area": "M",
+   "comentario": "AUX 1 ALARME CRITICO",
+   "classe": "alarme"
+  },
+  {
+   "nome": "mx_22.0",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M22.0",
+   "area": "M",
+   "comentario": "CICLO AUTO LIMPEZA",
+   "classe": "estado"
+  },
+  {
+   "nome": "mx_22.1",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M22.1",
+   "area": "M",
+   "comentario": "1° CICLO AUTO LIMPEZA APÓS INICIO",
+   "classe": "estado"
+  },
+  {
+   "nome": "mx_22.2",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M22.2",
+   "area": "M",
+   "comentario": "INICIO AUTO LIMPEZA A TEMPO",
+   "classe": "estado"
+  },
+  {
+   "nome": "mx_22.3",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M22.3",
+   "area": "M",
+   "comentario": "DURAÇÃO CICLO AUTO LIMPEZA",
+   "classe": "estado"
+  },
+  {
+   "nome": "mx_22.4",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M22.4",
+   "area": "M",
+   "comentario": "SET TIMER DURAÇÃO ASPIRADOR",
+   "classe": "apoio_programa"
+  },
+  {
+   "nome": "mx_25.0",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M25.0",
+   "area": "M",
+   "comentario": "BOMBA 1 FILTRO/ENVIO RESERVA",
+   "classe": "estado"
+  },
+  {
+   "nome": "mx_25.1",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M25.1",
+   "area": "M",
+   "comentario": "BOMBA 2 FILTRO/ENVIO RESERVA",
+   "classe": "estado"
+  },
+  {
+   "nome": "mx_pag1_bomba_vis",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M30.0",
+   "area": "M",
+   "comentario": "PAGINA 1 GRUPO BOMBAS FILTRO/USO VISUALIZADA",
+   "classe": "apoio_programa"
+  },
+  {
+   "nome": "mx_pag1_motores_vis",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M30.1",
+   "area": "M",
+   "comentario": "PAGINA 1 GRUPO MOTORES VISUALIZADA",
+   "classe": "apoio_programa"
+  },
+  {
+   "nome": "mx_pag1_vál_vis",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M30.2",
+   "area": "M",
+   "comentario": "PAGINA GRUPO VÁLVULA VISUALIZADA",
+   "classe": "apoio_programa"
+  },
+  {
+   "nome": "mx_increm_horar_bomba_1",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M30.3",
+   "area": "M",
+   "comentario": "INCREMENTO HORARIO BOMBA 1",
+   "classe": "apoio_programa"
+  },
+  {
+   "nome": "mx_incr_horar_bomba_2",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M30.4",
+   "area": "M",
+   "comentario": "INCREMENTO HORARIO BOMBA 2",
+   "classe": "apoio_programa"
+  },
+  {
+   "nome": "mx_pag_1_cond_habilit",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M30.5",
+   "area": "M",
+   "comentario": "PAGINA 1 CONDIÇÃO INICIO HABILITATA",
+   "classe": "apoio_programa"
+  },
+  {
+   "nome": "mx_pag_2_cond_habilit",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M30.6",
+   "area": "M",
+   "comentario": "PAGINA 2 CONDIÇÃO INICIO HABILITATA",
+   "classe": "apoio_programa"
+  },
+  {
+   "nome": "mx_pag2_motor_vis",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M40.0",
+   "area": "M",
+   "comentario": "PAGINA 2 GRUPO MOTORES VISUALIZADA",
+   "classe": "apoio_programa"
+  },
+  {
+   "nome": "mx_pag2_vál_vis",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M40.1",
+   "area": "M",
+   "comentario": "PAGINA 2 GRUPO VÁLVULAS VISUALIZADA",
+   "classe": "apoio_programa"
+  },
+  {
+   "nome": "mx_pag2_bomba:vis",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M40.2",
+   "area": "M",
+   "comentario": "PAGINA 2 GRUPO BOMBAS FILTRO/USO VISUALIZADA",
+   "classe": "apoio_programa"
+  },
+  {
+   "nome": "mx_pag_desolead_vis",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M40.3",
+   "area": "M",
+   "comentario": "PAGINA DESOLEADOR VISUALIZADA",
+   "classe": "apoio_programa"
+  },
+  {
+   "nome": "mx_Tag_6",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M46.0",
+   "area": "M",
+   "comentario": "",
+   "classe": "estado"
+  },
+  {
+   "nome": "mx_Tag_9",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M46.1",
+   "area": "M",
+   "comentario": "",
+   "classe": "estado"
+  },
+  {
+   "nome": "mx_61.0",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M61.0",
+   "area": "M",
+   "comentario": "ALARME AO INICIAR SOFTSTART BOMBA 1",
+   "classe": "alarme"
+  },
+  {
+   "nome": "mx_61.1",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M61.1",
+   "area": "M",
+   "comentario": "ALARME AO INICIAR SOFTSTART BOMBA 2",
+   "classe": "alarme"
+  },
+  {
+   "nome": "mx_100.0",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M100.0",
+   "area": "M",
+   "comentario": "MÁQUINA EM TRABALHO",
+   "classe": "estado"
+  },
+  {
+   "nome": "mx_100.1",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M100.1",
+   "area": "M",
+   "comentario": "incremento p/ hora bomba 4",
+   "classe": "apoio_programa"
+  },
+  {
+   "nome": "mx_100.5",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M100.5",
+   "area": "M",
+   "comentario": "pulso p/ contar minutos bomba 1",
+   "classe": "apoio_programa"
+  },
+  {
+   "nome": "mx_100.6",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M100.6",
+   "area": "M",
+   "comentario": "incremento p/ hora bomba 1",
+   "classe": "apoio_programa"
+  },
+  {
+   "nome": "mx_100.7",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M100.7",
+   "area": "M",
+   "comentario": "pulso p/ contar minutos bomba 2",
+   "classe": "apoio_programa"
+  },
+  {
+   "nome": "mx_101.0",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M101.0",
+   "area": "M",
+   "comentario": "incremento p/ hora bomba 2",
+   "classe": "apoio_programa"
+  },
+  {
+   "nome": "mx_101.1",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M101.1",
+   "area": "M",
+   "comentario": "incremento p/ hora bomba",
+   "classe": "apoio_programa"
+  },
+  {
+   "nome": "mx_101.2",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M101.2",
+   "area": "M",
+   "comentario": "pulso p/ contar autolimpeza",
+   "classe": "apoio_programa"
+  },
+  {
+   "nome": "mx_101.3",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M101.3",
+   "area": "M",
+   "comentario": "pulso p/ resetar duração autolimpeza",
+   "classe": "apoio_programa"
+  },
+  {
+   "nome": "mx_103.0",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M103.0",
+   "area": "M",
+   "comentario": "pulso p/ desabilitar papel descartável",
+   "classe": "apoio_programa"
+  },
+  {
+   "nome": "mx_103.1",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M103.1",
+   "area": "M",
+   "comentario": "habilita papel descartável",
+   "classe": "apoio_programa"
+  },
+  {
+   "nome": "mx_103.2",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M103.2",
+   "area": "M",
+   "comentario": "desabilita papel descartável",
+   "classe": "apoio_programa"
+  },
+  {
+   "nome": "mx_122.2_ALM BOMBA 1",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M122.2",
+   "area": "M",
+   "comentario": "ALARME BOMBA 1",
+   "classe": "alarme"
+  },
+  {
+   "nome": "mx_122.3",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M122.3",
+   "area": "M",
+   "comentario": "ALARME BOMBA 2",
+   "classe": "alarme"
+  },
+  {
+   "nome": "mx_140.4",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M140.4",
+   "area": "M",
+   "comentario": "COMANDO PT1 HABILITADO",
+   "classe": "estado"
+  },
+  {
+   "nome": "mx_140.5",
+   "grupo": "memorias",
+   "tipo": "Bool",
+   "endereco": "M140.5",
+   "area": "M",
+   "comentario": "COMANDO PT2 HABILITADO",
+   "classe": "estado"
+  },
+  {
+   "nome": "mb_clockmemorybyte",
+   "grupo": "memorias",
+   "tipo": "Byte",
+   "endereco": "MB1",
+   "area": "MB",
+   "comentario": "mb_clockmemorybyte",
+   "classe": "outro"
+  },
+  {
+   "nome": "mw_12",
+   "grupo": "memorias",
+   "tipo": "Word",
+   "endereco": "MW12",
+   "area": "MW",
+   "comentario": "",
+   "classe": "analogico_ou_palavra"
+  },
+  {
+   "nome": "mw_14",
+   "grupo": "memorias",
+   "tipo": "Word",
+   "endereco": "MW14",
+   "area": "MW",
+   "comentario": "",
+   "classe": "analogico_ou_palavra"
+  },
+  {
+   "nome": "mw_Tag_5",
+   "grupo": "memorias",
+   "tipo": "Word",
+   "endereco": "MW200",
+   "area": "MW",
+   "comentario": "",
+   "classe": "analogico_ou_palavra"
+  },
+  {
+   "nome": "mw_Tag_8",
+   "grupo": "memorias",
+   "tipo": "Word",
+   "endereco": "MW202",
+   "area": "MW",
+   "comentario": "",
+   "classe": "analogico_ou_palavra"
+  },
+  {
+   "nome": "qx_08.0_ligaDesligaBomba1",
+   "grupo": "saidas",
+   "tipo": "Bool",
+   "endereco": "Q8.0",
+   "area": "Q",
+   "comentario": "LIGA/DESL. AUX. BOMBA 1 DE FILTRAGEM",
+   "classe": "saida_digital"
+  },
+  {
+   "nome": "qx_08.1_reseSoftstarBomba1",
+   "grupo": "saidas",
+   "tipo": "Bool",
+   "endereco": "Q8.1",
+   "area": "Q",
+   "comentario": "AUX. RESET SOFT-START BOMBA 1 DE FILTR.",
+   "classe": "saida_digital"
+  },
+  {
+   "nome": "qx_08.2_ligaDesligaBomba2",
+   "grupo": "saidas",
+   "tipo": "Bool",
+   "endereco": "Q8.2",
+   "area": "Q",
+   "comentario": "LIGA/DESL. AUX. BOMBA 2 DE FILTRAGEM",
+   "classe": "saida_digital"
+  },
+  {
+   "nome": "qx_08.3_reseSoftstarBomba2",
+   "grupo": "saidas",
+   "tipo": "Bool",
+   "endereco": "Q8.3",
+   "area": "Q",
+   "comentario": "AUX. RESET SOFT-START BOMBA 2 DE FILTR.",
+   "classe": "saida_digital"
+  },
+  {
+   "nome": "qx_08.4_contBombaTrocador",
+   "grupo": "saidas",
+   "tipo": "Bool",
+   "endereco": "Q8.4",
+   "area": "Q",
+   "comentario": "LIGA BOMBA TROCADOR DE CALOR",
+   "classe": "saida_digital"
+  },
+  {
+   "nome": "qx_08.5_contAspirado",
+   "grupo": "saidas",
+   "tipo": "Bool",
+   "endereco": "Q8.5",
+   "area": "Q",
+   "comentario": "LIGA ASPIRADOR",
+   "classe": "saida_digital"
+  },
+  {
+   "nome": "qx_08.6_contExtratorLodo",
+   "grupo": "saidas",
+   "tipo": "Bool",
+   "endereco": "Q8.6",
+   "area": "Q",
+   "comentario": "LIGA EXTRATOR DE LODO",
+   "classe": "saida_digital"
+  },
+  {
+   "nome": "qx_08.7_contRotovac",
+   "grupo": "saidas",
+   "tipo": "Bool",
+   "endereco": "Q8.7",
+   "area": "Q",
+   "comentario": "LIGA ROTOVAC",
+   "classe": "saida_digital"
+  },
+  {
+   "nome": "qx_09.0_res",
+   "grupo": "saidas",
+   "tipo": "Bool",
+   "endereco": "Q9.0",
+   "area": "Q",
+   "comentario": "RESERVA",
+   "classe": "reserva"
+  },
+  {
+   "nome": "qx_09.1_RELE AUX. TRANSP. DRAGANTE",
+   "grupo": "saidas",
+   "tipo": "Bool",
+   "endereco": "Q9.1",
+   "area": "Q",
+   "comentario": "RELE AUX. TRANSP. DRAGANTE",
+   "classe": "saida_digital"
+  },
+  {
+   "nome": "qx_09.2_res",
+   "grupo": "saidas",
+   "tipo": "Bool",
+   "endereco": "Q9.2",
+   "area": "Q",
+   "comentario": "RESERVA",
+   "classe": "reserva"
+  },
+  {
+   "nome": "qx_09.3_res",
+   "grupo": "saidas",
+   "tipo": "Bool",
+   "endereco": "Q9.3",
+   "area": "Q",
+   "comentario": "RESERVA",
+   "classe": "reserva"
+  },
+  {
+   "nome": "qx_09.4_res",
+   "grupo": "saidas",
+   "tipo": "Bool",
+   "endereco": "Q9.4",
+   "area": "Q",
+   "comentario": "RESERVA",
+   "classe": "reserva"
+  },
+  {
+   "nome": "qx_09.5_res",
+   "grupo": "saidas",
+   "tipo": "Bool",
+   "endereco": "Q9.5",
+   "area": "Q",
+   "comentario": "RESERVA",
+   "classe": "reserva"
+  },
+  {
+   "nome": "qx_09.6_res",
+   "grupo": "saidas",
+   "tipo": "Bool",
+   "endereco": "Q9.6",
+   "area": "Q",
+   "comentario": "RESERVA",
+   "classe": "reserva"
+  },
+  {
+   "nome": "qx_09.7_res",
+   "grupo": "saidas",
+   "tipo": "Bool",
+   "endereco": "Q9.7",
+   "area": "Q",
+   "comentario": "RESERVA",
+   "classe": "reserva"
+  },
+  {
+   "nome": "qx_10.0_valvEnvio",
+   "grupo": "saidas",
+   "tipo": "Bool",
+   "endereco": "Q10.0",
+   "area": "Q",
+   "comentario": "VÁLV. DE ALIM. AR COMPRIMIDO",
+   "classe": "saida_digital"
+  },
+  {
+   "nome": "qx_10.1_valvQuebraPressao",
+   "grupo": "saidas",
+   "tipo": "Bool",
+   "endereco": "Q10.1",
+   "area": "Q",
+   "comentario": "VÁLV. COMANDO QUEBRA DEPRESSÃO",
+   "classe": "saida_digital"
+  },
+  {
+   "nome": "qx_10.2_valvSopragem",
+   "grupo": "saidas",
+   "tipo": "Bool",
+   "endereco": "Q10.2",
+   "area": "Q",
+   "comentario": "VÁLV. COMANDO DE ASSOPRAGEM",
+   "classe": "saida_digital"
+  },
+  {
+   "nome": "qx_10.3_valvLavagemCompensa",
+   "grupo": "saidas",
+   "tipo": "Bool",
+   "endereco": "Q10.3",
+   "area": "Q",
+   "comentario": "VÁLV. LAVAGEM E COMPENSAÇÃO",
+   "classe": "saida_digital"
+  },
+  {
+   "nome": "qx_10.4_modoLocalPt2Ligado",
+   "grupo": "saidas",
+   "tipo": "Bool",
+   "endereco": "Q10.4",
+   "area": "Q",
+   "comentario": "modo local pt2 ligado",
+   "classe": "saida_digital"
+  },
+  {
+   "nome": "qx_10.5_transportadorDraganteLigadoViaPt2",
+   "grupo": "saidas",
+   "tipo": "Bool",
+   "endereco": "Q10.5",
+   "area": "Q",
+   "comentario": "transportador dragante ligado via pt2",
+   "classe": "saida_digital"
+  },
+  {
+   "nome": "qx_10.6_valvTrocadorCalor",
+   "grupo": "saidas",
+   "tipo": "Bool",
+   "endereco": "Q10.6",
+   "area": "Q",
+   "comentario": "VÁLV. DO TROCADOR DE CALOR",
+   "classe": "saida_digital"
+  },
+  {
+   "nome": "qx_10.7_res",
+   "grupo": "saidas",
+   "tipo": "Bool",
+   "endereco": "Q10.7",
+   "area": "Q",
+   "comentario": "reserva",
+   "classe": "reserva"
+  },
+  {
+   "nome": "qx_11.0_lampModoLocalPT1",
+   "grupo": "saidas",
+   "tipo": "Bool",
+   "endereco": "Q11.0",
+   "area": "Q",
+   "comentario": "MODO LOCAL PT1 LIGADO",
+   "classe": "saida_digital"
+  },
+  {
+   "nome": "qx_11.1_lampModoLocalPT2",
+   "grupo": "saidas",
+   "tipo": "Bool",
+   "endereco": "Q11.1",
+   "area": "Q",
+   "comentario": "TRANSP. DRAG. LIGADO VIA PT1",
+   "classe": "saida_digital"
+  },
+  {
+   "nome": "qx_11.2_tranPT1Ligado",
+   "grupo": "saidas",
+   "tipo": "Bool",
+   "endereco": "Q11.2",
+   "area": "Q",
+   "comentario": "TRANSP. DRAG. +ROTOVAC LIGADO VIA PT1",
+   "classe": "saida_digital"
+  },
+  {
+   "nome": "qx_11.3_tranPT2Ligado",
+   "grupo": "saidas",
+   "tipo": "Bool",
+   "endereco": "Q11.3",
+   "area": "Q",
+   "comentario": "EXTRATOR DE LODO LIGADO VIA PT1",
+   "classe": "saida_digital"
+  },
+  {
+   "nome": "qx_11.4_sistFiltrageLigado",
+   "grupo": "saidas",
+   "tipo": "Bool",
+   "endereco": "Q11.4",
+   "area": "Q",
+   "comentario": "COLUNA VD SIST. DE FILTRAGEM LIG.",
+   "classe": "saida_digital"
+  },
+  {
+   "nome": "qx_11.5_sistFiltrageFalha",
+   "grupo": "saidas",
+   "tipo": "Bool",
+   "endereco": "Q11.5",
+   "area": "Q",
+   "comentario": "COLUNA VM SIST. DE FILTRAGEM FALHA",
+   "classe": "saida_digital"
+  },
+  {
+   "nome": "qx_11.6_sistFiltrageAviso",
+   "grupo": "saidas",
+   "tipo": "Bool",
+   "endereco": "Q11.6",
+   "area": "Q",
+   "comentario": "COLUNA AM SIST. DE FILTRAGEM AVISO",
+   "classe": "saida_digital"
+  },
+  {
+   "nome": "qx_11.7_sireFalha",
+   "grupo": "saidas",
+   "tipo": "Bool",
+   "endereco": "Q11.7",
+   "area": "Q",
+   "comentario": "COLUNA SIRENE SIST. DE FILTR. FALHA",
+   "classe": "saida_digital"
+  },
+  {
+   "nome": "qx_12.0_sistManual",
+   "grupo": "saidas",
+   "tipo": "Bool",
+   "endereco": "Q12.0",
+   "area": "Q",
+   "comentario": "SINÓT. SISTEMA EM MAN.",
+   "classe": "saida_digital"
+  },
+  {
+   "nome": "qx_12.1_sistAutomati",
+   "grupo": "saidas",
+   "tipo": "Bool",
+   "endereco": "Q12.1",
+   "area": "Q",
+   "comentario": "SINÓT SISTEMA EM AUT.",
+   "classe": "saida_digital"
+  },
+  {
+   "nome": "qx_12.2_ciclAutomatiLigado",
+   "grupo": "saidas",
+   "tipo": "Bool",
+   "endereco": "Q12.2",
+   "area": "Q",
+   "comentario": "SINÓT. CICLO AUT. LIGADO",
+   "classe": "saida_digital"
+  },
+  {
+   "nome": "qx_12.3_ciclFimSemanaLigado",
+   "grupo": "saidas",
+   "tipo": "Bool",
+   "endereco": "Q12.3",
+   "area": "Q",
+   "comentario": "SINÓT. CICLO FINAL SEMANA LIGADO",
+   "classe": "saida_digital"
+  },
+  {
+   "nome": "qx_12.4_ciclAutolimpLigado",
+   "grupo": "saidas",
+   "tipo": "Bool",
+   "endereco": "Q12.4",
+   "area": "Q",
+   "comentario": "SINÓT. CICLO AUTOLIMPEZA LIGADO",
+   "classe": "saida_digital"
+  },
+  {
+   "nome": "qx_12.5_ciclAutolimpContinua",
+   "grupo": "saidas",
+   "tipo": "Bool",
+   "endereco": "Q12.5",
+   "area": "Q",
+   "comentario": "SINÓT. CICLO AUTOL. CONTINUA LIGADO",
+   "classe": "saida_digital"
+  },
+  {
+   "nome": "qx_12.6_deslCicloAutomati",
+   "grupo": "saidas",
+   "tipo": "Bool",
+   "endereco": "Q12.6",
+   "area": "Q",
+   "comentario": "SINÓT. DESLIGADO CICLO AUT.",
+   "classe": "saida_digital"
+  },
+  {
+   "nome": "qx_12.7_res",
+   "grupo": "saidas",
+   "tipo": "Bool",
+   "endereco": "Q12.7",
+   "area": "Q",
+   "comentario": "RESERVA",
+   "classe": "reserva"
+  },
+  {
+   "nome": "qx_13.0_bomb1LigadaFalha",
+   "grupo": "saidas",
+   "tipo": "Bool",
+   "endereco": "Q13.0",
+   "area": "Q",
+   "comentario": "SINÓT. BOMBA1 FILTR. LIGADA/FALHA",
+   "classe": "saida_digital"
+  },
+  {
+   "nome": "qx_13.1_bomb2LigadaFalha",
+   "grupo": "saidas",
+   "tipo": "Bool",
+   "endereco": "Q13.1",
+   "area": "Q",
+   "comentario": "SINÓT. BOMBA2 FILTR. LIGADA/FALHA",
+   "classe": "saida_digital"
+  },
+  {
+   "nome": "qx_13.2_tranLigadoFalha",
+   "grupo": "saidas",
+   "tipo": "Bool",
+   "endereco": "Q13.2",
+   "area": "Q",
+   "comentario": "SINÓT. TRANSP. DRAGANTE LIGADO/FALHA",
+   "classe": "saida_digital"
+  },
+  {
+   "nome": "qx_13.3_extrLigadoFalha",
+   "grupo": "saidas",
+   "tipo": "Bool",
+   "endereco": "Q13.3",
+   "area": "Q",
+   "comentario": "SINÓT. EXTRATOR DE LODO LIGADO/FALHA",
+   "classe": "saida_digital"
+  },
+  {
+   "nome": "qx_13.4_aspiLigadoFalha",
+   "grupo": "saidas",
+   "tipo": "Bool",
+   "endereco": "Q13.4",
+   "area": "Q",
+   "comentario": "SINÓT. ASPIRADOR LIGADO/FALHA",
+   "classe": "saida_digital"
+  },
+  {
+   "nome": "qx_13.5_rotoLigadoFalha",
+   "grupo": "saidas",
+   "tipo": "Bool",
+   "endereco": "Q13.5",
+   "area": "Q",
+   "comentario": "SINÓT. ROTOVAC LIGADO/FALHA",
+   "classe": "saida_digital"
+  },
+  {
+   "nome": "qx_13.6_bombTrocadorLigadaFalha",
+   "grupo": "saidas",
+   "tipo": "Bool",
+   "endereco": "Q13.6",
+   "area": "Q",
+   "comentario": "SINÓT. BOMBA T. C. LIGADO/FALHA",
+   "classe": "saida_digital"
+  },
+  {
+   "nome": "qx_13.7_res",
+   "grupo": "saidas",
+   "tipo": "Bool",
+   "endereco": "Q13.7",
+   "area": "Q",
+   "comentario": "RESERVA",
+   "classe": "reserva"
+  },
+  {
+   "nome": "qx_14.0_presArOK",
+   "grupo": "saidas",
+   "tipo": "Bool",
+   "endereco": "Q14.0",
+   "area": "Q",
+   "comentario": "SINÓT. PRESSÃO DE AR COMPRIMIDO",
+   "classe": "saida_digital"
+  },
+  {
+   "nome": "qx_14.1_valvQuebraVacuoAberta",
+   "grupo": "saidas",
+   "tipo": "Bool",
+   "endereco": "Q14.1",
+   "area": "Q",
+   "comentario": "SINÓT. VÁLV. QUEBRA VÁCUO ABERTA",
+   "classe": "saida_digital"
+  },
+  {
+   "nome": "qx_14.2_valvCompensaAberta",
+   "grupo": "saidas",
+   "tipo": "Bool",
+   "endereco": "Q14.2",
+   "area": "Q",
+   "comentario": "SINÓT. VÁLV. COMPENSAÇÃO ABERTA",
+   "classe": "saida_digital"
+  },
+  {
+   "nome": "qx_14.3_valvSopragemAberta",
+   "grupo": "saidas",
+   "tipo": "Bool",
+   "endereco": "Q14.3",
+   "area": "Q",
+   "comentario": "SINÓT. VÁLV. ASSOPRAGEM ABERTA",
+   "classe": "saida_digital"
+  },
+  {
+   "nome": "qx_14.4_niveAltoTanqueCompensa",
+   "grupo": "saidas",
+   "tipo": "Bool",
+   "endereco": "Q14.4",
+   "area": "Q",
+   "comentario": "SINÓT. NÍVEL ALTO TQ. COMPENSAÇÃO",
+   "classe": "saida_digital"
+  },
+  {
+   "nome": "qx_14.5_niveBaixoTanqueCompensa",
+   "grupo": "saidas",
+   "tipo": "Bool",
+   "endereco": "Q14.5",
+   "area": "Q",
+   "comentario": "SINÓT. NÍVEL BAIXO TQ. COMPENSAÇÃO",
+   "classe": "saida_digital"
+  },
+  {
+   "nome": "qx_14.6_niveMaximoFiltro",
+   "grupo": "saidas",
+   "tipo": "Bool",
+   "endereco": "Q14.6",
+   "area": "Q",
+   "comentario": "SINÓT. NÍVEL MAXIMO FILTRO",
+   "classe": "saida_digital"
+  },
+  {
+   "nome": "qx_14.7_niveAltoFiltro",
+   "grupo": "saidas",
+   "tipo": "Bool",
+   "endereco": "Q14.7",
+   "area": "Q",
+   "comentario": "SINÓT. NÍVEL ALTO FILTRO",
+   "classe": "saida_digital"
+  },
+  {
+   "nome": "qx_15.0_niveBaixoFiltro",
+   "grupo": "saidas",
+   "tipo": "Bool",
+   "endereco": "Q15.0",
+   "area": "Q",
+   "comentario": "SINÓT. NÍVEL BAIXO FILTRO",
+   "classe": "saida_digital"
+  },
+  {
+   "nome": "qx_15.1_niveMinimoFiltro",
+   "grupo": "saidas",
+   "tipo": "Bool",
+   "endereco": "Q15.1",
+   "area": "Q",
+   "comentario": "SINÓT. NÍVEL MINIMO FILTRO",
+   "classe": "saida_digital"
+  },
+  {
+   "nome": "qx_15.2_contPapel",
+   "grupo": "saidas",
+   "tipo": "Bool",
+   "endereco": "Q15.2",
+   "area": "Q",
+   "comentario": "SINÓT. CONTR. DE PAPEL",
+   "classe": "saida_digital"
+  },
+  {
+   "nome": "qx_15.3_contRotacaoBanda",
+   "grupo": "saidas",
+   "tipo": "Bool",
+   "endereco": "Q15.3",
+   "area": "Q",
+   "comentario": "SINÓT. CONTR. ROTAÇÃO DA MANTA FILTR.",
+   "classe": "saida_digital"
+  },
+  {
+   "nome": "qx_15.4_vacuNoFiltro",
+   "grupo": "saidas",
+   "tipo": "Bool",
+   "endereco": "Q15.4",
+   "area": "Q",
+   "comentario": "SINÓT. VÁCUO DO FILTRO",
+   "classe": "saida_digital"
+  },
+  {
+   "nome": "qx_15.5_tempAltaPainel",
+   "grupo": "saidas",
+   "tipo": "Bool",
+   "endereco": "Q15.5",
+   "area": "Q",
+   "comentario": "SINÓT. VÁLV. T.C. ABERTA",
+   "classe": "saida_digital"
+  },
+  {
+   "nome": "qx_15.6_valvLavagemAberta",
+   "grupo": "saidas",
+   "tipo": "Bool",
+   "endereco": "Q15.6",
+   "area": "Q",
+   "comentario": "SINÓT. VÁLV. LAVAGEM ABERTA",
+   "classe": "saida_digital"
+  },
+  {
+   "nome": "qx_15.7_res",
+   "grupo": "saidas",
+   "tipo": "Bool",
+   "endereco": "Q15.7",
+   "area": "Q",
+   "comentario": "RESERVA",
+   "classe": "reserva"
+  },
+  {
+   "nome": "qx_transp_em_rotaç",
+   "grupo": "saidas",
+   "tipo": "Bool",
+   "endereco": "Q28.6",
+   "area": "Q",
+   "comentario": "HLA28.6 transportador ligado",
+   "classe": "saida_digital"
+  },
+  {
+   "nome": "qx_rotovac_em_rotaç",
+   "grupo": "saidas",
+   "tipo": "Bool",
+   "endereco": "Q28.7",
+   "area": "Q",
+   "comentario": "HLA28.7 rotovac ligado",
+   "classe": "saida_digital"
+  },
+  {
+   "nome": "qx_extrator_em_rotaç",
+   "grupo": "saidas",
+   "tipo": "Bool",
+   "endereco": "Q29.0",
+   "area": "Q",
+   "comentario": "HLA29.0 extrator de lodo ligado",
+   "classe": "saida_digital"
+  },
+  {
+   "nome": "qx_saída_analog_inverter",
+   "grupo": "saidas",
+   "tipo": "Word",
+   "endereco": "QW336",
+   "area": "QW",
+   "comentario": "saída analôgica p/ regolar inverter",
+   "classe": "analogico_ou_palavra"
+  },
+  {
+   "nome": "timer1",
+   "grupo": "timers",
+   "tipo": "Timer",
+   "endereco": "T1",
+   "area": "T",
+   "comentario": "tempo p/ alarme no inverter",
+   "classe": "temporizador"
+  },
+  {
+   "nome": "timer2",
+   "grupo": "timers",
+   "tipo": "Timer",
+   "endereco": "T2",
+   "area": "T",
+   "comentario": "tempo p/ alarme no softstarter",
+   "classe": "temporizador"
+  },
+  {
+   "nome": "timer3",
+   "grupo": "timers",
+   "tipo": "Timer",
+   "endereco": "T3",
+   "area": "T",
+   "comentario": "tempo p/ alarme ao iniciar softstarter",
+   "classe": "temporizador"
+  },
+  {
+   "nome": "timer4",
+   "grupo": "timers",
+   "tipo": "Timer",
+   "endereco": "T4",
+   "area": "T",
+   "comentario": "tempo de alarme ao iniciar bomba 3",
+   "classe": "temporizador"
+  },
+  {
+   "nome": "timer7",
+   "grupo": "timers",
+   "tipo": "Timer",
+   "endereco": "T7",
+   "area": "T",
+   "comentario": "tempo antirepetição",
+   "classe": "temporizador"
+  },
+  {
+   "nome": "timer8",
+   "grupo": "timers",
+   "tipo": "Timer",
+   "endereco": "T8",
+   "area": "T",
+   "comentario": "tempo de duração ciclo de autolimpeza",
+   "classe": "temporizador"
+  },
+  {
+   "nome": "timer10",
+   "grupo": "timers",
+   "tipo": "Timer",
+   "endereco": "T10",
+   "area": "T",
+   "comentario": "atraso controle depressão filtro",
+   "classe": "temporizador"
+  },
+  {
+   "nome": "timer11",
+   "grupo": "timers",
+   "tipo": "Timer",
+   "endereco": "T11",
+   "area": "T",
+   "comentario": "tempo de alarme refrigerador",
+   "classe": "temporizador"
+  },
+  {
+   "nome": "timer12",
+   "grupo": "timers",
+   "tipo": "Timer",
+   "endereco": "T12",
+   "area": "T",
+   "comentario": "tempo de alarme bomba trocador de calor",
+   "classe": "temporizador"
+  },
+  {
+   "nome": "timer13",
+   "grupo": "timers",
+   "tipo": "Timer",
+   "endereco": "T13",
+   "area": "T",
+   "comentario": "tempo de alarme ao iniciar bomba 1",
+   "classe": "temporizador"
+  },
+  {
+   "nome": "timer14",
+   "grupo": "timers",
+   "tipo": "Timer",
+   "endereco": "T14",
+   "area": "T",
+   "comentario": "tempo de alarme ao iniciar bomba 2",
+   "classe": "temporizador"
+  },
+  {
+   "nome": "timer15",
+   "grupo": "timers",
+   "tipo": "Timer",
+   "endereco": "T15",
+   "area": "T",
+   "comentario": "controle nível max liquido filtrado",
+   "classe": "temporizador"
+  },
+  {
+   "nome": "timer16",
+   "grupo": "timers",
+   "tipo": "Timer",
+   "endereco": "T16",
+   "area": "T",
+   "comentario": "tempo de alarme posição válvula motorizada",
+   "classe": "temporizador"
+  },
+  {
+   "nome": "timer17",
+   "grupo": "timers",
+   "tipo": "Timer",
+   "endereco": "T17",
+   "area": "T",
+   "comentario": "tempo de alarme ao iniciar rotovac",
+   "classe": "temporizador"
+  },
+  {
+   "nome": "timer20",
+   "grupo": "timers",
+   "tipo": "Timer",
+   "endereco": "T20",
+   "area": "T",
+   "comentario": "tempo de alarme ao iniciar transp.",
+   "classe": "temporizador"
+  },
+  {
+   "nome": "timer21",
+   "grupo": "timers",
+   "tipo": "Timer",
+   "endereco": "T21",
+   "area": "T",
+   "comentario": "tempo de alarme ao iniciar transp. em alta velocidade",
+   "classe": "temporizador"
+  },
+  {
+   "nome": "timer22",
+   "grupo": "timers",
+   "tipo": "Timer",
+   "endereco": "T22",
+   "area": "T",
+   "comentario": "tempo de alarme ao iniciar aspirador",
+   "classe": "temporizador"
+  },
+  {
+   "nome": "timer23",
+   "grupo": "timers",
+   "tipo": "Timer",
+   "endereco": "T23",
+   "area": "T",
+   "comentario": "tempo de alarme ao iniciar preseparador",
+   "classe": "temporizador"
+  },
+  {
+   "nome": "timer24",
+   "grupo": "timers",
+   "tipo": "Timer",
+   "endereco": "T24",
+   "area": "T",
+   "comentario": "atraso controle nível min. liquido filtrado",
+   "classe": "temporizador"
+  },
+  {
+   "nome": "timer25",
+   "grupo": "timers",
+   "tipo": "Timer",
+   "endereco": "T25",
+   "area": "T",
+   "comentario": "atraso controle nível max liquido p/ filtrar",
+   "classe": "temporizador"
+  },
+  {
+   "nome": "timer26",
+   "grupo": "timers",
+   "tipo": "Timer",
+   "endereco": "T26",
+   "area": "T",
+   "comentario": "controle rotação \"1\" banda filtrante",
+   "classe": "temporizador"
+  },
+  {
+   "nome": "timer27",
+   "grupo": "timers",
+   "tipo": "Timer",
+   "endereco": "T27",
+   "area": "T",
+   "comentario": "controle rotação \"0\" banda filtrante",
+   "classe": "temporizador"
+  },
+  {
+   "nome": "timer30",
+   "grupo": "timers",
+   "tipo": "Timer",
+   "endereco": "T30",
+   "area": "T",
+   "comentario": "tempo de alarme ao iniciar extrator de lodo",
+   "classe": "temporizador"
+  },
+  {
+   "nome": "timer31",
+   "grupo": "timers",
+   "tipo": "Timer",
+   "endereco": "T31",
+   "area": "T",
+   "comentario": "atraso controle alarme",
+   "classe": "temporizador"
+  },
+  {
+   "nome": "timer32",
+   "grupo": "timers",
+   "tipo": "Timer",
+   "endereco": "T32",
+   "area": "T",
+   "comentario": "tempo de alarme ao iniciar desoleador",
+   "classe": "temporizador"
+  },
+  {
+   "nome": "timer33",
+   "grupo": "timers",
+   "tipo": "Timer",
+   "endereco": "T33",
+   "area": "T",
+   "comentario": "pausa ciclo final semana",
+   "classe": "temporizador"
+  },
+  {
+   "nome": "timer34",
+   "grupo": "timers",
+   "tipo": "Timer",
+   "endereco": "T34",
+   "area": "T",
+   "comentario": "duração trab ciclo final semana",
+   "classe": "temporizador"
+  },
+  {
+   "nome": "timer35",
+   "grupo": "timers",
+   "tipo": "Timer",
+   "endereco": "T35",
+   "area": "T",
+   "comentario": "inicio 1° ciclo auto limpeza",
+   "classe": "temporizador"
+  },
+  {
+   "nome": "timer36",
+   "grupo": "timers",
+   "tipo": "Timer",
+   "endereco": "T36",
+   "area": "T",
+   "comentario": "tempo auto limpeza a tempo",
+   "classe": "temporizador"
+  },
+  {
+   "nome": "timer37",
+   "grupo": "timers",
+   "tipo": "Timer",
+   "endereco": "T37",
+   "area": "T",
+   "comentario": "set tempo incremento",
+   "classe": "temporizador"
+  },
+  {
+   "nome": "timer40",
+   "grupo": "timers",
+   "tipo": "Timer",
+   "endereco": "T40",
+   "area": "T",
+   "comentario": "atraso inicio dragante",
+   "classe": "temporizador"
+  },
+  {
+   "nome": "timer41",
+   "grupo": "timers",
+   "tipo": "Timer",
+   "endereco": "T41",
+   "area": "T",
+   "comentario": "atraso fech. quebra depressão após auto limpeza",
+   "classe": "temporizador"
+  },
+  {
+   "nome": "timer42",
+   "grupo": "timers",
+   "tipo": "Timer",
+   "endereco": "T42",
+   "area": "T",
+   "comentario": "duração rotação aspirador",
+   "classe": "temporizador"
+  },
+  {
+   "nome": "timer43",
+   "grupo": "timers",
+   "tipo": "Timer",
+   "endereco": "T43",
+   "area": "T",
+   "comentario": "duração rotação extrator lodo",
+   "classe": "temporizador"
+  },
+  {
+   "nome": "timer44",
+   "grupo": "timers",
+   "tipo": "Timer",
+   "endereco": "T44",
+   "area": "T",
+   "comentario": "timer rotação separador magnetico",
+   "classe": "temporizador"
+  },
+  {
+   "nome": "timer45",
+   "grupo": "timers",
+   "tipo": "Timer",
+   "endereco": "T45",
+   "area": "T",
+   "comentario": "tempo funzionamento bombas",
+   "classe": "temporizador"
+  },
+  {
+   "nome": "timer46",
+   "grupo": "timers",
+   "tipo": "Timer",
+   "endereco": "T46",
+   "area": "T",
+   "comentario": "reset tempo funzionamento bombas",
+   "classe": "temporizador"
+  },
+  {
+   "nome": "timer47",
+   "grupo": "timers",
+   "tipo": "Timer",
+   "endereco": "T47",
+   "area": "T",
+   "comentario": "duração pausa separador magnetico",
+   "classe": "temporizador"
+  },
+  {
+   "nome": "timer48",
+   "grupo": "timers",
+   "tipo": "Timer",
+   "endereco": "T48",
+   "area": "T",
+   "comentario": "atraso abertura válvula envio",
+   "classe": "temporizador"
+  },
+  {
+   "nome": "timer50",
+   "grupo": "timers",
+   "tipo": "Timer",
+   "endereco": "T50",
+   "area": "T",
+   "comentario": "atraso liga motor troc. calor",
+   "classe": "temporizador"
+  },
+  {
+   "nome": "timer51",
+   "grupo": "timers",
+   "tipo": "Timer",
+   "endereco": "T51",
+   "area": "T",
+   "comentario": "atraso controle alarme refrigerador",
+   "classe": "temporizador"
+  },
+  {
+   "nome": "timer52",
+   "grupo": "timers",
+   "tipo": "Timer",
+   "endereco": "T52",
+   "area": "T",
+   "comentario": "reset tempo bomba 1",
+   "classe": "temporizador"
+  },
+  {
+   "nome": "timer53",
+   "grupo": "timers",
+   "tipo": "Timer",
+   "endereco": "T53",
+   "area": "T",
+   "comentario": "reset tempo bomba 2",
+   "classe": "temporizador"
+  },
+  {
+   "nome": "timer54",
+   "grupo": "timers",
+   "tipo": "Timer",
+   "endereco": "T54",
+   "area": "T",
+   "comentario": "duração max enchimento",
+   "classe": "temporizador"
+  },
+  {
+   "nome": "timer100",
+   "grupo": "timers",
+   "tipo": "Timer",
+   "endereco": "T100",
+   "area": "T",
+   "comentario": "atraso controle pressão",
+   "classe": "temporizador"
+  },
+  {
+   "nome": "timer101",
+   "grupo": "timers",
+   "tipo": "Timer",
+   "endereco": "T101",
+   "area": "T",
+   "comentario": "atraso consenso inicio bombas",
+   "classe": "temporizador"
+  },
+  {
+   "nome": "timer102",
+   "grupo": "timers",
+   "tipo": "Timer",
+   "endereco": "T102",
+   "area": "T",
+   "comentario": "atraso consenso desliga bombas",
+   "classe": "temporizador"
+  },
+  {
+   "nome": "timer103",
+   "grupo": "timers",
+   "tipo": "Timer",
+   "endereco": "T103",
+   "area": "T",
+   "comentario": "atraso inicio segunda bomba",
+   "classe": "temporizador"
+  },
+  {
+   "nome": "timer104",
+   "grupo": "timers",
+   "tipo": "Timer",
+   "endereco": "T104",
+   "area": "T",
+   "comentario": "atraso inicio terza bomba",
+   "classe": "temporizador"
+  },
+  {
+   "nome": "timer105",
+   "grupo": "timers",
+   "tipo": "Timer",
+   "endereco": "T105",
+   "area": "T",
+   "comentario": "atraso p/ desligar segunda bomba",
+   "classe": "temporizador"
+  },
+  {
+   "nome": "timer106",
+   "grupo": "timers",
+   "tipo": "Timer",
+   "endereco": "T108",
+   "area": "T",
+   "comentario": "atraso habilita inverter p/ bomba 1",
+   "classe": "temporizador"
+  },
+  {
+   "nome": "timer107",
+   "grupo": "timers",
+   "tipo": "Timer",
+   "endereco": "T109",
+   "area": "T",
+   "comentario": "atraso habilita inverter p/ bomba 2",
+   "classe": "temporizador"
+  },
+  {
+   "nome": "timer110",
+   "grupo": "timers",
+   "tipo": "Timer",
+   "endereco": "T110",
+   "area": "T",
+   "comentario": "atraso habilita softstart p/ bomba 2",
+   "classe": "temporizador"
+  },
+  {
+   "nome": "timer111",
+   "grupo": "timers",
+   "tipo": "Timer",
+   "endereco": "T111",
+   "area": "T",
+   "comentario": "atraso habilita sofstart p/ bomba 3",
+   "classe": "temporizador"
+  },
+  {
+   "nome": "timer112",
+   "grupo": "timers",
+   "tipo": "Timer",
+   "endereco": "T112",
+   "area": "T",
+   "comentario": "atraso habilita softstart p/ bomba 4",
+   "classe": "temporizador"
+  },
+  {
+   "nome": "timer113",
+   "grupo": "timers",
+   "tipo": "Timer",
+   "endereco": "T113",
+   "area": "T",
+   "comentario": "atraso habilita softstart p/ bomba 1",
+   "classe": "temporizador"
+  },
+  {
+   "nome": "timer117",
+   "grupo": "timers",
+   "tipo": "Timer",
+   "endereco": "T117",
+   "area": "T",
+   "comentario": "tempo de alarme comando do desoleador",
+   "classe": "temporizador"
+  },
+  {
+   "nome": "timer118",
+   "grupo": "timers",
+   "tipo": "Timer",
+   "endereco": "T118",
+   "area": "T",
+   "comentario": "tempo de alarme falta de ar desoleador",
+   "classe": "temporizador"
+  }
+ ]
+}

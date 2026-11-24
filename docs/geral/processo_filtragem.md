@@ -4,7 +4,7 @@ Fonte: telas do WinCC (Overview e I/O Status) do projeto `WU_HAGANE`.
 
 ## Rede e CPU
 - CPU 315-2 PN/DP, interface X2 na sub-rede `PN/IE_1`, IP **192.168.0.2 / 255.255.255.0**.
-- Web server da CPU ativo (sem HTTPS, sem atualização automática). Não usar como interface do operador; avaliar desativar em produção.
+- Web server da CPU: **desativado** no projeto atual (print de 24/11). Foi visto ativo e sem HTTPS antes; manter desativado.
 
 ## Equipamentos (tela Overview)
 - **Tanque sujo** com 4 níveis: máximo, fim de enchimento, início de enchimento, mínimo.
@@ -16,9 +16,7 @@ Fonte: telas do WinCC (Overview e I/O Status) do projeto `WU_HAGANE`.
 
 ## Entradas digitais
 64 entradas (I0.0 a I7.7) em [entradas_digitais.csv](entradas_digitais.csv), copiadas da tela I/O Status.
-Faltam: saídas digitais, entradas/saídas analógicas (Hz das bombas), endereços de memória/DB usados pelo WinCC.
+Planilha completa de tags (305): [../contratos/tags_v0.1.csv](../contratos/tags_v0.1.csv), gerada por `plc/variaveis/gerar_tags_v0.1.py`. Bombas têm inversor (`QW336`).
 
 ## Pontos a confirmar
-- I3.2/I3.3/I3.4 e I6.2/I6.3/I6.4 têm nomes iguais: entradas físicas duplicadas ou ligadas ao mesmo sensor?
-- "T. C." = tanque de compensação?
-- PT1 / PT2 = pontos de comando local 1 e 2?
+Ver [../contratos/pendencias.md](../contratos/pendencias.md).
