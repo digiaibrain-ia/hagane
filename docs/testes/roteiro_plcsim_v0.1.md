@@ -1,4 +1,4 @@
-# Roteiro de teste com PLCSIM clássico — Hagane v0.2
+# Roteiro de teste com PLCSIM clássico — Baggio v0.4
 
 Cadeia: **PLCSIM V5.4 (CPU 315) → NetToPLCsim → Node-RED → HTML**. Tudo no notebook. Somente leitura.
 Teste no PLCSIM **não substitui** o teste na CPU real (manual do NetToPLCsim).
@@ -15,8 +15,8 @@ Teste no PLCSIM **não substitui** o teste na CPU real (manual do NetToPLCsim).
 2. PLCSIM clássico, caixa em `PLCSIM(TCP/IP)`.
 3. TIA: Download (hardware + software) para `192.168.0.2`; CPU em **RUN-P**; depois **Go offline**.
 4. NetToPLCsim **como administrador** → "Sim" para parar o serviço → estação: Network IP `192.168.0.10`, Plcsim IP `192.168.0.2` (pelo botão `...`), Rack/Slot `0/2` → **Start Server** → "Port 102 OK".
-5. Node-RED: endpoint da fonte S7 com Address `192.168.0.10` (ou `$env:HAGANE_PLC_IP="192.168.0.10"` antes de abrir, na v0.2).
-6. Abrir `http://localhost:1880/hagane` → topo "CPU REAL" + "✔ comunicação OK".
+5. Node-RED: endpoint da fonte S7 com Address `192.168.0.10` (ou `$env:BAGGIO_PLC_IP="192.168.0.10"` antes de abrir).
+6. Abrir `http://localhost:1880/baggio` → topo "CPU REAL" + "✔ comunicação OK".
 
 Para voltar ao TIA depois: fechar NetToPLCsim e `Start-Service s7oiehsx64` (admin).
 
@@ -53,3 +53,6 @@ Toque na lâmpada no HTML para ver o endereço e o estado.
 
 ## 6. Registrar
 Para cada linha: OK / diferente (print). Diferença de polaridade → atualizar `docs/contratos/pendencias.md`.
+
+## Se o PLCSIM não cooperar
+Troque a **Fonte** no cabeçalho da tela para **Simulação**: a página roda sem PLC e sem Node-RED. O teste da leitura real da CPU fica para a CPU 315 na bancada.

@@ -1,11 +1,10 @@
-HAGANE v0.3 - COMO USAR NO NOTEBOOK (somente leitura)
-1. Node-RED com o pacote node-red-contrib-s7 (Manage palette).
-2. Menu > Import: hagane_core_v0.3.json (se perguntar, escolha "Replace" para trocar a versao anterior). Deploy.
-3. Teste SEM PLC: importe tambem hagane_fonte_demo_v0.3.json. Tela: http://localhost:1880/hagane (selo DEMO).
-4. Com PLCSIM ou CPU: use a fonte S7 (NAO junto com a demo). Na v0.2 o IP vem de HAGANE_PLC_IP
-   ($env:HAGANE_PLC_IP="192.168.0.10"; node-red) ou digite o IP no endpoint "CPU 315".
-   Nao use PLC_IP: e a variavel do bt-gerador.
-5. PLCSIM: siga docs/testes/roteiro_plcsim_v0.1.md (ordem de abertura + NetToPLCsim).
-6. Toque numa lampada do Overview para ver o endereco e o estado no PLC.
-7. Erro: foto da aba Debug + da faixa "SEM COMUNICACAO". Nada aqui escreve na CPU.
-8. No cabecalho: botao Moderno/Original troca o visual (o ultimo escolhido fica salvo; ?tema=ori ou ?tema=mod na URL).
+BAGGIO - SISTEMA DE FILTRAGEM v0.4 - COMO USAR NO NOTEBOOK (somente leitura)
+1. VER A TELA SEM NADA INSTALADO: abra dashboard/src/baggio_monitor_v0.4.html com dois cliques. Ele roda a SIMULACAO
+   embutida (selo DEMO). Botoes do cabecalho: Fonte (CPU | Simulacao) e Visual (Moderno | Original); "Animacao" liga/desliga a agua.
+2. COM NODE-RED: instale node-red-contrib-s7. Menu > Import: baggio_core_v0.4.json (Replace se ja houver o core antigo) + UMA fonte:
+   baggio_fonte_demo_v0.4.json (teste) OU baggio_fonte_s7_v0.4.json (CPU). Deploy. Abra http://localhost:1880/baggio
+3. CPU/PLCSIM: o IP vem de BAGGIO_PLC_IP ($env:BAGGIO_PLC_IP="192.168.0.10"; node-red) ou digitado no endpoint "CPU 315".
+   Nao use PLC_IP (e do bt-gerador). Roteiro PLCSIM: docs/testes/roteiro_plcsim_v0.1.md
+4. Se a CPU nao responder, troque a Fonte para Simulacao: a tela funciona sem PLC e sem Node-RED.
+5. Toque numa lampada do Overview para ver o endereco e o estado. Nada aqui escreve na CPU.
+6. Erro: foto da aba Debug + da faixa vermelha "SEM COMUNICACAO".

@@ -1,9 +1,9 @@
 ---
-name: hagane-licoes
-description: Licoes aprendidas (herdadas do bt-gerador e novas do Hagane) sobre HTML de supervisao, Node-RED e PLC S7-300. Use ao criar ou revisar qualquer tela, fluxo, bloco SCL ou contrato do Hagane.
+name: baggio-licoes
+description: Licoes aprendidas (herdadas do bt-gerador e novas do Baggio) sobre HTML de supervisao, Node-RED e PLC S7-300. Use ao criar ou revisar qualquer tela, fluxo, bloco SCL ou contrato do Baggio.
 ---
 
-# Lições do Hagane
+# Lições do Baggio
 Herdadas do projeto BT2 (bt-gerador) e já filtradas para este escopo. Lição nova entra no fim, com ID `HG-nnn`.
 
 ## HTML
@@ -29,8 +29,8 @@ Herdadas do projeto BT2 (bt-gerador) e já filtradas para este escopo. Lição n
 - Demo × Real: o que foi provado no PLCSIM **não prova** o PLC real. (LL-040)
 - O programa do PLC **já está pronto e em operação**: este repositório não o altera. Leitura apenas.
 
-## Hagane (novas)
-- **HG-001** Planilha de tags exportada do TIA é a fonte de verdade dos endereços; o contrato é gerado dela por script, não digitado à mão.
-- **HG-002** Nome de tag no TIA pode mentir (`ix_3.2_res` tem comentário "NÍVEL DE ENCHIMENTO"; `ix_8.x_res` idem). Vale endereço + comentário; dúvida vai para `docs/contratos/pendencias.md`.
-- **HG-003** O programa herdou restos de outra máquina (bomba 3/4, desoleador, separador magnético, inverter). Não exibir o que não existe fisicamente; confirmar com quem conhece a máquina antes.
-- **HG-004** O IHM WinCC Unified RT queimou: o HTML precisa cobrir **a operação que o WinCC cobria**, não só mostrar. Levantar o que o operador fazia ali antes de decidir só-leitura.
+## Baggio (novas)
+- **BG-001** Planilha de tags exportada do TIA é a fonte de verdade dos endereços; o contrato é gerado dela por script, não digitado à mão.
+- **BG-002** Nome de tag no TIA pode mentir (`ix_3.2_res` tem comentário "NÍVEL DE ENCHIMENTO"; `ix_8.x_res` idem). Vale endereço + comentário; dúvida vai para `docs/contratos/pendencias.md`.
+- **BG-003** O programa herdou restos de outra máquina (bomba 3/4, desoleador, separador magnético, inverter). Não exibir o que não existe fisicamente; confirmar com quem conhece a máquina antes.
+- **BG-004** O IHM WinCC Unified RT queimou: o HTML precisa cobrir **a operação que o WinCC cobria**, não só mostrar. Levantar o que o operador fazia ali antes de decidir só-leitura.

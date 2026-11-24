@@ -4,7 +4,7 @@ const fs = require("fs"), path = require("path");
 const dir = path.join(__dirname, "..", "nodered", "flows");
 const PROIBIDOS = ["s7 out", "s7 control", "modbus-write", "modbus-flex-write", "mqtt out", "tcp out", "udp out", "exec", "file", "http request"];
 let falhas = 0;
-for (const f of fs.readdirSync(dir).filter(x => /^hagane_.*_v\d+\.\d+\.json$/.test(x))) {
+for (const f of fs.readdirSync(dir).filter(x => /^(baggio|hagane)_.*_v\d+\.\d+\.json$/.test(x))) {
   const nos = JSON.parse(fs.readFileSync(path.join(dir, f), "utf8"));
   const ruins = nos.filter(n => PROIBIDOS.includes(n.type)).map(n => n.type + ":" + n.id);
   const metodos = nos.filter(n => n.type === "http in" && n.method !== "get").map(n => n.url + " " + n.method);

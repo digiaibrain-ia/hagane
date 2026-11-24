@@ -3,5 +3,5 @@
 // [F] A decisao final de "sem comunicacao" tambem usa a IDADE do ultimo instantaneo (API).
 const s = msg.status || {};
 const ok = s.fill === "green";
-global.set("hagane_com", { ok: ok, texto: s.text || "", desde: Date.now() });
+global.set("baggio_com", { ok: ok, texto: s.text || "", desde: Date.now() });
 return null;

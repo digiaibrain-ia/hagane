@@ -1,7 +1,8 @@
-# Hagane — supervisão e controle do sistema de filtragem
+# Baggio — Sistema de filtragem
 
-Sistema de filtragem industrial supervisionado por dashboard HTML, com Node-RED
-como gateway central e PLC Siemens S7 como controlador.
+Supervisão do sistema de filtragem **Baggio**, instalado na fábrica **Hagane** (projeto TIA `WU_HAGANE`).
+
+Dashboard HTML, com Node-RED como gateway central e PLC Siemens S7 (CPU 315-2 PN/DP) como controlador.
 
 ## Arquitetura
 ```

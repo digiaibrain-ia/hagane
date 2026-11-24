@@ -1,9 +1,9 @@
 ---
-name: hagane-metodo
-description: Metodo de trabalho do Hagane (portoes, versao nova, teste, relatorio honesto). Use ao alterar HTML, fluxos Node-RED, contratos ou ao montar entrega para a maquina.
+name: baggio-metodo
+description: Metodo de trabalho do Baggio (portoes, versao nova, teste, relatorio honesto). Use ao alterar HTML, fluxos Node-RED, contratos ou ao montar entrega para a maquina.
 ---
 
-# Método Hagane (enxuto, herdado do BT2)
+# Método Baggio (enxuto, herdado do BT2)
 1. **Responder só o que foi pedido.** Ambíguo: dizer a leitura em uma linha e agir; perguntar só o que muda o resultado, com recomendação.
 2. **Proposta → decisão → execução.** "Autorizado" não vale para o próximo assunto.
 3. **Espelhar o que já existe e funciona** (PLC pronto, planilha de tags) antes de inventar.

@@ -34,3 +34,10 @@ Histórico em banco, relatórios, tendências, comandos de máquina, acesso remo
 - **Dois visuais** no mesmo HTML: Moderno (identidade do medidor: tinta `#1a4a78`, acento `#ec7000`, modo escuro automático) e Original (= v0.2, fiel ao WinCC). Mesma geometria e mesmos dados.
 - **Menos repetição:** um único selo de estado (Em operação, Aviso, Falha, Parada, Sem dado) no cabeçalho no lugar da faixa de luzes; local mostrado uma vez por visual; na E/S o nome da tag sai da linha.
 - Arquivos: `dashboard/src/hagane_monitor_v0.3.html` (gerado por `dashboard/gerador/gerar_monitor_v0.3.py` a partir da v0.2 em `arquivo/`), `nodered/flows/hagane_*_v0.3.json`. Teste: `tests/telas_v0.3.js` nos dois visuais.
+
+## v0.4 (24/11/2026)
+- **Nome:** o sistema é **Baggio — Sistema de filtragem**; **Hagane** é a fábrica que o usa (projeto TIA `WU_HAGANE`). Arquivos, rotas (`/baggio`), variável `BAGGIO_PLC_IP` e chaves do navegador passaram a `baggio_*`. As versões anteriores (v0.1–v0.3) ficam em `arquivo/` com os nomes antigos `hagane_*`.
+- **Fonte dos dados no próprio HTML:** `CPU` (Node-RED) ou `Simulação` embutida. A página funciona sem Node-RED e sem PLC (abre com dois cliques). Selo DEMO sempre visível na simulação.
+- **Nível dos tanques pelos sensores de nível** (`I6.x`, sensor ativo = coberto; polaridade a validar, P-10), com ondas na água e fluxo nos tubos das bombas. Botão **Animação** liga/desliga (lembrado).
+- **Textos:** 6 colisões medidas e corrigidas nos dois visuais (`tests/colisao_textos.js` = 0).
+- Teste: `tests/telas_v0.4.js` (nos dois visuais) + `tests/colisao_textos.js` + `tests/fluxos_somente_leitura_v0.4.js`.

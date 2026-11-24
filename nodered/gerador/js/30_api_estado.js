@@ -1,9 +1,9 @@
-// [F] GET /hagane/api/estado  -> instantaneo atual + saude da comunicacao. SOMENTE LEITURA.
+// [F] GET /baggio/api/estado  -> instantaneo atual + saude da comunicacao. SOMENTE LEITURA.
 // [F] comunicacao = "ok" so se: existe instantaneo, ele tem menos de LIMITE_MS e o no S7 nao reportou falha.
 // [F] Nunca devolve o ultimo valor como se fosse atual: a tela decide pelo campo "comunicacao".
 const LIMITE_MS = 5000;
-const snap = global.get("hagane_snap");
-const com = global.get("hagane_com") || {};
+const snap = global.get("baggio_snap");
+const com = global.get("baggio_com") || {};
 const agora = Date.now();
 const idade = snap ? agora - snap.ts : null;
 let comunicacao = "ok", motivo = "";
