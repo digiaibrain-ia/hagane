@@ -1,0 +1,1924 @@
+{
+ "versao": "0.1",
+ "fonte": [
+  "plc/blocos/FC_ALARME_CRITICO.awl",
+  "plc/blocos/FC_ALARME_PERMISSIVEL.awl"
+ ],
+ "aviso": "Fatos (bit, bloco, rede, atraso, retenção, endereços) são extraídos do código do PLC. Efeito, causas, teste rápido e solução são PROPOSTOS e precisam da validação de quem opera a máquina.",
+ "familias": {
+  "DSJ": "Disjuntor desarmado",
+  "CMD": "Comando sem retorno (motor)",
+  "NIV": "Nível dos tanques",
+  "PRS": "Pressão de ar",
+  "SEG": "Segurança e emergência",
+  "FLT": "Filtro (depressão)",
+  "PRT": "Partida das bombas",
+  "BND": "Banda filtrante",
+  "OLE": "Óleo (reserva)",
+  "ENC": "Enchimento",
+  "AUX": "Auxiliares",
+  "OUT": "Outros (lógica não fornecida)"
+ },
+ "onde": {
+  "operador": "Operador (botão/tela)",
+  "painel": "Painel elétrico",
+  "campo": "Campo (máquina)",
+  "programa": "Programa (engenharia)"
+ },
+ "alarmes": [
+  {
+   "bit": "M10.4",
+   "codigo": "F-DSJ-001",
+   "nome": "Disjuntor do transportador dragante desarmado",
+   "gatilho": "Contato OK do disjuntor (I3.5) em 0 com a máquina em trabalho há 3 s (T31).",
+   "efeito": "O transportador dragante perde a alimentação: o lodo não é retirado do filtro.",
+   "causas": [
+    {
+     "t": "O disjuntor desarmou por sobrecorrente ou curto-circuito (motor travado, sobrecarga, isolação ruim).",
+     "teste": "Olhe a alavanca do disjuntor no painel: está em TRIP/OFF? Se rearmar e ele desarmar de novo, a falha é real no motor ou no cabo.",
+     "sol": [
+      [
+       "Descubra e elimine a causa (travamento, sobrecarga, isolação) antes de rearmar.",
+       "campo"
+      ],
+      [
+       "Rearme o disjuntor e aperte RESET FALHAS.",
+       "operador"
+      ]
+     ]
+    },
+    {
+     "t": "Contato auxiliar do disjuntor com defeito ou fio solto na entrada I3.5.",
+     "teste": "Com o disjuntor ligado, a entrada I3.5 deve estar em 1 (veja na tela Entradas e saídas). Se continua em 0, o problema é o contato ou a fiação.",
+     "sol": [
+      [
+       "Troque o contato auxiliar ou refaça a ligação até a entrada I3.5.",
+       "painel"
+      ]
+     ]
+    }
+   ],
+   "obs": null,
+   "tipo": "F",
+   "familia": "DSJ",
+   "familia_nome": "Disjuntor desarmado",
+   "prioridade": "critico",
+   "bloco": "FC_ALARME_CRITICO",
+   "rede": 1,
+   "rede_titulo": "DISJUNTOR DESARMADO MOTOR TRANSP. DRAGANTE",
+   "retentivo": true,
+   "reset": "I0.2 (RESET FALHAS)",
+   "porta_t31": true,
+   "atraso_s": null,
+   "timers": [],
+   "operandos": [
+    "I0.2",
+    "I3.5",
+    "T31"
+   ],
+   "comentario_tag": "DISJUNTOR DESARMADO MOTOR TRANSP. DRAGANTE",
+   "evidencia": {
+    "logica": "A (extraída do PLC)",
+    "texto": "C (proposto, a validar)"
+   }
+  },
+  {
+   "bit": "M10.5",
+   "codigo": "F-DSJ-002",
+   "nome": "Disjuntor da bomba 1 desarmado",
+   "gatilho": "Contato OK do disjuntor da bomba 1 (I1.0) em 0 com a máquina em trabalho há 3 s (T31).",
+   "efeito": "A bomba 1 fica sem alimentação: não parte ou para, e a filtragem perde vazão.",
+   "causas": [
+    {
+     "t": "O disjuntor desarmou por sobrecorrente ou curto-circuito (motor travado, sobrecarga, isolação ruim).",
+     "teste": "Olhe a alavanca do disjuntor no painel: está em TRIP/OFF? Se rearmar e ele desarmar de novo, a falha é real no motor ou no cabo.",
+     "sol": [
+      [
+       "Descubra e elimine a causa (travamento, sobrecarga, isolação) antes de rearmar.",
+       "campo"
+      ],
+      [
+       "Rearme o disjuntor e aperte RESET FALHAS.",
+       "operador"
+      ]
+     ]
+    },
+    {
+     "t": "Contato auxiliar do disjuntor com defeito ou fio solto na entrada I1.0.",
+     "teste": "Com o disjuntor ligado, a entrada I1.0 deve estar em 1 (veja na tela Entradas e saídas). Se continua em 0, o problema é o contato ou a fiação.",
+     "sol": [
+      [
+       "Troque o contato auxiliar ou refaça a ligação até a entrada I1.0.",
+       "painel"
+      ]
+     ]
+    }
+   ],
+   "obs": null,
+   "tipo": "F",
+   "familia": "DSJ",
+   "familia_nome": "Disjuntor desarmado",
+   "prioridade": "critico",
+   "bloco": "FC_ALARME_CRITICO",
+   "rede": 2,
+   "rede_titulo": "DISJUNTOR DESARMADO BOMBA 1",
+   "retentivo": true,
+   "reset": "I0.2 (RESET FALHAS)",
+   "porta_t31": true,
+   "atraso_s": null,
+   "timers": [],
+   "operandos": [
+    "I0.2",
+    "I1.0",
+    "T31"
+   ],
+   "comentario_tag": "DISJUNTOR DESARMADO BOMBA 1",
+   "evidencia": {
+    "logica": "A (extraída do PLC)",
+    "texto": "C (proposto, a validar)"
+   }
+  },
+  {
+   "bit": "M10.6",
+   "codigo": "F-DSJ-003",
+   "nome": "Disjuntor da bomba 2 desarmado",
+   "gatilho": "Contato OK do disjuntor da bomba 2 (I1.4) em 0 com a máquina em trabalho há 3 s (T31).",
+   "efeito": "A bomba 2 fica sem alimentação: não parte ou para, e a filtragem perde vazão.",
+   "causas": [
+    {
+     "t": "O disjuntor desarmou por sobrecorrente ou curto-circuito (motor travado, sobrecarga, isolação ruim).",
+     "teste": "Olhe a alavanca do disjuntor no painel: está em TRIP/OFF? Se rearmar e ele desarmar de novo, a falha é real no motor ou no cabo.",
+     "sol": [
+      [
+       "Descubra e elimine a causa (travamento, sobrecarga, isolação) antes de rearmar.",
+       "campo"
+      ],
+      [
+       "Rearme o disjuntor e aperte RESET FALHAS.",
+       "operador"
+      ]
+     ]
+    },
+    {
+     "t": "Contato auxiliar do disjuntor com defeito ou fio solto na entrada I1.4.",
+     "teste": "Com o disjuntor ligado, a entrada I1.4 deve estar em 1 (veja na tela Entradas e saídas). Se continua em 0, o problema é o contato ou a fiação.",
+     "sol": [
+      [
+       "Troque o contato auxiliar ou refaça a ligação até a entrada I1.4.",
+       "painel"
+      ]
+     ]
+    }
+   ],
+   "obs": null,
+   "tipo": "F",
+   "familia": "DSJ",
+   "familia_nome": "Disjuntor desarmado",
+   "prioridade": "critico",
+   "bloco": "FC_ALARME_CRITICO",
+   "rede": 3,
+   "rede_titulo": "DISJUNTOR DESARMADO BOMBA 2",
+   "retentivo": true,
+   "reset": "I0.2 (RESET FALHAS)",
+   "porta_t31": true,
+   "atraso_s": null,
+   "timers": [],
+   "operandos": [
+    "I0.2",
+    "I1.4",
+    "T31"
+   ],
+   "comentario_tag": "DISJUNTOR DESARMADO BOMBA 2",
+   "evidencia": {
+    "logica": "A (extraída do PLC)",
+    "texto": "C (proposto, a validar)"
+   }
+  },
+  {
+   "bit": "M11.6",
+   "codigo": "F-FLT-001",
+   "nome": "Depressão do filtro",
+   "gatilho": "Comando de depressão do filtro (I5.1) em 1 por 1 min (T10), com a máquina em trabalho (T31).",
+   "efeito": "A depressão (vácuo) do filtro permaneceu fora do esperado por mais de 1 minuto.",
+   "causas": [
+    {
+     "t": "Vazamento de vácuo no filtro (válvula quebra vácuo travada aberta ou vedação ruim).",
+     "teste": "Veja se a válvula quebra vácuo no Overview está aberta quando não deveria.",
+     "sol": [
+      [
+       "Verifique a válvula quebra vácuo e as vedações do filtro.",
+       "campo"
+      ],
+      [
+       "Corrigida a causa, aperte RESET FALHAS.",
+       "operador"
+      ]
+     ]
+    },
+    {
+     "t": "Aspirador ou rotovac sem rendimento.",
+     "teste": "Aspirador e rotovac estão em operação no Overview?",
+     "sol": [
+      [
+       "Verifique o aspirador e o rotovac.",
+       "campo"
+      ]
+     ]
+    }
+   ],
+   "obs": "O significado exato de I5.1 (COMANDO DEPRESSÃO DO FILTRO) precisa ser confirmado com quem programou.",
+   "tipo": "F",
+   "familia": "FLT",
+   "familia_nome": "Filtro (depressão)",
+   "prioridade": "critico",
+   "bloco": "FC_ALARME_CRITICO",
+   "rede": 9,
+   "rede_titulo": "ALARME DEPRESSÃO FILTRO",
+   "retentivo": true,
+   "reset": "I0.2 (RESET FALHAS)",
+   "porta_t31": true,
+   "atraso_s": 60,
+   "timers": [
+    "T10"
+   ],
+   "operandos": [
+    "I0.2",
+    "I5.1",
+    "T10",
+    "T31"
+   ],
+   "comentario_tag": "ALARME DEPRESSÃO FILTRO",
+   "evidencia": {
+    "logica": "A (extraída do PLC)",
+    "texto": "C (proposto, a validar)"
+   }
+  },
+  {
+   "bit": "M11.1",
+   "codigo": "F-NIV-001",
+   "nome": "Nível mínimo do líquido a filtrar (tanque sujo)",
+   "gatilho": "Sensor de nível mínimo do tanque sujo (I6.1) em 0 com a máquina em trabalho (T31). Sem atraso adicional.",
+   "efeito": "Pouco líquido no tanque sujo: as bombas de filtragem podem ficar sem líquido (risco de rodar a seco).",
+   "causas": [
+    {
+     "t": "Falta de alimentação do tanque sujo (retorno da produção parado ou válvula fechada).",
+     "teste": "Olhe o nível do tanque sujo no Overview e a válvula de alimentação/retorno.",
+     "sol": [
+      [
+       "Restabeleça a alimentação do tanque sujo.",
+       "campo"
+      ],
+      [
+       "Com o nível normal, aperte RESET FALHAS.",
+       "operador"
+      ]
+     ]
+    },
+    {
+     "t": "Sensor de nível mínimo (I6.1) sujo, desregulado ou com fio solto.",
+     "teste": "Com o tanque com líquido acima do sensor, a entrada I6.1 deve estar em 1 (tela Entradas e saídas).",
+     "sol": [
+      [
+       "Limpe, regule ou troque o sensor; confira a fiação.",
+       "campo"
+      ]
+     ]
+    }
+   ],
+   "obs": null,
+   "tipo": "F",
+   "familia": "NIV",
+   "familia_nome": "Nível dos tanques",
+   "prioridade": "critico",
+   "bloco": "FC_ALARME_CRITICO",
+   "rede": 4,
+   "rede_titulo": "NÍVEL MIN. LIQUIDO P/ FILTRAR",
+   "retentivo": true,
+   "reset": "I0.2 (RESET FALHAS)",
+   "porta_t31": true,
+   "atraso_s": null,
+   "timers": [],
+   "operandos": [
+    "I0.2",
+    "I6.1",
+    "T31"
+   ],
+   "comentario_tag": "NÍVEL MIN. LIQUIDO P/ FILTRAR",
+   "evidencia": {
+    "logica": "A (extraída do PLC)",
+    "texto": "C (proposto, a validar)"
+   }
+  },
+  {
+   "bit": "M16.0",
+   "codigo": "F-OUT-001",
+   "tipo": "F",
+   "familia": "OUT",
+   "familia_nome": "Outros (lógica não fornecida)",
+   "nome": "Aux 2 alarme critico",
+   "prioridade": "critico",
+   "bloco": null,
+   "rede": null,
+   "rede_titulo": null,
+   "retentivo": null,
+   "reset": null,
+   "porta_t31": null,
+   "atraso_s": null,
+   "timers": [],
+   "operandos": [
+    "M16.0"
+   ],
+   "gatilho": "A lógica deste alarme não está nos blocos fornecidos (FC_ALARME_CRITICO e FC_ALARME_PERMISSIVEL).",
+   "efeito": "Sem descrição: a lógica deste alarme está em outro bloco do programa.",
+   "causas": [
+    {
+     "t": "Causa a definir quando o bloco que gera este alarme for fornecido.",
+     "teste": "Veja o comentário da tag na planilha: AUX 2 ALARME CRITICO",
+     "sol": []
+    }
+   ],
+   "obs": "Entrada gerada automaticamente da planilha de tags; sem lógica conhecida.",
+   "comentario_tag": "AUX 2 ALARME CRITICO",
+   "evidencia": {
+    "logica": "sem fonte",
+    "texto": "gerado da planilha"
+   }
+  },
+  {
+   "bit": "M16.1",
+   "codigo": "F-OUT-002",
+   "tipo": "F",
+   "familia": "OUT",
+   "familia_nome": "Outros (lógica não fornecida)",
+   "nome": "Alarme critico p/ nível min liquido filtrado",
+   "prioridade": "critico",
+   "bloco": null,
+   "rede": null,
+   "rede_titulo": null,
+   "retentivo": null,
+   "reset": null,
+   "porta_t31": null,
+   "atraso_s": null,
+   "timers": [],
+   "operandos": [
+    "M16.1"
+   ],
+   "gatilho": "A lógica deste alarme não está nos blocos fornecidos (FC_ALARME_CRITICO e FC_ALARME_PERMISSIVEL).",
+   "efeito": "Sem descrição: a lógica deste alarme está em outro bloco do programa.",
+   "causas": [
+    {
+     "t": "Causa a definir quando o bloco que gera este alarme for fornecido.",
+     "teste": "Veja o comentário da tag na planilha: ALARME CRITICO P/ NÍVEL MIN LIQUIDO FILTRADO",
+     "sol": []
+    }
+   ],
+   "obs": "Entrada gerada automaticamente da planilha de tags; sem lógica conhecida.",
+   "comentario_tag": "ALARME CRITICO P/ NÍVEL MIN LIQUIDO FILTRADO",
+   "evidencia": {
+    "logica": "sem fonte",
+    "texto": "gerado da planilha"
+   }
+  },
+  {
+   "bit": "M16.3",
+   "codigo": "F-OUT-003",
+   "tipo": "F",
+   "familia": "OUT",
+   "familia_nome": "Outros (lógica não fornecida)",
+   "nome": "Aux 3 alarme critico",
+   "prioridade": "critico",
+   "bloco": null,
+   "rede": null,
+   "rede_titulo": null,
+   "retentivo": null,
+   "reset": null,
+   "porta_t31": null,
+   "atraso_s": null,
+   "timers": [],
+   "operandos": [
+    "M16.3"
+   ],
+   "gatilho": "A lógica deste alarme não está nos blocos fornecidos (FC_ALARME_CRITICO e FC_ALARME_PERMISSIVEL).",
+   "efeito": "Sem descrição: a lógica deste alarme está em outro bloco do programa.",
+   "causas": [
+    {
+     "t": "Causa a definir quando o bloco que gera este alarme for fornecido.",
+     "teste": "Veja o comentário da tag na planilha: AUX 3 ALARME CRITICO",
+     "sol": []
+    }
+   ],
+   "obs": "Entrada gerada automaticamente da planilha de tags; sem lógica conhecida.",
+   "comentario_tag": "AUX 3 ALARME CRITICO",
+   "evidencia": {
+    "logica": "sem fonte",
+    "texto": "gerado da planilha"
+   }
+  },
+  {
+   "bit": "M21.5",
+   "codigo": "F-OUT-004",
+   "tipo": "F",
+   "familia": "OUT",
+   "familia_nome": "Outros (lógica não fornecida)",
+   "nome": "Aux 1 alarme critico",
+   "prioridade": "critico",
+   "bloco": null,
+   "rede": null,
+   "rede_titulo": null,
+   "retentivo": null,
+   "reset": null,
+   "porta_t31": null,
+   "atraso_s": null,
+   "timers": [],
+   "operandos": [
+    "M21.5"
+   ],
+   "gatilho": "A lógica deste alarme não está nos blocos fornecidos (FC_ALARME_CRITICO e FC_ALARME_PERMISSIVEL).",
+   "efeito": "Sem descrição: a lógica deste alarme está em outro bloco do programa.",
+   "causas": [
+    {
+     "t": "Causa a definir quando o bloco que gera este alarme for fornecido.",
+     "teste": "Veja o comentário da tag na planilha: AUX 1 ALARME CRITICO",
+     "sol": []
+    }
+   ],
+   "obs": "Entrada gerada automaticamente da planilha de tags; sem lógica conhecida.",
+   "comentario_tag": "AUX 1 ALARME CRITICO",
+   "evidencia": {
+    "logica": "sem fonte",
+    "texto": "gerado da planilha"
+   }
+  },
+  {
+   "bit": "M11.2",
+   "codigo": "F-PRS-001",
+   "nome": "Pressão de ar comprimido insuficiente",
+   "gatilho": "Entrada de presença de ar comprimido (I5.0) em 0 com a máquina em trabalho (T31).",
+   "efeito": "Sem ar: válvulas pneumáticas (sopro, quebra vácuo e outras) podem não atuar corretamente.",
+   "causas": [
+    {
+     "t": "Compressor desligado ou rede de ar sem pressão.",
+     "teste": "Veja o manômetro da rede de ar e se o compressor está em operação.",
+     "sol": [
+      [
+       "Religue o compressor ou corrija o vazamento na rede de ar.",
+       "campo"
+      ],
+      [
+       "Com a pressão normal, aperte RESET FALHAS.",
+       "operador"
+      ]
+     ]
+    },
+    {
+     "t": "Pressostato desregulado ou com fio solto na entrada I5.0.",
+     "teste": "Com a rede pressurizada, a entrada I5.0 deve ir para 1.",
+     "sol": [
+      [
+       "Regule ou troque o pressostato; confira a fiação.",
+       "painel"
+      ]
+     ]
+    }
+   ],
+   "obs": null,
+   "tipo": "F",
+   "familia": "PRS",
+   "familia_nome": "Pressão de ar",
+   "prioridade": "critico",
+   "bloco": "FC_ALARME_CRITICO",
+   "rede": 5,
+   "rede_titulo": "PRESSÃO AR INSUFICIENTE",
+   "retentivo": true,
+   "reset": "I0.2 (RESET FALHAS)",
+   "porta_t31": true,
+   "atraso_s": null,
+   "timers": [],
+   "operandos": [
+    "I0.2",
+    "I5.0",
+    "T31"
+   ],
+   "comentario_tag": "PRESSÃO AR INSUFICIENTE",
+   "evidencia": {
+    "logica": "A (extraída do PLC)",
+    "texto": "C (proposto, a validar)"
+   }
+  },
+  {
+   "bit": "M61.0",
+   "codigo": "F-PRT-001",
+   "nome": "Soft-starter da bomba 1: partida fora do esperado",
+   "gatilho": "Modo automático (M20.1) E ((fim de partida I1.2 E bomba 1 ligada I1.1) OU softstart sem OK I1.3 em 0) por 10 s (T2).",
+   "efeito": "A bomba 1 não completou a partida pelo soft-starter no tempo esperado.",
+   "causas": [
+    {
+     "t": "Soft-starter em falha ou sem completar a rampa de partida.",
+     "teste": "Veja os LEDs do soft-starter da bomba 1 e as entradas I1.1, I1.2 e I1.3 na tela Entradas e saídas.",
+     "sol": [
+      [
+       "Verifique o soft-starter (falha, parametrização, alimentação).",
+       "painel"
+      ],
+      [
+       "Depois, aperte RESET FALHAS.",
+       "operador"
+      ]
+     ]
+    }
+   ],
+   "obs": "Confirmar a polaridade de I1.2 (fim de partida) e I1.3 (falha soft-start): o programa trata a condição como '(I1.2 e I1.1) ou (I1.3 em 0)'. Pendência P-14.",
+   "tipo": "F",
+   "familia": "PRT",
+   "familia_nome": "Partida das bombas",
+   "prioridade": "critico",
+   "bloco": "FC_ALARME_CRITICO",
+   "rede": 10,
+   "rede_titulo": "tempo p/ alarme no softstarter",
+   "retentivo": true,
+   "reset": "I0.2 (RESET FALHAS)",
+   "porta_t31": false,
+   "atraso_s": 10,
+   "timers": [
+    "T2"
+   ],
+   "operandos": [
+    "I0.2",
+    "I1.1",
+    "I1.2",
+    "I1.3",
+    "M20.1",
+    "T2"
+   ],
+   "comentario_tag": "ALARME AO INICIAR SOFTSTART BOMBA 1",
+   "evidencia": {
+    "logica": "A (extraída do PLC)",
+    "texto": "C (proposto, a validar)"
+   }
+  },
+  {
+   "bit": "M61.1",
+   "codigo": "F-PRT-002",
+   "nome": "Soft-starter da bomba 2: partida fora do esperado",
+   "gatilho": "Modo automático (M20.1) E ((fim de partida I1.6 E bomba 2 ligada I1.5) OU softstart sem OK I1.7 em 0) por 10 s (T3).",
+   "efeito": "A bomba 2 não completou a partida pelo soft-starter no tempo esperado.",
+   "causas": [
+    {
+     "t": "Soft-starter em falha ou sem completar a rampa de partida.",
+     "teste": "Veja os LEDs do soft-starter da bomba 2 e as entradas I1.5, I1.6 e I1.7 na tela Entradas e saídas.",
+     "sol": [
+      [
+       "Verifique o soft-starter (falha, parametrização, alimentação).",
+       "painel"
+      ],
+      [
+       "Depois, aperte RESET FALHAS.",
+       "operador"
+      ]
+     ]
+    }
+   ],
+   "obs": "Confirmar a polaridade de I1.6 e I1.7 (mesma dúvida da bomba 1). Pendência P-14.",
+   "tipo": "F",
+   "familia": "PRT",
+   "familia_nome": "Partida das bombas",
+   "prioridade": "critico",
+   "bloco": "FC_ALARME_CRITICO",
+   "rede": 11,
+   "rede_titulo": "tempo p/ alarme ao iniciar softstarter",
+   "retentivo": true,
+   "reset": "I0.2 (RESET FALHAS)",
+   "porta_t31": false,
+   "atraso_s": 10,
+   "timers": [
+    "T3"
+   ],
+   "operandos": [
+    "I0.2",
+    "I1.5",
+    "I1.6",
+    "I1.7",
+    "M20.1",
+    "T3"
+   ],
+   "comentario_tag": "ALARME AO INICIAR SOFTSTART BOMBA 2",
+   "evidencia": {
+    "logica": "A (extraída do PLC)",
+    "texto": "C (proposto, a validar)"
+   }
+  },
+  {
+   "bit": "M10.1",
+   "codigo": "F-PRT-003",
+   "nome": "Bomba 1: partida não concluída no tempo",
+   "gatilho": "Modo automático (M20.1), fim de partida (I1.2) e comando liga da bomba 1 (Q8.0) por 10 s (T13).",
+   "efeito": "A bomba 1 foi comandada a ligar, mas a partida não terminou no tempo esperado.",
+   "causas": [
+    {
+     "t": "A bomba não parte (soft-starter, contator ou motor).",
+     "teste": "Q8.0 está ligada e a bomba 1 mostra 'em operação' (I1.1) no Overview?",
+     "sol": [
+      [
+       "Verifique soft-starter, contator e motor da bomba 1.",
+       "painel"
+      ],
+      [
+       "Depois, aperte RESET FALHAS.",
+       "operador"
+      ]
+     ]
+    }
+   ],
+   "obs": "Polaridade de I1.2 a confirmar (P-14).",
+   "tipo": "F",
+   "familia": "PRT",
+   "familia_nome": "Partida das bombas",
+   "prioridade": "critico",
+   "bloco": "FC_ALARME_CRITICO",
+   "rede": 12,
+   "rede_titulo": "tempo de alarme ao iniciar bomba 1",
+   "retentivo": true,
+   "reset": "I0.2 (RESET FALHAS)",
+   "porta_t31": false,
+   "atraso_s": 10,
+   "timers": [
+    "T13"
+   ],
+   "operandos": [
+    "I0.2",
+    "I1.2",
+    "M20.1",
+    "Q8.0",
+    "T13"
+   ],
+   "comentario_tag": "ALARME AO INICIAR BOMBA 1 FILTRO/ENVIO",
+   "evidencia": {
+    "logica": "A (extraída do PLC)",
+    "texto": "C (proposto, a validar)"
+   }
+  },
+  {
+   "bit": "M10.3",
+   "codigo": "F-PRT-004",
+   "nome": "Bomba 2: partida não concluída no tempo",
+   "gatilho": "Modo automático (M20.1), fim de partida (I1.6) e comando liga da bomba 2 (Q8.2) por 15 s (T14).",
+   "efeito": "A bomba 2 foi comandada a ligar, mas a partida não terminou no tempo esperado.",
+   "causas": [
+    {
+     "t": "A bomba não parte (soft-starter, contator ou motor).",
+     "teste": "Q8.2 está ligada e a bomba 2 mostra 'em operação' (I1.5) no Overview?",
+     "sol": [
+      [
+       "Verifique soft-starter, contator e motor da bomba 2.",
+       "painel"
+      ],
+      [
+       "Depois, aperte RESET FALHAS.",
+       "operador"
+      ]
+     ]
+    }
+   ],
+   "obs": "Polaridade de I1.6 a confirmar (P-14).",
+   "tipo": "F",
+   "familia": "PRT",
+   "familia_nome": "Partida das bombas",
+   "prioridade": "critico",
+   "bloco": "FC_ALARME_CRITICO",
+   "rede": 13,
+   "rede_titulo": "tempo de alarme ao iniciar bomba 2",
+   "retentivo": true,
+   "reset": "I0.2 (RESET FALHAS)",
+   "porta_t31": false,
+   "atraso_s": 15,
+   "timers": [
+    "T14"
+   ],
+   "operandos": [
+    "I0.2",
+    "I1.6",
+    "M20.1",
+    "Q8.2",
+    "T14"
+   ],
+   "comentario_tag": "ALARME AO INICIAR BOMBA 2 FILTRO/ENVIO",
+   "evidencia": {
+    "logica": "A (extraída do PLC)",
+    "texto": "C (proposto, a validar)"
+   }
+  },
+  {
+   "bit": "M11.5",
+   "codigo": "F-SEG-001",
+   "nome": "Emergência atuada",
+   "gatilho": "Botão de emergência do painel (I0.1) em 1, OU relé do circuito de segurança (I0.3) em 0, OU botão de emergência do filtro (I4.7) em 1. Sem atraso e sem retenção: acompanha a condição.",
+   "efeito": "O circuito de segurança está aberto: a máquina fica parada pela emergência.",
+   "causas": [
+    {
+     "t": "Botão de emergência do painel (I0.1) ou do filtro (I4.7) pressionado.",
+     "teste": "Olhe os dois botões de emergência: algum está travado em baixo?",
+     "sol": [
+      [
+       "Libere (destrave) o botão de emergência depois de confirmar que o local está seguro.",
+       "campo"
+      ],
+      [
+       "Aperte RESET FALHAS e religue pelo procedimento normal.",
+       "operador"
+      ]
+     ]
+    },
+    {
+     "t": "Relé do circuito de segurança (I0.3) sem OK por falha no circuito (porta aberta, cabo, relé).",
+     "teste": "Com os botões soltos, a entrada I0.3 deve estar em 1.",
+     "sol": [
+      [
+       "Verifique o circuito de segurança e o relé; corrija a causa.",
+       "painel"
+      ]
+     ]
+    }
+   ],
+   "obs": null,
+   "tipo": "F",
+   "familia": "SEG",
+   "familia_nome": "Segurança e emergência",
+   "prioridade": "critico",
+   "bloco": "FC_ALARME_CRITICO",
+   "rede": 7,
+   "rede_titulo": "EMERGÊNCIA ATUADA",
+   "retentivo": false,
+   "reset": null,
+   "porta_t31": false,
+   "atraso_s": null,
+   "timers": [],
+   "operandos": [
+    "I0.1",
+    "I0.3",
+    "I4.7"
+   ],
+   "comentario_tag": "EMERGÊNCIA ATUADA",
+   "evidencia": {
+    "logica": "A (extraída do PLC)",
+    "texto": "C (proposto, a validar)"
+   }
+  },
+  {
+   "bit": "M14.1",
+   "codigo": "A-BND-001",
+   "nome": "Avanço da banda filtrante",
+   "gatilho": "Transportador dragante ligado (I3.6) E controle de avanço da manta (I4.1) parado em 1 por 3 s (T26) OU parado em 0 por 3 s (T27).",
+   "efeito": "A banda filtrante não está avançando: o filtro tende a saturar.",
+   "causas": [
+    {
+     "t": "A manta/banda acabou, rompeu ou travou.",
+     "teste": "Olhe a banda no filtro: está andando? Há manta no rolo?",
+     "sol": [
+      [
+       "Troque a manta ou destrave a banda.",
+       "campo"
+      ],
+      [
+       "Depois, aperte RESET FALHAS.",
+       "operador"
+      ]
+     ]
+    },
+    {
+     "t": "Sensor/controle de avanço da manta (I4.1) sem pulso (defeito ou fio solto).",
+     "teste": "Com a banda andando, a entrada I4.1 deve alternar entre 0 e 1.",
+     "sol": [
+      [
+       "Verifique o sensor de avanço e a fiação.",
+       "painel"
+      ]
+     ]
+    }
+   ],
+   "obs": null,
+   "tipo": "A",
+   "familia": "BND",
+   "familia_nome": "Banda filtrante",
+   "prioridade": "permissivel",
+   "bloco": "FC_ALARME_PERMISSIVEL",
+   "rede": 12,
+   "rede_titulo": "ALARME AVANÇO BANDA FILTRANTE",
+   "retentivo": true,
+   "reset": "I0.2 (RESET FALHAS)",
+   "porta_t31": false,
+   "atraso_s": 3,
+   "timers": [
+    "T26",
+    "T27"
+   ],
+   "operandos": [
+    "I0.2",
+    "I3.6",
+    "I4.1",
+    "T26",
+    "T27"
+   ],
+   "comentario_tag": "ALARME AVANÇO BANDA FILTRANTE",
+   "evidencia": {
+    "logica": "A (extraída do PLC)",
+    "texto": "C (proposto, a validar)"
+   }
+  },
+  {
+   "bit": "M12.1",
+   "codigo": "A-CMD-001",
+   "nome": "Bomba do trocador de calor: comando sem retorno",
+   "gatilho": "Saída de comando da bomba do trocador de calor (Q8.4) ligada e retorno 'ligada' (I2.1) em 0 por 3 s (T12).",
+   "efeito": "Foi mandado ligar a bomba do trocador de calor, mas o retorno não chegou: ela pode não estar girando.",
+   "causas": [
+    {
+     "t": "O contator de a bomba do trocador de calor não fechou (bobina, relé auxiliar ou relé térmico aberto).",
+     "teste": "A saída Q8.4 está acesa na tela Entradas e saídas? No painel, o contator está fechado?",
+     "sol": [
+      [
+       "Verifique bobina, relé térmico e fiação do contator.",
+       "painel"
+      ],
+      [
+       "Depois de corrigir, aperte RESET FALHAS.",
+       "operador"
+      ]
+     ]
+    },
+    {
+     "t": "O contato auxiliar do contator não devolve o sinal 'ligado' para a entrada I2.1 (fio solto ou contato com defeito).",
+     "teste": "Com o contator fechado, a entrada I2.1 deve ir para 1.",
+     "sol": [
+      [
+       "Corrija o contato auxiliar ou o fio até a entrada I2.1.",
+       "painel"
+      ]
+     ]
+    }
+   ],
+   "obs": null,
+   "tipo": "A",
+   "familia": "CMD",
+   "familia_nome": "Comando sem retorno (motor)",
+   "prioridade": "permissivel",
+   "bloco": "FC_ALARME_PERMISSIVEL",
+   "rede": 1,
+   "rede_titulo": "ALARME COMANDO BOMBA TROCADOR DE CALOR",
+   "retentivo": true,
+   "reset": "I0.2 (RESET FALHAS)",
+   "porta_t31": false,
+   "atraso_s": 3,
+   "timers": [
+    "T12"
+   ],
+   "operandos": [
+    "I0.2",
+    "I2.1",
+    "Q8.4",
+    "T12"
+   ],
+   "comentario_tag": "ALARME COMANDO BOMBA TROCADOR DE CALOR",
+   "evidencia": {
+    "logica": "A (extraída do PLC)",
+    "texto": "C (proposto, a validar)"
+   }
+  },
+  {
+   "bit": "M13.1",
+   "codigo": "A-CMD-002",
+   "nome": "Rotovac: comando sem retorno",
+   "gatilho": "Saída de comando do rotovac (Q8.7) ligada e retorno 'ligado' (I3.1) em 0 por 3 s (T17).",
+   "efeito": "Foi mandado ligar o rotovac, mas o retorno não chegou: ele pode não estar girando.",
+   "causas": [
+    {
+     "t": "O contator de o rotovac não fechou (bobina, relé auxiliar ou relé térmico aberto).",
+     "teste": "A saída Q8.7 está acesa na tela Entradas e saídas? No painel, o contator está fechado?",
+     "sol": [
+      [
+       "Verifique bobina, relé térmico e fiação do contator.",
+       "painel"
+      ],
+      [
+       "Depois de corrigir, aperte RESET FALHAS.",
+       "operador"
+      ]
+     ]
+    },
+    {
+     "t": "O contato auxiliar do contator não devolve o sinal 'ligado' para a entrada I3.1 (fio solto ou contato com defeito).",
+     "teste": "Com o contator fechado, a entrada I3.1 deve ir para 1.",
+     "sol": [
+      [
+       "Corrija o contato auxiliar ou o fio até a entrada I3.1.",
+       "painel"
+      ]
+     ]
+    }
+   ],
+   "obs": null,
+   "tipo": "A",
+   "familia": "CMD",
+   "familia_nome": "Comando sem retorno (motor)",
+   "prioridade": "permissivel",
+   "bloco": "FC_ALARME_PERMISSIVEL",
+   "rede": 2,
+   "rede_titulo": "tempo de alarme ao iniciar rotovac",
+   "retentivo": true,
+   "reset": "I0.2 (RESET FALHAS)",
+   "porta_t31": false,
+   "atraso_s": 3,
+   "timers": [
+    "T17"
+   ],
+   "operandos": [
+    "I0.2",
+    "I3.1",
+    "Q8.7",
+    "T17"
+   ],
+   "comentario_tag": "ALARME COMANDO MOTOR ROTOVAC",
+   "evidencia": {
+    "logica": "A (extraída do PLC)",
+    "texto": "C (proposto, a validar)"
+   }
+  },
+  {
+   "bit": "M13.2",
+   "codigo": "A-CMD-003",
+   "nome": "Transportador dragante: comando sem retorno",
+   "gatilho": "Saída de comando do transportador dragante (Q9.0) ligada e retorno 'ligado' (I3.6) em 0 por 3 s (T20).",
+   "efeito": "Foi mandado ligar o transportador dragante, mas o retorno não chegou: ele pode não estar andando.",
+   "causas": [
+    {
+     "t": "O contator de o transportador dragante não fechou (bobina, relé auxiliar ou relé térmico aberto).",
+     "teste": "A saída Q9.0 está acesa na tela Entradas e saídas? No painel, o contator está fechado?",
+     "sol": [
+      [
+       "Verifique bobina, relé térmico e fiação do contator.",
+       "painel"
+      ],
+      [
+       "Depois de corrigir, aperte RESET FALHAS.",
+       "operador"
+      ]
+     ]
+    },
+    {
+     "t": "O contato auxiliar do contator não devolve o sinal 'ligado' para a entrada I3.6 (fio solto ou contato com defeito).",
+     "teste": "Com o contator fechado, a entrada I3.6 deve ir para 1.",
+     "sol": [
+      [
+       "Corrija o contato auxiliar ou o fio até a entrada I3.6.",
+       "painel"
+      ]
+     ]
+    }
+   ],
+   "obs": "O programa usa a saída Q9.0, que na planilha de tags está com o nome 'reserva' (qx_09.0_res). Confirmar se é essa mesma a saída do contator.",
+   "tipo": "A",
+   "familia": "CMD",
+   "familia_nome": "Comando sem retorno (motor)",
+   "prioridade": "permissivel",
+   "bloco": "FC_ALARME_PERMISSIVEL",
+   "rede": 3,
+   "rede_titulo": "ALARME NO COMANDO DO TRANSPORTADOR DRAGANTE",
+   "retentivo": true,
+   "reset": "I0.2 (RESET FALHAS)",
+   "porta_t31": false,
+   "atraso_s": 3,
+   "timers": [
+    "T20"
+   ],
+   "operandos": [
+    "I0.2",
+    "I3.6",
+    "Q9.0",
+    "T20"
+   ],
+   "comentario_tag": "ALARME COMANDO MOTOR TRANSP. DRAGANTE",
+   "evidencia": {
+    "logica": "A (extraída do PLC)",
+    "texto": "C (proposto, a validar)"
+   }
+  },
+  {
+   "bit": "M13.4",
+   "codigo": "A-CMD-004",
+   "nome": "Aspirador: comando sem retorno",
+   "gatilho": "Saída de comando do aspirador (Q8.5) ligada e retorno 'ligado' (I2.3) em 0 por 3 s (T22).",
+   "efeito": "Foi mandado ligar o aspirador, mas o retorno não chegou: ele pode não estar girando.",
+   "causas": [
+    {
+     "t": "O contator de o aspirador não fechou (bobina, relé auxiliar ou relé térmico aberto).",
+     "teste": "A saída Q8.5 está acesa na tela Entradas e saídas? No painel, o contator está fechado?",
+     "sol": [
+      [
+       "Verifique bobina, relé térmico e fiação do contator.",
+       "painel"
+      ],
+      [
+       "Depois de corrigir, aperte RESET FALHAS.",
+       "operador"
+      ]
+     ]
+    },
+    {
+     "t": "O contato auxiliar do contator não devolve o sinal 'ligado' para a entrada I2.3 (fio solto ou contato com defeito).",
+     "teste": "Com o contator fechado, a entrada I2.3 deve ir para 1.",
+     "sol": [
+      [
+       "Corrija o contato auxiliar ou o fio até a entrada I2.3.",
+       "painel"
+      ]
+     ]
+    }
+   ],
+   "obs": null,
+   "tipo": "A",
+   "familia": "CMD",
+   "familia_nome": "Comando sem retorno (motor)",
+   "prioridade": "permissivel",
+   "bloco": "FC_ALARME_PERMISSIVEL",
+   "rede": 4,
+   "rede_titulo": "ALARME COMANDO MOTOR ASPIRADOR",
+   "retentivo": true,
+   "reset": "I0.2 (RESET FALHAS)",
+   "porta_t31": false,
+   "atraso_s": 3,
+   "timers": [
+    "T22"
+   ],
+   "operandos": [
+    "I0.2",
+    "I2.3",
+    "Q8.5",
+    "T22"
+   ],
+   "comentario_tag": "ALARME COMANDO MOTOR ASPIRADOR",
+   "evidencia": {
+    "logica": "A (extraída do PLC)",
+    "texto": "C (proposto, a validar)"
+   }
+  },
+  {
+   "bit": "M14.2",
+   "codigo": "A-CMD-005",
+   "nome": "Extrator de lodo: comando sem retorno",
+   "gatilho": "Saída de comando do extrator de lodo (Q8.6) ligada e retorno 'ligado' (I2.5) em 0 por 3 s (T30).",
+   "efeito": "Foi mandado ligar o extrator de lodo, mas o retorno não chegou: ele pode não estar girando.",
+   "causas": [
+    {
+     "t": "O contator de o extrator de lodo não fechou (bobina, relé auxiliar ou relé térmico aberto).",
+     "teste": "A saída Q8.6 está acesa na tela Entradas e saídas? No painel, o contator está fechado?",
+     "sol": [
+      [
+       "Verifique bobina, relé térmico e fiação do contator.",
+       "painel"
+      ],
+      [
+       "Depois de corrigir, aperte RESET FALHAS.",
+       "operador"
+      ]
+     ]
+    },
+    {
+     "t": "O contato auxiliar do contator não devolve o sinal 'ligado' para a entrada I2.5 (fio solto ou contato com defeito).",
+     "teste": "Com o contator fechado, a entrada I2.5 deve ir para 1.",
+     "sol": [
+      [
+       "Corrija o contato auxiliar ou o fio até a entrada I2.5.",
+       "painel"
+      ]
+     ]
+    }
+   ],
+   "obs": null,
+   "tipo": "A",
+   "familia": "CMD",
+   "familia_nome": "Comando sem retorno (motor)",
+   "prioridade": "permissivel",
+   "bloco": "FC_ALARME_PERMISSIVEL",
+   "rede": 13,
+   "rede_titulo": "ALARME COMANDO MOTOR EXTRATOR LODO",
+   "retentivo": true,
+   "reset": "I0.2 (RESET FALHAS)",
+   "porta_t31": false,
+   "atraso_s": 3,
+   "timers": [
+    "T30"
+   ],
+   "operandos": [
+    "I0.2",
+    "I2.5",
+    "Q8.6",
+    "T30"
+   ],
+   "comentario_tag": "ALARME COMANDO MOTOR EXTRATOR LODO",
+   "evidencia": {
+    "logica": "A (extraída do PLC)",
+    "texto": "C (proposto, a validar)"
+   }
+  },
+  {
+   "bit": "M13.6",
+   "codigo": "A-DSJ-004",
+   "nome": "Disjuntor da bomba do trocador de calor desarmado",
+   "gatilho": "Contato OK do disjuntor (I2.0) em 0 com a máquina em trabalho há 3 s (T31).",
+   "efeito": "A bomba do trocador de calor fica sem alimentação: o líquido refrigerante pode não circular.",
+   "causas": [
+    {
+     "t": "O disjuntor desarmou por sobrecorrente ou curto-circuito (motor travado, sobrecarga, isolação ruim).",
+     "teste": "Olhe a alavanca do disjuntor no painel: está em TRIP/OFF? Se rearmar e ele desarmar de novo, a falha é real no motor ou no cabo.",
+     "sol": [
+      [
+       "Descubra e elimine a causa (travamento, sobrecarga, isolação) antes de rearmar.",
+       "campo"
+      ],
+      [
+       "Rearme o disjuntor e aperte RESET FALHAS.",
+       "operador"
+      ]
+     ]
+    },
+    {
+     "t": "Contato auxiliar do disjuntor com defeito ou fio solto na entrada I2.0.",
+     "teste": "Com o disjuntor ligado, a entrada I2.0 deve estar em 1 (veja na tela Entradas e saídas). Se continua em 0, o problema é o contato ou a fiação.",
+     "sol": [
+      [
+       "Troque o contato auxiliar ou refaça a ligação até a entrada I2.0.",
+       "painel"
+      ]
+     ]
+    }
+   ],
+   "obs": null,
+   "tipo": "A",
+   "familia": "DSJ",
+   "familia_nome": "Disjuntor desarmado",
+   "prioridade": "permissivel",
+   "bloco": "FC_ALARME_PERMISSIVEL",
+   "rede": 5,
+   "rede_titulo": "DISJUNTOR DESARMADO BOMBA TROC. CALOR",
+   "retentivo": true,
+   "reset": "I0.2 (RESET FALHAS)",
+   "porta_t31": true,
+   "atraso_s": null,
+   "timers": [],
+   "operandos": [
+    "I0.2",
+    "I2.0",
+    "T31"
+   ],
+   "comentario_tag": "DISJUNTOR DESARMADO BOMBA TROC. CALOR",
+   "evidencia": {
+    "logica": "A (extraída do PLC)",
+    "texto": "C (proposto, a validar)"
+   }
+  },
+  {
+   "bit": "M15.0",
+   "codigo": "A-DSJ-005",
+   "nome": "Disjuntor do rotovac desarmado",
+   "gatilho": "Contato OK do disjuntor (I3.0) em 0 com a máquina em trabalho há 3 s (T31).",
+   "efeito": "O rotovac fica sem alimentação: não gira.",
+   "causas": [
+    {
+     "t": "O disjuntor desarmou por sobrecorrente ou curto-circuito (motor travado, sobrecarga, isolação ruim).",
+     "teste": "Olhe a alavanca do disjuntor no painel: está em TRIP/OFF? Se rearmar e ele desarmar de novo, a falha é real no motor ou no cabo.",
+     "sol": [
+      [
+       "Descubra e elimine a causa (travamento, sobrecarga, isolação) antes de rearmar.",
+       "campo"
+      ],
+      [
+       "Rearme o disjuntor e aperte RESET FALHAS.",
+       "operador"
+      ]
+     ]
+    },
+    {
+     "t": "Contato auxiliar do disjuntor com defeito ou fio solto na entrada I3.0.",
+     "teste": "Com o disjuntor ligado, a entrada I3.0 deve estar em 1 (veja na tela Entradas e saídas). Se continua em 0, o problema é o contato ou a fiação.",
+     "sol": [
+      [
+       "Troque o contato auxiliar ou refaça a ligação até a entrada I3.0.",
+       "painel"
+      ]
+     ]
+    }
+   ],
+   "obs": null,
+   "tipo": "A",
+   "familia": "DSJ",
+   "familia_nome": "Disjuntor desarmado",
+   "prioridade": "permissivel",
+   "bloco": "FC_ALARME_PERMISSIVEL",
+   "rede": 14,
+   "rede_titulo": "DISJUNTOR DESARMADO MOTOR ROTOVAC",
+   "retentivo": true,
+   "reset": "I0.2 (RESET FALHAS)",
+   "porta_t31": true,
+   "atraso_s": null,
+   "timers": [],
+   "operandos": [
+    "I0.2",
+    "I3.0",
+    "T31"
+   ],
+   "comentario_tag": "DISJUNTOR DESARMADO MOTOR ROTOVAC",
+   "evidencia": {
+    "logica": "A (extraída do PLC)",
+    "texto": "C (proposto, a validar)"
+   }
+  },
+  {
+   "bit": "M15.1",
+   "codigo": "A-DSJ-006",
+   "nome": "Disjuntor do aspirador desarmado",
+   "gatilho": "Contato OK do disjuntor (I2.2) em 0 com a máquina em trabalho há 3 s (T31).",
+   "efeito": "O aspirador fica sem alimentação: o vácuo do filtro cai.",
+   "causas": [
+    {
+     "t": "O disjuntor desarmou por sobrecorrente ou curto-circuito (motor travado, sobrecarga, isolação ruim).",
+     "teste": "Olhe a alavanca do disjuntor no painel: está em TRIP/OFF? Se rearmar e ele desarmar de novo, a falha é real no motor ou no cabo.",
+     "sol": [
+      [
+       "Descubra e elimine a causa (travamento, sobrecarga, isolação) antes de rearmar.",
+       "campo"
+      ],
+      [
+       "Rearme o disjuntor e aperte RESET FALHAS.",
+       "operador"
+      ]
+     ]
+    },
+    {
+     "t": "Contato auxiliar do disjuntor com defeito ou fio solto na entrada I2.2.",
+     "teste": "Com o disjuntor ligado, a entrada I2.2 deve estar em 1 (veja na tela Entradas e saídas). Se continua em 0, o problema é o contato ou a fiação.",
+     "sol": [
+      [
+       "Troque o contato auxiliar ou refaça a ligação até a entrada I2.2.",
+       "painel"
+      ]
+     ]
+    }
+   ],
+   "obs": null,
+   "tipo": "A",
+   "familia": "DSJ",
+   "familia_nome": "Disjuntor desarmado",
+   "prioridade": "permissivel",
+   "bloco": "FC_ALARME_PERMISSIVEL",
+   "rede": 15,
+   "rede_titulo": "DISJUNTOR DESARMADO MOTOR ASPIRADOR",
+   "retentivo": true,
+   "reset": "I0.2 (RESET FALHAS)",
+   "porta_t31": true,
+   "atraso_s": null,
+   "timers": [],
+   "operandos": [
+    "I0.2",
+    "I2.2",
+    "T31"
+   ],
+   "comentario_tag": "DISJUNTOR DESARMADO MOTOR ASPIRADOR",
+   "evidencia": {
+    "logica": "A (extraída do PLC)",
+    "texto": "C (proposto, a validar)"
+   }
+  },
+  {
+   "bit": "M15.2",
+   "codigo": "A-DSJ-007",
+   "nome": "Disjuntor do extrator de lodo desarmado",
+   "gatilho": "Contato OK do disjuntor (I2.4) em 0 com a máquina em trabalho há 3 s (T31).",
+   "efeito": "O extrator de lodo fica sem alimentação: o lodo se acumula.",
+   "causas": [
+    {
+     "t": "O disjuntor desarmou por sobrecorrente ou curto-circuito (motor travado, sobrecarga, isolação ruim).",
+     "teste": "Olhe a alavanca do disjuntor no painel: está em TRIP/OFF? Se rearmar e ele desarmar de novo, a falha é real no motor ou no cabo.",
+     "sol": [
+      [
+       "Descubra e elimine a causa (travamento, sobrecarga, isolação) antes de rearmar.",
+       "campo"
+      ],
+      [
+       "Rearme o disjuntor e aperte RESET FALHAS.",
+       "operador"
+      ]
+     ]
+    },
+    {
+     "t": "Contato auxiliar do disjuntor com defeito ou fio solto na entrada I2.4.",
+     "teste": "Com o disjuntor ligado, a entrada I2.4 deve estar em 1 (veja na tela Entradas e saídas). Se continua em 0, o problema é o contato ou a fiação.",
+     "sol": [
+      [
+       "Troque o contato auxiliar ou refaça a ligação até a entrada I2.4.",
+       "painel"
+      ]
+     ]
+    }
+   ],
+   "obs": null,
+   "tipo": "A",
+   "familia": "DSJ",
+   "familia_nome": "Disjuntor desarmado",
+   "prioridade": "permissivel",
+   "bloco": "FC_ALARME_PERMISSIVEL",
+   "rede": 16,
+   "rede_titulo": "DISJUNTOR DESARMADO MOTOR EXTRATOR LODO",
+   "retentivo": true,
+   "reset": "I0.2 (RESET FALHAS)",
+   "porta_t31": true,
+   "atraso_s": null,
+   "timers": [],
+   "operandos": [
+    "I0.2",
+    "I2.4",
+    "T31"
+   ],
+   "comentario_tag": "DISJUNTOR DESARMADO MOTOR EXTRATOR LODO",
+   "evidencia": {
+    "logica": "A (extraída do PLC)",
+    "texto": "C (proposto, a validar)"
+   }
+  },
+  {
+   "bit": "M15.7",
+   "codigo": "A-ENC-001",
+   "nome": "Duração máxima de enchimento",
+   "gatilho": "Temporizador T54 (partida fora dos blocos fornecidos). O selo da rede está invertido: 'NÃO M15.7 E RESET'.",
+   "efeito": "O enchimento passou do tempo máximo (se o alarme funcionasse).",
+   "causas": [
+    {
+     "t": "Tempo de enchimento acima do limite (sensor de fim de enchimento sem atuar, falta de vazão).",
+     "teste": "Veja os sensores de início e fim de enchimento (I6.2 e I6.3) na tela Entradas e saídas.",
+     "sol": [
+      [
+       "Verifique sensores de enchimento e a alimentação do tanque.",
+       "campo"
+      ]
+     ]
+    }
+   ],
+   "obs": "Na rede 21 o selo está invertido (NÃO M15.7 E I0.2): ao apertar RESET o bit liga em vez de desligar. Confirmar com quem programou.",
+   "tipo": "A",
+   "familia": "ENC",
+   "familia_nome": "Enchimento",
+   "prioridade": "permissivel",
+   "bloco": "FC_ALARME_PERMISSIVEL",
+   "rede": 21,
+   "rede_titulo": "DURAÇÃO MAX ENCHIMENTO",
+   "retentivo": true,
+   "reset": "I0.2 (RESET FALHAS)",
+   "porta_t31": false,
+   "atraso_s": null,
+   "timers": [
+    "T54"
+   ],
+   "operandos": [
+    "I0.2",
+    "T54"
+   ],
+   "comentario_tag": "DURAÇÃO MAX ENCHIMENTO",
+   "evidencia": {
+    "logica": "A (extraída do PLC)",
+    "texto": "C (proposto, a validar)"
+   }
+  },
+  {
+   "bit": "M13.7",
+   "codigo": "A-NIV-002",
+   "nome": "Nível mínimo do líquido filtrado (tanque limpo)",
+   "gatilho": "Sensor de nível mínimo do tanque de compensação (I6.5) em 0 por 10 s (T24), com a máquina em trabalho (T31).",
+   "efeito": "Pouco líquido filtrado no tanque limpo: o consumo pode estar maior que a produção do filtro.",
+   "causas": [
+    {
+     "t": "O filtro está produzindo menos que o consumo (banda/manta saturada, bombas paradas).",
+     "teste": "Veja se as bombas e a banda estão em operação no Overview.",
+     "sol": [
+      [
+       "Verifique bombas, banda filtrante e manta.",
+       "campo"
+      ],
+      [
+       "Com o nível normal, aperte RESET FALHAS.",
+       "operador"
+      ]
+     ]
+    },
+    {
+     "t": "Sensor de nível mínimo (I6.5) sujo, desregulado ou com fio solto.",
+     "teste": "Com o tanque limpo cheio acima do sensor, a entrada I6.5 deve estar em 1.",
+     "sol": [
+      [
+       "Limpe, regule ou troque o sensor; confira a fiação.",
+       "campo"
+      ]
+     ]
+    }
+   ],
+   "obs": null,
+   "tipo": "A",
+   "familia": "NIV",
+   "familia_nome": "Nível dos tanques",
+   "prioridade": "permissivel",
+   "bloco": "FC_ALARME_PERMISSIVEL",
+   "rede": 7,
+   "rede_titulo": "ALARME NÍVEL MIN. LIQUIDO FILTRADO",
+   "retentivo": true,
+   "reset": "I0.2 (RESET FALHAS)",
+   "porta_t31": true,
+   "atraso_s": 10,
+   "timers": [
+    "T24"
+   ],
+   "operandos": [
+    "I0.2",
+    "I6.5",
+    "T24",
+    "T31"
+   ],
+   "comentario_tag": "ALARME NÍVEL MIN. LIQUIDO FILTRADO",
+   "evidencia": {
+    "logica": "A (extraída do PLC)",
+    "texto": "C (proposto, a validar)"
+   }
+  },
+  {
+   "bit": "M14.0",
+   "codigo": "A-NIV-003",
+   "nome": "Nível máximo do líquido a filtrar (tanque sujo)",
+   "gatilho": "Sensor de nível máximo do tanque sujo (I6.0) em 1 por 10 s (T25), com a máquina em trabalho (T31).",
+   "efeito": "Tanque sujo cheio: o filtro não está dando conta da vazão que chega.",
+   "causas": [
+    {
+     "t": "O filtro está lento (banda/manta saturada, bombas paradas ou vazão de entrada alta).",
+     "teste": "Bombas e banda em operação? A manta está avançando (Overview)?",
+     "sol": [
+      [
+       "Verifique bombas, banda e manta; reduza a vazão de entrada se necessário.",
+       "campo"
+      ],
+      [
+       "Com o nível normal, aperte RESET FALHAS.",
+       "operador"
+      ]
+     ]
+    },
+    {
+     "t": "Sensor de nível máximo (I6.0) sujo ou travado em 1.",
+     "teste": "Com o tanque abaixo do máximo, a entrada I6.0 deve estar em 0.",
+     "sol": [
+      [
+       "Limpe ou troque o sensor.",
+       "campo"
+      ]
+     ]
+    }
+   ],
+   "obs": null,
+   "tipo": "A",
+   "familia": "NIV",
+   "familia_nome": "Nível dos tanques",
+   "prioridade": "permissivel",
+   "bloco": "FC_ALARME_PERMISSIVEL",
+   "rede": 9,
+   "rede_titulo": "ALARME NÍVEL MAX LIQUIDO P/ FILTRAR",
+   "retentivo": true,
+   "reset": "I0.2 (RESET FALHAS)",
+   "porta_t31": true,
+   "atraso_s": 10,
+   "timers": [
+    "T25"
+   ],
+   "operandos": [
+    "I0.2",
+    "I6.0",
+    "T25",
+    "T31"
+   ],
+   "comentario_tag": "ALARME NÍVEL MAX LIQUIDO P/ FILTRAR",
+   "evidencia": {
+    "logica": "A (extraída do PLC)",
+    "texto": "C (proposto, a validar)"
+   }
+  },
+  {
+   "bit": "M15.5",
+   "codigo": "A-NIV-004",
+   "nome": "Nível máximo do líquido filtrado (tanque limpo)",
+   "gatilho": "Temporizador T15 (1 min) com a máquina em trabalho (T31). Ver observação: a condição de partida do T15 está contraditória no programa.",
+   "efeito": "Tanque limpo cheio demais (se o alarme funcionasse).",
+   "causas": [
+    {
+     "t": "Alarme provavelmente nunca dispara (ver observação).",
+     "teste": "Não há teste prático enquanto o programa tiver a contradição.",
+     "sol": [
+      [
+       "Corrigir a rede 'CONTROLE NÍVEL MAX LIQUIDO FILTRADO' no programa.",
+       "programa"
+      ]
+     ]
+    }
+   ],
+   "obs": "Na rede 18 do FC_ALARME_PERMISSIVEL a condição é 'I6.4 E NÃO I6.4' (sempre falsa): o T15 nunca parte e este alarme não dispara. Confirmar com quem programou.",
+   "tipo": "A",
+   "familia": "NIV",
+   "familia_nome": "Nível dos tanques",
+   "prioridade": "permissivel",
+   "bloco": "FC_ALARME_PERMISSIVEL",
+   "rede": 19,
+   "rede_titulo": "ALARME NÍVEL MAX LIQUIDO FILTRADO",
+   "retentivo": true,
+   "reset": "I0.2 (RESET FALHAS)",
+   "porta_t31": true,
+   "atraso_s": 60,
+   "timers": [
+    "T15"
+   ],
+   "operandos": [
+    "I0.2",
+    "I6.4",
+    "M20.2",
+    "T15",
+    "T31"
+   ],
+   "comentario_tag": "ALARME NÍVEL MAX LIQUIDO FILTRADO",
+   "evidencia": {
+    "logica": "A (extraída do PLC)",
+    "texto": "C (proposto, a validar)"
+   }
+  },
+  {
+   "bit": "M15.4",
+   "codigo": "A-OLE-001",
+   "nome": "Falta de óleo para enchimento (reserva)",
+   "gatilho": "Entradas/saídas de reserva (I7.3 E Q9.2) com a máquina em trabalho (T31).",
+   "efeito": "Função em reserva: provavelmente sem uso nesta máquina.",
+   "causas": [
+    {
+     "t": "Rede marcada como reserva no programa.",
+     "teste": "Confirme com quem programou se a função existe.",
+     "sol": [
+      [
+       "Confirmar e, se não existir, remover o alarme do programa e da tela.",
+       "programa"
+      ]
+     ]
+    }
+   ],
+   "obs": "A rede se chama 'FALTA ÓLEO P/ ENCHIMENTO (RESERVA)' e usa I7.3 e Q9.2, ambos com nome 'reserva' na planilha.",
+   "tipo": "A",
+   "familia": "OLE",
+   "familia_nome": "Óleo (reserva)",
+   "prioridade": "permissivel",
+   "bloco": "FC_ALARME_PERMISSIVEL",
+   "rede": 17,
+   "rede_titulo": "FALTA ÓLEO P/ ENCHIMENTO (RESERVA)",
+   "retentivo": true,
+   "reset": "I0.2 (RESET FALHAS)",
+   "porta_t31": true,
+   "atraso_s": null,
+   "timers": [],
+   "operandos": [
+    "I0.2",
+    "I7.3",
+    "Q9.2",
+    "T31"
+   ],
+   "comentario_tag": "FALTA ÓLEO P/ ENCHIMENTO",
+   "evidencia": {
+    "logica": "A (extraída do PLC)",
+    "texto": "C (proposto, a validar)"
+   }
+  },
+  {
+   "bit": "M12.2",
+   "codigo": "A-OUT-001",
+   "tipo": "A",
+   "familia": "OUT",
+   "familia_nome": "Outros (lógica não fornecida)",
+   "nome": "Alarme bomba 1",
+   "prioridade": "permissivel",
+   "bloco": null,
+   "rede": null,
+   "rede_titulo": null,
+   "retentivo": null,
+   "reset": null,
+   "porta_t31": null,
+   "atraso_s": null,
+   "timers": [],
+   "operandos": [
+    "M12.2"
+   ],
+   "gatilho": "A lógica deste alarme não está nos blocos fornecidos (FC_ALARME_CRITICO e FC_ALARME_PERMISSIVEL).",
+   "efeito": "Sem descrição: a lógica deste alarme está em outro bloco do programa.",
+   "causas": [
+    {
+     "t": "Causa a definir quando o bloco que gera este alarme for fornecido.",
+     "teste": "Veja o comentário da tag na planilha: ALARME BOMBA 1",
+     "sol": []
+    }
+   ],
+   "obs": "Entrada gerada automaticamente da planilha de tags; sem lógica conhecida.",
+   "comentario_tag": "ALARME BOMBA 1",
+   "evidencia": {
+    "logica": "sem fonte",
+    "texto": "gerado da planilha"
+   }
+  },
+  {
+   "bit": "M12.3",
+   "codigo": "A-OUT-002",
+   "tipo": "A",
+   "familia": "OUT",
+   "familia_nome": "Outros (lógica não fornecida)",
+   "nome": "Alarme bomba 2",
+   "prioridade": "permissivel",
+   "bloco": null,
+   "rede": null,
+   "rede_titulo": null,
+   "retentivo": null,
+   "reset": null,
+   "porta_t31": null,
+   "atraso_s": null,
+   "timers": [],
+   "operandos": [
+    "M12.3"
+   ],
+   "gatilho": "A lógica deste alarme não está nos blocos fornecidos (FC_ALARME_CRITICO e FC_ALARME_PERMISSIVEL).",
+   "efeito": "Sem descrição: a lógica deste alarme está em outro bloco do programa.",
+   "causas": [
+    {
+     "t": "Causa a definir quando o bloco que gera este alarme for fornecido.",
+     "teste": "Veja o comentário da tag na planilha: ALARME BOMBA 2",
+     "sol": []
+    }
+   ],
+   "obs": "Entrada gerada automaticamente da planilha de tags; sem lógica conhecida.",
+   "comentario_tag": "ALARME BOMBA 2",
+   "evidencia": {
+    "logica": "sem fonte",
+    "texto": "gerado da planilha"
+   }
+  },
+  {
+   "bit": "M13.0",
+   "codigo": "A-OUT-003",
+   "tipo": "A",
+   "familia": "OUT",
+   "familia_nome": "Outros (lógica não fornecida)",
+   "nome": "Alarme temperatura armário elétrico",
+   "prioridade": "permissivel",
+   "bloco": null,
+   "rede": null,
+   "rede_titulo": null,
+   "retentivo": null,
+   "reset": null,
+   "porta_t31": null,
+   "atraso_s": null,
+   "timers": [],
+   "operandos": [
+    "M13.0"
+   ],
+   "gatilho": "A lógica deste alarme não está nos blocos fornecidos (FC_ALARME_CRITICO e FC_ALARME_PERMISSIVEL).",
+   "efeito": "Sem descrição: a lógica deste alarme está em outro bloco do programa.",
+   "causas": [
+    {
+     "t": "Causa a definir quando o bloco que gera este alarme for fornecido.",
+     "teste": "Veja o comentário da tag na planilha: ALARME TEMPERATURA ARMÁRIO ELÉTRICO",
+     "sol": []
+    }
+   ],
+   "obs": "Entrada gerada automaticamente da planilha de tags; sem lógica conhecida.",
+   "comentario_tag": "ALARME TEMPERATURA ARMÁRIO ELÉTRICO",
+   "evidencia": {
+    "logica": "sem fonte",
+    "texto": "gerado da planilha"
+   }
+  },
+  {
+   "bit": "M21.1",
+   "codigo": "A-OUT-004",
+   "tipo": "A",
+   "familia": "OUT",
+   "familia_nome": "Outros (lógica não fornecida)",
+   "nome": "Aux 1 alarme permissível",
+   "prioridade": "permissivel",
+   "bloco": null,
+   "rede": null,
+   "rede_titulo": null,
+   "retentivo": null,
+   "reset": null,
+   "porta_t31": null,
+   "atraso_s": null,
+   "timers": [],
+   "operandos": [
+    "M21.1"
+   ],
+   "gatilho": "A lógica deste alarme não está nos blocos fornecidos (FC_ALARME_CRITICO e FC_ALARME_PERMISSIVEL).",
+   "efeito": "Sem descrição: a lógica deste alarme está em outro bloco do programa.",
+   "causas": [
+    {
+     "t": "Causa a definir quando o bloco que gera este alarme for fornecido.",
+     "teste": "Veja o comentário da tag na planilha: AUX 1 ALARME PERMISSÍVEL",
+     "sol": []
+    }
+   ],
+   "obs": "Entrada gerada automaticamente da planilha de tags; sem lógica conhecida.",
+   "comentario_tag": "AUX 1 ALARME PERMISSÍVEL",
+   "evidencia": {
+    "logica": "sem fonte",
+    "texto": "gerado da planilha"
+   }
+  },
+  {
+   "bit": "M21.2",
+   "codigo": "A-OUT-005",
+   "tipo": "A",
+   "familia": "OUT",
+   "familia_nome": "Outros (lógica não fornecida)",
+   "nome": "Aux 2 alarme permissível",
+   "prioridade": "permissivel",
+   "bloco": null,
+   "rede": null,
+   "rede_titulo": null,
+   "retentivo": null,
+   "reset": null,
+   "porta_t31": null,
+   "atraso_s": null,
+   "timers": [],
+   "operandos": [
+    "M21.2"
+   ],
+   "gatilho": "A lógica deste alarme não está nos blocos fornecidos (FC_ALARME_CRITICO e FC_ALARME_PERMISSIVEL).",
+   "efeito": "Sem descrição: a lógica deste alarme está em outro bloco do programa.",
+   "causas": [
+    {
+     "t": "Causa a definir quando o bloco que gera este alarme for fornecido.",
+     "teste": "Veja o comentário da tag na planilha: AUX 2 ALARME PERMISSÍVEL",
+     "sol": []
+    }
+   ],
+   "obs": "Entrada gerada automaticamente da planilha de tags; sem lógica conhecida.",
+   "comentario_tag": "AUX 2 ALARME PERMISSÍVEL",
+   "evidencia": {
+    "logica": "sem fonte",
+    "texto": "gerado da planilha"
+   }
+  },
+  {
+   "bit": "M122.2",
+   "codigo": "A-OUT-006",
+   "tipo": "A",
+   "familia": "OUT",
+   "familia_nome": "Outros (lógica não fornecida)",
+   "nome": "Alarme bomba 1",
+   "prioridade": "permissivel",
+   "bloco": null,
+   "rede": null,
+   "rede_titulo": null,
+   "retentivo": null,
+   "reset": null,
+   "porta_t31": null,
+   "atraso_s": null,
+   "timers": [],
+   "operandos": [
+    "M122.2"
+   ],
+   "gatilho": "A lógica deste alarme não está nos blocos fornecidos (FC_ALARME_CRITICO e FC_ALARME_PERMISSIVEL).",
+   "efeito": "Sem descrição: a lógica deste alarme está em outro bloco do programa.",
+   "causas": [
+    {
+     "t": "Causa a definir quando o bloco que gera este alarme for fornecido.",
+     "teste": "Veja o comentário da tag na planilha: ALARME BOMBA 1",
+     "sol": []
+    }
+   ],
+   "obs": "Entrada gerada automaticamente da planilha de tags; sem lógica conhecida.",
+   "comentario_tag": "ALARME BOMBA 1",
+   "evidencia": {
+    "logica": "sem fonte",
+    "texto": "gerado da planilha"
+   }
+  },
+  {
+   "bit": "M122.3",
+   "codigo": "A-OUT-007",
+   "tipo": "A",
+   "familia": "OUT",
+   "familia_nome": "Outros (lógica não fornecida)",
+   "nome": "Alarme bomba 2",
+   "prioridade": "permissivel",
+   "bloco": null,
+   "rede": null,
+   "rede_titulo": null,
+   "retentivo": null,
+   "reset": null,
+   "porta_t31": null,
+   "atraso_s": null,
+   "timers": [],
+   "operandos": [
+    "M122.3"
+   ],
+   "gatilho": "A lógica deste alarme não está nos blocos fornecidos (FC_ALARME_CRITICO e FC_ALARME_PERMISSIVEL).",
+   "efeito": "Sem descrição: a lógica deste alarme está em outro bloco do programa.",
+   "causas": [
+    {
+     "t": "Causa a definir quando o bloco que gera este alarme for fornecido.",
+     "teste": "Veja o comentário da tag na planilha: ALARME BOMBA 2",
+     "sol": []
+    }
+   ],
+   "obs": "Entrada gerada automaticamente da planilha de tags; sem lógica conhecida.",
+   "comentario_tag": "ALARME BOMBA 2",
+   "evidencia": {
+    "logica": "sem fonte",
+    "texto": "gerado da planilha"
+   }
+  },
+  {
+   "bit": "M11.3",
+   "codigo": "I-AUX-001",
+   "nome": "Auxiliares desabilitados",
+   "gatilho": "Relé de controle desligado (I0.0 em 0) OU máquina não está em trabalho (M100.0 em 0). Sem atraso e sem retenção.",
+   "efeito": "Informação de estado: os auxiliares ficam desabilitados enquanto a máquina não está em trabalho.",
+   "causas": [
+    {
+     "t": "Máquina parada ou relé de controle desligado (situação normal com a máquina desligada).",
+     "teste": "Veja 'Comando ligado' no Overview.",
+     "sol": [
+      [
+       "Ligue o comando pelo procedimento normal, se a máquina deve operar.",
+       "operador"
+      ]
+     ]
+    }
+   ],
+   "obs": null,
+   "tipo": "I",
+   "familia": "AUX",
+   "familia_nome": "Auxiliares",
+   "prioridade": "critico",
+   "bloco": "FC_ALARME_CRITICO",
+   "rede": 6,
+   "rede_titulo": "AUXILIARES DESABILITADO",
+   "retentivo": false,
+   "reset": null,
+   "porta_t31": false,
+   "atraso_s": null,
+   "timers": [],
+   "operandos": [
+    "I0.0",
+    "M100.0"
+   ],
+   "comentario_tag": "AUXILIARES DESABILITADO",
+   "evidencia": {
+    "logica": "A (extraída do PLC)",
+    "texto": "C (proposto, a validar)"
+   }
+  },
+  {
+   "bit": "M17.7",
+   "codigo": "I-ENC-002",
+   "nome": "Nível de enchimento (início)",
+   "gatilho": "Nível de início de enchimento (I6.2) em 1, retido até RESET FALHAS.",
+   "efeito": "Informação de estado do ciclo de enchimento.",
+   "causas": [
+    {
+     "t": "Condição normal do ciclo de enchimento.",
+     "teste": "Veja os sensores de nível do tanque sujo no Overview.",
+     "sol": [
+      [
+       "Nenhuma ação: é só informação.",
+       "operador"
+      ]
+     ]
+    }
+   ],
+   "obs": null,
+   "tipo": "I",
+   "familia": "ENC",
+   "familia_nome": "Enchimento",
+   "prioridade": "permissivel",
+   "bloco": "FC_ALARME_PERMISSIVEL",
+   "rede": 20,
+   "rede_titulo": "NÍVEL DE ENCHIMENTO",
+   "retentivo": true,
+   "reset": "I0.2 (RESET FALHAS)",
+   "porta_t31": false,
+   "atraso_s": null,
+   "timers": [],
+   "operandos": [
+    "I0.2",
+    "I6.2"
+   ],
+   "comentario_tag": "NÍVEL BAIXO INICIO DE ENCHIMENTO",
+   "evidencia": {
+    "logica": "A (extraída do PLC)",
+    "texto": "C (proposto, a validar)"
+   }
+  }
+ ]
+}

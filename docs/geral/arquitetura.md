@@ -1,4 +1,4 @@
-# Arquitetura — Baggio (sistema de filtragem, fábrica Hagane)
+# Arquitetura — Baggio (sistema de filtragem)
 
 ```
 Sensores/atuadores ──► PLC S7 ──► Node-RED (único cliente do PLC + API HTTP) ──► Dashboard HTML

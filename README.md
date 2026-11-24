@@ -1,6 +1,6 @@
 # Baggio — Sistema de filtragem
 
-Supervisão do sistema de filtragem **Baggio**, instalado na fábrica **Hagane** (projeto TIA `WU_HAGANE`).
+Supervisão do sistema de filtragem Baggio.
 
 Dashboard HTML, com Node-RED como gateway central e PLC Siemens S7 (CPU 315-2 PN/DP) como controlador.
 

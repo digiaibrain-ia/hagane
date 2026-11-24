@@ -47,3 +47,11 @@ Histórico em banco, relatórios, tendências, comandos de máquina, acesso remo
 - **Tubo emendado:** o tubo do extrator de lodo começava solto, 30 unidades antes do funil. `tests/colisao_textos.js` agora também confere que cada ponta de tubo encosta em outro tubo, equipamento ou bomba (entradas livres: ar, alimentação e retorno).
 - Os testes novos foram provados por mutação: na v0.4 eles falham (tubo solto e deslocamento detectados).
 - Arquivos: `baggio_monitor_v0.5.html` (`dashboard/gerador/gerar_monitor_v0.5.py`), `baggio_*_v0.5.json`, `tests/telas_v0.5.js`.
+
+## v0.6 (24/11/2026)
+- **"Hagane" saiu da tela e do projeto.** Origem dos dados com nome claro: **Dados: PLC | Simulados** (antes "CPU | Simulação").
+- **Tubulação conferida com o WinCC:** o tubo que desce ao lado do filtro sai da **parede do tanque limpo** (na v0.5 eu o tinha ligado ao funil, errado). **Válvula quebra vácuo:** lâmpada, rótulo e válvula juntos na caixa, válvula sobre o tubo, com atuador desenhado.
+- **Alertas e falhas no padrão do medidor**, alimentado pelos blocos do PLC (`plc/blocos/FC_ALARME_CRITICO.awl` e `FC_ALARME_PERMISSIVEL.awl`): código `T-AAA-NNN`, **efeito → causa (teste rápido) → solução (onde)**, **como o PLC decide** (gatilho, atraso, retenção, endereços ao vivo), histórico persistente (500), Exportar (txt, md, csv, PDF). Catálogo gerado por `plc/variaveis/gerar_alarmes_v0.1.py` → `docs/contratos/alarmes_v0.1.json`.
+- **Alarmes deduzidos de entradas removidos:** o PLC é a única fonte. A dedução `I1.3 = 1 → falha` estava invertida (P-14).
+- Achados nos blocos: `M15.5` nunca dispara (condição contraditória), `M15.7` com selo invertido, `Q9.0` com nome de reserva (P-15 a P-17).
+- Teste: `tests/telas_v0.6.js` (nos dois visuais), `tests/colisao_textos.js`, `tests/fluxos_somente_leitura_v0.6.js`.

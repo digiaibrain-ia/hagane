@@ -1,4 +1,4 @@
-# Regras do projeto Baggio (sistema de filtragem da fábrica Hagane)
+# Regras do projeto Baggio (sistema de filtragem)
 
 Valem para qualquer sessão neste repositório. Em português.
 

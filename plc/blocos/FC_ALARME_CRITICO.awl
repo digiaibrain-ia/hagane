@@ -1,0 +1,162 @@
+﻿FUNCTION "FC_ALARME_CRITICO" : Void
+TITLE = ALARME CRITICO
+{ S7_Optimized_Access := 'FALSE' }
+VERSION : 0.1
+
+BEGIN
+NETWORK
+TITLE = DISJUNTOR DESARMADO MOTOR TRANSP. DRAGANTE
+      A(;
+      ON "ix_3.5_djTransporDraganteOK";
+      O;
+      A "mx_10.4";
+      AN "ix_0.2_btResetFalhas";
+      );
+      A "timer31";
+      = "mx_10.4";
+NETWORK
+TITLE = DISJUNTOR DESARMADO BOMBA 1
+      A(;
+      ON "ix_1.0_djBomba1OK";
+      O;
+      A "mx_10.5";
+      AN "ix_0.2_btResetFalhas";
+      );
+      A "timer31";
+      = "mx_10.5";
+NETWORK
+TITLE = DISJUNTOR DESARMADO BOMBA 2
+      A(;
+      ON "ix_1.4_djBomba2OK";
+      O;
+      A "mx_10.6";
+      AN "ix_0.2_btResetFalhas";
+      );
+      A "timer31";
+      = "mx_10.6";
+NETWORK
+TITLE = NÍVEL MIN. LIQUIDO P/ FILTRAR
+      A(;
+      ON "ix_6.1_nvMinimoTanqueSujo";
+      O;
+      A "mx_11.1";
+      AN "ix_0.2_btResetFalhas";
+      );
+      A "timer31";
+      = "mx_11.1";
+NETWORK
+TITLE = PRESSÃO AR INSUFICIENTE
+      A(;
+      ON "ix_5.0_prsArComprimi";
+      O;
+      A "mx_11.2";
+      AN "ix_0.2_btResetFalhas";
+      );
+      A "timer31";
+      = "mx_11.2";
+NETWORK
+TITLE = AUXILIARES DESABILITADO
+      ON "ix_0.0_rlCircuitoDeControle";
+      ON "mx_100.0";
+      = "mx_11.3";
+NETWORK
+TITLE = EMERGÊNCIA ATUADA
+      O "ix_0.1_btEmergencPainelEletrico";
+      ON "ix_0.3_rlEmergencCircuitoSeguranc";
+      O "ix_4.7_emgFiltroPression";
+      = "mx_11.5";
+NETWORK
+TITLE = ATRASO CONTROLE DEPRESSÃO FILTRO
+      A "ix_5.1_comaPressaoFiltro";
+      L S5T#1M;
+      SD "timer10";
+NETWORK
+TITLE = ALARME DEPRESSÃO FILTRO
+      A(;
+      O "timer10";
+      O;
+      A "mx_11.6";
+      AN "ix_0.2_btResetFalhas";
+      );
+      A "timer31";
+      = "mx_11.6";
+NETWORK
+TITLE = tempo p/ alarme no softstarter
+      O(;
+      A(;
+      A "mx_20.1";
+      A "ix_1.2_bm1FimPartida";
+      A "ix_1.1_bm1Ligada";
+      O;
+      A "mx_20.1";
+      AN "ix_1.3_bm1FalhaSoftstar";
+      );
+      L S5T#10S;
+      SD "timer2";
+      NOP 0;
+      NOP 0;
+      NOP 0;
+      A "timer2";
+      );
+      O;
+      A "mx_61.0";
+      AN "ix_0.2_btResetFalhas";
+      = "mx_61.0";
+NETWORK
+TITLE = tempo p/ alarme ao iniciar softstarter
+      O(;
+      A(;
+      A "mx_20.1";
+      A "ix_1.6_bm2FimPartida";
+      A "ix_1.5_bm2Ligada";
+      O;
+      A "mx_20.1";
+      AN "ix_1.7_bm2FalhaSoftstar";
+      );
+      L S5T#10S;
+      SD "timer3";
+      NOP 0;
+      NOP 0;
+      NOP 0;
+      A "timer3";
+      );
+      O;
+      A "mx_61.1";
+      AN "ix_0.2_btResetFalhas";
+      = "mx_61.1";
+NETWORK
+TITLE = tempo de alarme ao iniciar bomba 1
+      O(;
+      A "mx_20.1";
+      A "ix_1.2_bm1FimPartida";
+      A "qx_08.0_ligaDesligaBomba1";
+      L S5T#10S;
+      SD "timer13";
+      NOP 0;
+      NOP 0;
+      NOP 0;
+      A "timer13";
+      );
+      O;
+      A "mx_10.1";
+      AN "ix_0.2_btResetFalhas";
+      = "mx_10.1";
+NETWORK
+TITLE = tempo de alarme ao iniciar bomba 2
+      O(;
+      A "mx_20.1";
+      A "ix_1.6_bm2FimPartida";
+      A "qx_08.2_ligaDesligaBomba2";
+      L S5T#15S;
+      SD "timer14";
+      NOP 0;
+      NOP 0;
+      NOP 0;
+      A "timer14";
+      );
+      O;
+      A "mx_10.3";
+      AN "ix_0.2_btResetFalhas";
+      = "mx_10.3";
+END_FUNCTION
+

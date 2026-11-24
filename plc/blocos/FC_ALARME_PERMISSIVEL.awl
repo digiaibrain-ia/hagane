@@ -1,0 +1,222 @@
+﻿FUNCTION "FC_ALARME_PERMISSIVEL" : Void
+TITLE = ALARME PERMISSÍVEL
+{ S7_Optimized_Access := 'FALSE' }
+VERSION : 0.1
+
+BEGIN
+NETWORK
+TITLE = ALARME COMANDO BOMBA TROCADOR DE CALOR
+      O(;
+      AN "ix_2.1_bmTrocadorLigada";
+      A "qx_08.4_contBombaTrocador";
+      L S5T#3S;
+      SD "timer12";
+      NOP 0;
+      NOP 0;
+      NOP 0;
+      A "timer12";
+      );
+      O;
+      A "mx_12.1";
+      AN "ix_0.2_btResetFalhas";
+      = "mx_12.1";
+NETWORK
+TITLE = tempo de alarme ao iniciar rotovac
+      O(;
+      AN "ix_3.1_rotoLigado";
+      A "qx_08.7_contRotovac";
+      L S5T#3S;
+      SD "timer17";
+      NOP 0;
+      NOP 0;
+      NOP 0;
+      A "timer17";
+      );
+      O;
+      A "mx_13.1";
+      AN "ix_0.2_btResetFalhas";
+      = "mx_13.1";
+NETWORK
+TITLE = ALARME NO COMANDO DO TRANSPORTADOR DRAGANTE
+      O(;
+      AN "ix_3.6_tranDraganteLigado";
+      A "qx_09.0_res";
+      L S5T#3S;
+      SD "timer20";
+      NOP 0;
+      NOP 0;
+      NOP 0;
+      A "timer20";
+      );
+      O;
+      A "mx_13.2";
+      AN "ix_0.2_btResetFalhas";
+      = "mx_13.2";
+NETWORK
+TITLE = ALARME COMANDO MOTOR ASPIRADOR
+      O(;
+      AN "ix_2.3_aspiLigado";
+      A "qx_08.5_contAspirado";
+      L S5T#3S;
+      SD "timer22";
+      NOP 0;
+      NOP 0;
+      NOP 0;
+      A "timer22";
+      );
+      O;
+      A "mx_13.4";
+      AN "ix_0.2_btResetFalhas";
+      = "mx_13.4";
+NETWORK
+TITLE = DISJUNTOR DESARMADO BOMBA TROC. CALOR
+      A(;
+      ON "ix_2.0_djBombaTrocadorOK";
+      O;
+      A "mx_13.6";
+      AN "ix_0.2_btResetFalhas";
+      );
+      A "timer31";
+      = "mx_13.6";
+NETWORK
+TITLE = ATRASO CONTROLE NÍVEL MIN. LIQUIDO FILTRADO
+      AN "ix_6.5_nvMinimoTanqueCompensa";
+      A "timer31";
+      L S5T#10S;
+      SD "timer24";
+NETWORK
+TITLE = ALARME NÍVEL MIN. LIQUIDO FILTRADO
+      O "timer24";
+      O;
+      A "mx_13.7";
+      AN "ix_0.2_btResetFalhas";
+      = "mx_13.7";
+NETWORK
+TITLE = ATRASO CONTROLE NÍVEL MAX LIQUIDO P/ FILTRAR
+      A "ix_6.0_nvMaximoTanqueSujo";
+      A "timer31";
+      L S5T#10S;
+      SD "timer25";
+NETWORK
+TITLE = ALARME NÍVEL MAX LIQUIDO P/ FILTRAR
+      O "timer25";
+      O;
+      A "mx_14.0";
+      AN "ix_0.2_btResetFalhas";
+      = "mx_14.0";
+NETWORK
+TITLE = CONTROLE ROTAÇÃO "1" BANDA FILTRANTE
+      A "ix_3.6_tranDraganteLigado";
+      A "ix_4.1_ctrlAvancoMantaFiltrant";
+      L S5T#3S;
+      SD "timer26";
+NETWORK
+TITLE = CONTROLE ROTAÇÃO "0" BANDA FILTRANTE
+      A "ix_3.6_tranDraganteLigado";
+      AN "ix_4.1_ctrlAvancoMantaFiltrant";
+      L S5T#3S;
+      SD "timer27";
+NETWORK
+TITLE = ALARME AVANÇO BANDA FILTRANTE
+      O "timer26";
+      O "timer27";
+      O;
+      A "mx_14.1";
+      AN "ix_0.2_btResetFalhas";
+      = "mx_14.1";
+NETWORK
+TITLE = ALARME COMANDO MOTOR EXTRATOR LODO
+      O(;
+      AN "ix_2.5_extrLodoLigado";
+      A "qx_08.6_contExtratorLodo";
+      L S5T#3S;
+      SD "timer30";
+      NOP 0;
+      NOP 0;
+      NOP 0;
+      A "timer30";
+      );
+      O;
+      A "mx_14.2";
+      AN "ix_0.2_btResetFalhas";
+      = "mx_14.2";
+NETWORK
+TITLE = DISJUNTOR DESARMADO MOTOR ROTOVAC
+      A(;
+      ON "ix_3.0_djRotovacOK";
+      O;
+      A "mx_15.0";
+      AN "ix_0.2_btResetFalhas";
+      );
+      A "timer31";
+      = "mx_15.0";
+NETWORK
+TITLE = DISJUNTOR DESARMADO MOTOR ASPIRADOR
+      A(;
+      ON "ix_2.2_djAspiradoOK";
+      O;
+      A "mx_15.1";
+      AN "ix_0.2_btResetFalhas";
+      );
+      A "timer31";
+      = "mx_15.1";
+NETWORK
+TITLE = DISJUNTOR DESARMADO MOTOR EXTRATOR LODO
+      A(;
+      ON "ix_2.4_djExtratorLodoOK";
+      O;
+      A "mx_15.2";
+      AN "ix_0.2_btResetFalhas";
+      );
+      A "timer31";
+      = "mx_15.2";
+NETWORK
+TITLE = FALTA ÓLEO P/ ENCHIMENTO (RESERVA)
+      A(;
+      A "ix_7.3_res";
+      A "qx_09.2_res";
+      O;
+      A "mx_15.4";
+      AN "ix_0.2_btResetFalhas";
+      );
+      A "timer31";
+      = "mx_15.4";
+NETWORK
+TITLE = CONTROLE NÍVEL MAX LIQUIDO FILTRADO
+      A "ix_6.4_nvMaximoTanqueCompensa";
+      AN "ix_6.4_nvMaximoTanqueCompensa";
+      A "mx_20.2";
+      L S5T#1M;
+      SD "timer15";
+NETWORK
+TITLE = ALARME NÍVEL MAX LIQUIDO FILTRADO
+      A(;
+      O "timer15";
+      O;
+      A "mx_15.5";
+      AN "ix_0.2_btResetFalhas";
+      );
+      A "timer31";
+      = "mx_15.5";
+NETWORK
+TITLE = NÍVEL DE ENCHIMENTO
+      O "ix_6.2_nvInicioEnchimen";
+      O;
+      A "mx_17.7";
+      AN "ix_0.2_btResetFalhas";
+      = "mx_17.7";
+NETWORK
+TITLE = DURAÇÃO MAX ENCHIMENTO
+      O "timer54";
+      O;
+      AN "mx_15.7";
+      A "ix_0.2_btResetFalhas";
+      = "mx_15.7";
+NETWORK
+TITLE = 
+      A "mx_uno";
+      A "mx_100.0";
+      L S5T#3S;
+      SD "timer31";
+END_FUNCTION
+
