@@ -8,3 +8,5 @@ dashboard/dist/
 .DS_Store
 # dados de ensaio / exportações com dados reais
 dados/
+__pycache__/
+*.pyc
