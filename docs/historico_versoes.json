@@ -1,7 +1,15 @@
 {
- "atual": "0.10",
+ "atual": "0.11",
  "data": "24/11/2026",
  "versoes": [
+  {
+   "v": "0.11",
+   "data": "24/11/2026",
+   "itens": [
+    "Bombas 1 e 2: o motor e a bomba ficam verdes quando estão funcionando e cinza quando desligados (vermelhos se houver falha); o rotor gira junto com a animação.",
+    "Retirada a sinalização de hertz embaixo das bombas."
+   ]
+  },
   {
    "v": "0.10",
    "data": "24/11/2026",

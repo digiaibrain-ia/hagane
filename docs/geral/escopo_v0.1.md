@@ -87,3 +87,9 @@ Histórico em banco, relatórios, tendências, comandos de máquina, acesso remo
 - **Cadeia de comunicação HTML → Node-RED → PLC** (cartão "Modo" do medidor): nas opções (engrenagem) e na faixa de "sem comunicação" ("HTML ✔ → Node-RED ✔ → PLC ✖ não conectado (motivo)"). Ajuda a achar o elo que falha (por exemplo, Node-RED ok e PLC fora). Nos dados simulados, Node-RED e PLC aparecem como "não usado".
 - Teste: `tests/telas_v0.10.js` cobre contadores (incluindo "?" sem comunicação), cadeia nos três cenários, diálogo (abrir, ampliar, foco, Esc, clique fora, Fechar) e paridade do histórico embutido com o arquivo.
 - Do medidor ainda **não trazido** (ver backlog): "Logs", central de registros, exportação de relatório completo.
+
+## v0.11 (24/11/2026) — bombas com cor de estado
+- Retirada a sinalização "-- Hz" das bombas 1 e 2 (a frequência analógica continua pendente: P-03).
+- Motor e bomba ficam VERDES quando funcionando, CINZA quando desligadas (vermelhas em falha, tracejadas sem dado). O rotor gira com a animação ligada. Sem legenda de cores.
+- Estado = mesmo cálculo das lâmpadas (retorno de motor ligado e alarmes do PLC).
+- Teste: `tests/telas_v0.11.js` (cores nos dois temas, ausência de Hz, rotor só gira com bomba ligada e animação ligada). Provado em simulação; aparência no Edge 1366×768 depende de conferência no notebook.
