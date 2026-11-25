@@ -6,7 +6,7 @@ Geradas da planilha: [pendencias_geradas.md](pendencias_geradas.md).
 |---|---|---|---|
 | P-01 | `I3.2–I3.4` têm nome `_res` e comentário de nível: são cópia não usada de `I6.2–I6.4`? | Duplicata na grade de I/O confunde o operador | aberta |
 | P-02 | `I8.0–I8.6` (nome `_res`, comentário "SAE/SBE…", com `KAA23.5`): é um segundo módulo de entradas real, em uso? | Entram na tela de I/O? | aberta |
-| P-03 | `IW352` (contador de banda rasgada), `IW356` (transdutor de pressão), `QW336` (saída p/ inversor): escala e unidade? Endereços de periferia (`PIW`)? | Overview mostra Hz das bombas | aberta |
+| P-03 (ENCERRADA 25/11: sem analógicas) | `IW352` (contador de banda rasgada), `IW356` (transdutor de pressão), `QW336` (saída p/ inversor): escala e unidade? Endereços de periferia (`PIW`)? | Overview mostra Hz das bombas | aberta |
 | P-04 | Quais `M` são alarme **crítico** e quais **permissível**? A planilha não diz | Prioridade e cor na tela de alertas | **respondida em parte (24/11):** os blocos `FC_ALARME_CRITICO` e `FC_ALARME_PERMISSIVEL` definem 24 alarmes (ver `alarmes_v0.1.md`). Faltam os outros 11 (M12.2/M12.3, M122.x, M13.0, M16.x, M21.x), cuja lógica está em outro bloco |
 | P-05 | O que `PT1` e `PT2` significam (pontos de comando local?) | Texto da tela | aberta |
 | P-06 | Restos de outra máquina (bomba 3/4, desoleador, separador magnético, inverter): ocultar? | BG-003 | aberta |

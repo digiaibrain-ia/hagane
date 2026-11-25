@@ -93,3 +93,7 @@ Histórico em banco, relatórios, tendências, comandos de máquina, acesso remo
 - Motor e bomba ficam VERDES quando funcionando, CINZA quando desligadas (vermelhas em falha, tracejadas sem dado). O rotor gira com a animação ligada. Sem legenda de cores.
 - Estado = mesmo cálculo das lâmpadas (retorno de motor ligado e alarmes do PLC).
 - Teste: `tests/telas_v0.11.js` (cores nos dois temas, ausência de Hz, rotor só gira com bomba ligada e animação ligada). Provado em simulação; aparência no Edge 1366×768 depende de conferência no notebook.
+
+## v0.12 (25/11/2026) — sem analógicas
+- O equipamento não tem entrada nem saída analógica: painel "Analógicas" removido da tela Entradas e saídas; `analogicas[]` removido do contrato da API (`api_http_v0.1.md`) e do contrato embutido. P-03 encerrada.
+- Teste: `tests/telas_v0.12.js` (sem área analógica) e `tests/fluxos_somente_leitura_v0.12.js`. Provado em simulação; conferir no Edge do notebook.
