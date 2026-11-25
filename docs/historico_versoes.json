@@ -1,7 +1,15 @@
 {
- "atual": "0.12",
+ "atual": "0.13",
  "data": "25/11/2026",
  "versoes": [
+  {
+   "v": "0.13",
+   "data": "25/11/2026",
+   "itens": [
+    "Bomba 2 invertida (motor à direita) e tubulação de sucção refeita, mais curta e entrando pela esquerda.",
+    "Título \"Baggio · Sistema de Filtragem\" no cabeçalho, com ícone animado (funil com gotas)."
+   ]
+  },
   {
    "v": "0.12",
    "data": "25/11/2026",

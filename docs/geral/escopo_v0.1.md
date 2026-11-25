@@ -97,3 +97,8 @@ Histórico em banco, relatórios, tendências, comandos de máquina, acesso remo
 ## v0.12 (25/11/2026) — sem analógicas
 - O equipamento não tem entrada nem saída analógica: painel "Analógicas" removido da tela Entradas e saídas; `analogicas[]` removido do contrato da API (`api_http_v0.1.md`) e do contrato embutido. P-03 encerrada.
 - Teste: `tests/telas_v0.12.js` (sem área analógica) e `tests/fluxos_somente_leitura_v0.12.js`. Provado em simulação; conferir no Edge do notebook.
+
+## v0.13 (25/11/2026) — bomba 2 invertida e título com ícone
+- Bomba 2 espelhada 180° (motor à direita, voluta à esquerda); sucção refeita (curta, entra pela esquerda); quadro tracejado das bombas reduzido (sem o laço inferior).
+- Cabeçalho (tema Moderno): "Baggio Sistema de Filtragem" com ícone animado (funil com gotas, anima junto com o botão Animação). No Original o título continua o da barra WinCC.
+- Teste: `tests/telas_v0.13.js` (regras de geometria, direção×animação e colisões passaram nos dois temas). Provado em simulação; a ordem real das tubulações da bomba 2 deve ser conferida contra a máquina.
